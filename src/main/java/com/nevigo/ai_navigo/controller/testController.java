@@ -1,13 +1,9 @@
 package com.nevigo.ai_navigo.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
 public class testController {
 
-    @GetMapping("/main")
-    public String mainPage() {
-        return "/main/home"; // home.html 파일과 매핑
-    }
 }
