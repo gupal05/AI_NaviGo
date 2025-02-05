@@ -89,7 +89,7 @@
                 <hr class="sign-up-divider">
 
                 <!-- 회원가입 버튼 -->
-                <button class="btn btn-secondary w-100" onclick="location.href='#'">Sign Up</button>
+                <button class="btn btn-secondary w-100" onclick="location.href='signUp'">Sign Up</button>
             </div>
         </div>
     </div>

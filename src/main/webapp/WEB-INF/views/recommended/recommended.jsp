@@ -101,7 +101,9 @@
         <jsp:include page="/WEB-INF/views/recommended/ai.jsp" />
         <jsp:include page="/WEB-INF/views/recommended/popular.jsp" />
         <jsp:include page="/WEB-INF/views/recommended/season.jsp" />
-        <jsp:include page="/WEB-INF/views/recommended/festival.jsp" />
+        <jsp:include page="/WEB-INF/views/recommended/festival.jsp">
+            <jsp:param name="limit" value="8" />
+        </jsp:include>
     </div>
 
     <!-- (2) AI추천여행지 탭: 해당 섹션만 표시 -->
@@ -111,6 +113,7 @@
 
     <!-- (3) 인기 여행지 탭 -->
     <div class="tab-pane fade" id="popular" role="tabpanel" aria-labelledby="popular-tab">
+<%--        <jsp:include page="/WEB-INF/views/recommended/popular.jsp" />--%>
         <jsp:include page="/WEB-INF/views/recommended/popular.jsp" />
     </div>
 
@@ -121,7 +124,8 @@
 
     <!-- (5) 문화 축제 탭 -->
     <div class="tab-pane fade" id="festival" role="tabpanel" aria-labelledby="festival-tab">
-        <jsp:include page="/WEB-INF/views/recommended/festival.jsp" />
+<%--        <jsp:include page="/WEB-INF/views/recommended/festival.jsp" />--%>
+    <jsp:include page="/WEB-INF/views/recommended/festival.jsp" />
     </div>
 </div>
 <%----%>
