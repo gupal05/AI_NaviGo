@@ -1,7 +1,9 @@
 package com.nevigo.ai_navigo.controller;
 
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import org.springframework.stereotype.Controller;
+
+@Controller
 public class loginController {
+
 }
