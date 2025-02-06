@@ -46,7 +46,7 @@ public class mypageController {
             return "redirect:/login";  // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
         }
 
-        member.setMemberId(memberId);  // 세션에서 ID를 가져와 설정
+        //member.setMemberId(memberId);  // 세션에서 ID를 가져와 설정
         memberService.updateMember(member);  // 서비스 호출하여 회원 정보 업데이트
         return "redirect:/mypage";  // 업데이트 후 마이페이지로 리다이렉트
     }
