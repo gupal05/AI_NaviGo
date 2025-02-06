@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .google-btn {
             background-color: white;
@@ -65,16 +66,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/auth/sign_in" method="post">
+                <form action="/auth/sign_in" method="post" id="login-form">
                     <div class="mb-3">
                         <label for="id" class="form-label">ID</label>
-                        <input type="text" class="form-control" id="id" name="id" required>
+                        <input type="text" class="form-control" id="id" name="memberId" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" name="memberPw" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <button type="button" id="login-btn" class="btn btn-primary w-100">Login</button>
                 </form>
 
                 <!-- 구분선 -->
@@ -97,6 +98,47 @@
 
 <!-- 푸터 포함 -->
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+
+<!-- javascript -->
+<script>
+    $(document).ready(function() {
+        $("#login-btn").click(function() { // "Login" 버튼 클릭 시 실행
+            let userId = $("#id"); // 입력된 ID 값 가져오기
+            let userPw = $("#password"); // 입력된 PW 값 가져오기
+
+            if (userId.val().trim() === "") {
+                alert("아이디를 입력해주세요.");
+                return;
+            } else if(userPw.val().trim() === ""){
+                alert("비밀번호를 입력해주세요.");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "/isLogin",
+                data: {
+                    [userId.attr("name")]: userId.val(),
+                    [userPw.attr("name")]: userPw.val()
+                },
+                success: function(response) {
+                    if (response === 'ok') {
+                        const form = $('#login-form');
+                        form.submit();
+                    } else if(response === '존재하지 않는 계정입니다.'){
+                        userId.val('');
+                        alert(response);
+                    } else{
+                        userPw.val('');
+                        alert(response);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 오류:", error);
+                }
+            });
+        });
+    });
+</script>
 
 <!-- Bootstrap JS (Popper.js 포함) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
