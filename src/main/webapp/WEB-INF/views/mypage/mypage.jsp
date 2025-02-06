@@ -41,7 +41,7 @@
             background-color: #e9ecef
         }
         .mypage-container > .content, .mypage-container > .sidebar {
-            padding: 30px;
+            padding: 20px;
             border: 1px solid #ccc
         }
         .mypage-container .content p, .mypage-container .sidebar p {
@@ -93,10 +93,10 @@
     </div>
 
 
-
-
-
 </div>
+
+<!-- chatbot 포함 -->
+<jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 
 <!-- 푸터 포함 -->
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
