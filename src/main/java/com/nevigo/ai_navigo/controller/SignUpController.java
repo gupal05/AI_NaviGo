@@ -1,15 +1,23 @@
 package com.nevigo.ai_navigo.controller;
 
 import com.nevigo.ai_navigo.dto.MemberDTO;
+import com.nevigo.ai_navigo.dto.PreferenceDTO;
 import com.nevigo.ai_navigo.service.IF_SignUpService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class SignUpController {
     @Autowired
     private IF_SignUpService signUpService;
+    @Autowired
+    private HttpSession session;
 
     //회원가입 페이지로 이동을 위한
     @GetMapping("/signUp")
@@ -31,9 +39,24 @@ public class SignUpController {
     @PostMapping("/signResult")
     public String signupResult(@ModelAttribute MemberDTO member) {
         if(signUpService.insMember(member) != 0){
-            return "signup_result";
+            session.setAttribute("temp", member);
+            return "/auth/signup_result";
         } else{
           return "redirect:/signUp";
+        }
+    }
+
+    @PostMapping("/sign_card_result")
+    public String cardResult(@RequestParam("selectedCategory") String selCard) {
+        MemberDTO member = (MemberDTO) session.getAttribute("temp");
+        Map<String, Object> map = new HashMap<>();
+        map.put("selectedCategory", selCard);
+        map.put("memberId", member.getMemberId());
+        if(signUpService.insPreference(map) != 0){
+            session.removeAttribute("temp");
+            return "redirect:/main";
+        }else{
+            return "redirect:/signUp";
         }
     }
 }

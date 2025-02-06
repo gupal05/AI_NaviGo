@@ -1,23 +1,23 @@
 package com.nevigo.ai_navigo.service;
 
+import com.nevigo.ai_navigo.dao.IF_LoginDao;
 import com.nevigo.ai_navigo.dao.IF_SignUpDao;
 import com.nevigo.ai_navigo.dto.MemberDTO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
-public class SignUpService implements IF_SignUpService {
-    private final IF_SignUpDao signUpDao;
+public class LoginService implements IF_LoginService{
+    private final IF_LoginDao loginDao;
 
     @Override
     @Transactional
-    public int dupCheckId(String dupCheckId) {
+    public int isMemberId(MemberDTO member) {
         try {
-            return signUpDao.dupCheckId(dupCheckId);
+            return loginDao.isMemberId(member);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -25,9 +25,9 @@ public class SignUpService implements IF_SignUpService {
 
     @Override
     @Transactional
-    public int insMember(MemberDTO member) {
+    public int isMemberPw(MemberDTO member) {
         try {
-            return signUpDao.insMember(member);
+            return loginDao.isMemberPw(member);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -35,10 +35,10 @@ public class SignUpService implements IF_SignUpService {
 
     @Override
     @Transactional
-    public int insPreference(Map<String, Object> map) {
+    public MemberDTO getMemberInfo(MemberDTO member) {
         try {
-            System.out.println(map);
-            return signUpDao.insPreference(map);
+            MemberDTO result = loginDao.getMemberInfo(member);
+            return result;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -38,29 +38,29 @@
     <form action="/signResult" method="post">
         <div class="form-group">
             <label for="member_name" class="form-label">이름</label>
-            <input type="text" class="form-control" id="member_name" name="member_name" required>
+            <input type="text" class="form-control" id="member_name" name="memberName" required>
         </div>
         <div class="form-group">
             <label for="member_id" class="form-label">아이디</label>
             <div class="input-group">
-                <input type="text" class="form-control" id="member_id" name="member_id" required>
-                <input type="hidden" id="hidden_member_id" name="member_id">
+                <input type="text" class="form-control" id="member_id" name="memberId" required>
+                <input type="hidden" id="hidden_member_id" name="memberId">
                 <button type="button" class="btn btn-secondary" id="checkIdBtn">중복 확인</button>
             </div>
         </div>
         <div class="form-group">
             <label for="member_pw" class="form-label">비밀번호</label>
-            <input type="password" class="form-control" id="member_pw" name="member_pw" required>
+            <input type="password" class="form-control" id="member_pw" name="memberPw" required>
         </div>
         <div class="form-group">
             <label class="form-label">성별</label>
-            <select class="form-control" name="member_gender">
+            <select class="form-control" name="memberGender">
                 <option value="M">남성</option>
                 <option value="F">여성</option>
             </select>
         </div>
         <div class="d-flex justify-content-between mt-4">
-            <button type="button" class="btn btn-secondary">Cancel</button>
+            <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
             <button type="submit" class="btn btn-primary">Next</button>
         </div>
     </form>
