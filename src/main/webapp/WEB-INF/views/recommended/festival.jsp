@@ -21,7 +21,7 @@
     urlBuilder.append("&areaCode=");
     urlBuilder.append("&sigunguCode=");
     urlBuilder.append("&modifiedtime=");
-    // addr1 파라미터 보내지 않음
+    //
 
     URL url = new URL(urlBuilder.toString());
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -108,7 +108,7 @@
         for (int i = 0; i < limit; i++){
             JSONObject item = items.getJSONObject(i);
             String title = item.optString("title", "제목 없음");
-            String imageUrl = item.optString("firstimage", "secondimage");
+            String imageUrl = item.optString("firstimage", "firstimage2");
             String description = item.optString("overview", "");
             if(description.isEmpty()){
                 String startDate = item.optString("eventstartdate", "");
