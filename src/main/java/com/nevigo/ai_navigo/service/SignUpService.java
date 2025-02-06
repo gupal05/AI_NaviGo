@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class SignUpService implements IF_SignUpService {
@@ -26,6 +28,17 @@ public class SignUpService implements IF_SignUpService {
     public int insMember(MemberDTO member) {
         try {
             return signUpDao.insMember(member);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public int insPreference(Map<String, Object> map) {
+        try {
+            System.out.println(map);
+            return signUpDao.insPreference(map);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
