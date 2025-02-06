@@ -46,6 +46,9 @@
   <h2>회원 정보 수정</h2>
 </div>
 
+<!-- chatbot 포함 -->
+<jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
+
 <!-- 푸터 포함 -->
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 

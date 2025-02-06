@@ -1,35 +1,26 @@
 package com.nevigo.ai_navigo.service;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nevigo.ai_navigo.dto.MemberDTO;
+
+import com.nevigo.ai_navigo.dao.memberUpdateDao;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class MemberUpdateService {
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final memberUpdateDao memberUpdateDao;
 
-    public void updateMember(String username, Member updatedMember, String currentPassword) {
-        // 현재 사용자 조회
-        Member existingMember = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+    @Autowired // 의존성 주입을 위함 (생성자 주입 방식)
+    public MemberUpdateService(memberUpdateDao memberUpdateDao) {
+        this.memberUpdateDao = memberUpdateDao; // spring이 주입하는 DAO
+    }
 
-        // 현재 비밀번호 검증
-        if (!passwordEncoder.matches(currentPassword, existingMember.getPassword())) {
-            throw new InvalidPasswordException("현재 비밀번호가 일치하지 않습니다.");
-        }
+    public MemberDTO getMemberById(String memberId) {
+        return memberUpdateDao.findById(memberId);  // 변경된 DAO에서 조회
+    }
 
-        // 업데이트 가능한 정보 설정
-        existingMember.setEmail(updatedMember.getEmail());
-        existingMember.setPhone(updatedMember.getPhone());
-
-        // 새 비밀번호가 있는 경우에만 비밀번호 변경
-        if (StringUtils.hasText(updatedMember.getNewPassword())) {
-            existingMember.setPassword(
-                    passwordEncoder.encode(updatedMember.getNewPassword())
-            );
-        }
-
-        memberRepository.save(existingMember);
+    public void updateMember(MemberDTO member) {
+        memberUpdateDao.updateMember(member);  // DAO의 updateMember 메서드 호출
     }
 }
+
