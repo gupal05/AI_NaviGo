@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.nevigo.ai_navigo.dao.IF_SignUpDao">
+<mapper namespace="com.nevigo.ai_navigo.dao.IF_SignUpDaoDao">
     <!-- 사용자 id 중복 확인을 위한 구문 -->
     <select id="dupCheckId" parameterType="String" resultType="int">
         select count(*) from member where member_id = #{memberId}
@@ -10,6 +10,6 @@
     <!-- 회원가입(member 테이블에 insert) 하기 위한 구문 -->
     <insert id="insMember" parameterType="com.nevigo.ai_navigo.dto.MemberDTO">
         insert into member(member_id, member_name, member_pw, member_gender, member_grade, reg_date, upt_date)
-        values (#{member_id}, #{member_name}, #{member_pw}, #{member_gender}, default, default, default)
+        values (#{memberId}, #{memberName}, #{memberPw}, #{memberGender}, default, default, default)
     </insert>
 </mapper>
