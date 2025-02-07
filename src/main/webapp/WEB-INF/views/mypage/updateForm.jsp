@@ -37,11 +37,6 @@
 
 <body>
 
-<!-- 헤더 포함 -->
-<header id="top-header">
-  <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
-</header>
-
 <div class="update-container">
   <h2>회원 정보 수정</h2>
 </div>
@@ -49,13 +44,12 @@
 <!-- chatbot 포함 -->
 <jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 
-<!-- 푸터 포함 -->
-<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+
+
+
 
 <!-- Bootstrap JS (Popper.js 포함) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
 
 </body>
 </html>
