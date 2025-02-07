@@ -25,7 +25,7 @@
                 <%-- session에 memberInfo가 있으면 마이 페이지와 Logout 버튼 표시 --%>
                 <% if (session.getAttribute("memberInfo") != null) { %>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">마이 페이지</a>
+                    <a class="nav-link" href="/mypage">마이 페이지</a>
                 </li>
                 <li class="nav-item">
                     <form action="/logout" method="post">
