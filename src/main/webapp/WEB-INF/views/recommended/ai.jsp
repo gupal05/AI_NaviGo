@@ -4,6 +4,11 @@
     // ------------------------------
     // 1. 첫번째 API 호출: areaBasedList1 (기본 목록 조회)
     // ------------------------------
+    String preferenceMB = (String) request.getAttribute("preference");
+    if(preferenceMB == null || preferenceMB.trim().isEmpty()) {
+        preferenceMB = "A0202";
+    }
+
     String tempword = "힐링 코스";
     String tempword2 = tempword;
     String tempsearchword = "";
@@ -24,8 +29,8 @@
     urlBuilder.append("&_type=json");
     urlBuilder.append("&listYN=Y");
     urlBuilder.append("&arrange=R");
-    // 여기서는 tempsearchword를 사용하여 목록 조회
-    urlBuilder.append("&cat2=").append(tempsearchword);
+    // 선호도를 사용해 API 호출, 중분류 코드 사용
+    urlBuilder.append("&cat2=").append(preferenceMB);
 
     URL url = new URL(urlBuilder.toString());
     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -47,6 +52,9 @@
         jsonResponse = "{\"response\":{\"header\":{\"resultCode\":\"API ERROR: " + responseCode + "\"}}}";
     }
     conn.disconnect();
+
+    // 콘솔에 첫번째 API 응답 출력
+    System.out.println("첫번째 API 응답 (jsonResponse): " + jsonResponse);
 
     // ------------------------------
     // 2. 첫번째 API JSON 파싱 (목록 items 배열 추출)
@@ -76,8 +84,6 @@
     // ------------------------------
     String limitStr = request.getParameter("limit");
     int limit = items.length();
-    // 디버그: 파라미터 값 확인
-//    out.println("Received limit parameter: " + limitStr + "<br/>");
     if(limitStr != null) {
         try {
             int reqLimit = Integer.parseInt(limitStr);
@@ -86,15 +92,15 @@
             // 파라미터 변환 실패 시 전체 아이템 사용
         }
     }
-//    out.println("Using limit: " + limit + " / Total items: " + items.length() + "<br/>");
 %>
 <html>
 <head>
     <title>AI 추천 여행지</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <style>
+        /* 이미지가 카드의 너비에 맞게 조절되고, 고정 높이 내에서 적절히 잘리도록 설정 */
         .card-img-custom {
-            width: 295px;
+            width: 100%;
             height: 212px;
             object-fit: cover;
         }
@@ -102,56 +108,63 @@
             color: inherit;
             text-decoration: none;
         }
-        /*.debug-box {*/
-        /*    background-color: #f8f9fa;*/
-        /*    padding: 15px;*/
-        /*    margin-bottom: 20px;*/
-        /*    border: 1px solid #ddd;*/
-        /*    font-family: monospace;*/
-        /*    font-size: 13px;*/
-        /*}*/
     </style>
 </head>
 <body>
-<%--<div class="container my-4">--%>
-<%--    <!-- 디버깅 정보 영역 -->--%>
-<%--    <div class="debug-box">--%>
-<%--        <h5>첫번째 API 응답 (jsonResponse)</h5>--%>
-<%--        <pre><%= jsonResponse %></pre>--%>
-<%--        <hr>--%>
-<%--        <h5>JSON 파싱 결과</h5>--%>
-<%--        <p><%= parsingMessage %></p>--%>
-<%--    </div>--%>
+<h3 class="mb-3">AI추천 여행지 !</h3>
+<div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
+    <%
+        for(int i = 0; i < limit; i++){
+            JSONObject item = items.getJSONObject(i);
+            String title = item.optString("title", "제목 없음");
+            String imageUrl = item.optString("firstimage", "firstimage2");
+            if(imageUrl == null || imageUrl.isEmpty()){
+                imageUrl = "placeholder.jpg";
+            }
+            String contentid = item.optString("contentid", "");
+            String contenttypeid = item.optString("contenttypeid", "");
+            String cat1 = item.optString("cat1", "기본값");
+            String cat2 = item.optString("cat2", "기본값");
+            String cat3 = item.optString("cat3", "기본값");
 
-    <h3 class="mb-3">AI추천 <%= tempword2 %> 관련 여행지</h3>
+//            String detailUrl = "detail.jsp?contentid=" + contentid + "&contenttypeid=" + contenttypeid ;
+            String detailUrl = "recommend/detail?contentid=" + contentid + "&contenttypeid=" + contenttypeid;
+    %>
 
-    <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
-        <%
-            for(int i = 0; i < limit; i++){
-                JSONObject item = items.getJSONObject(i);
-                String title = item.optString("title", "제목 없음");
-                String imageUrl = item.optString("firstimage", "");
-                if(imageUrl == null || imageUrl.isEmpty()){
-                    imageUrl = "placeholder.jpg";
-                }
-                String contentid = item.optString("contentid", "");
-                String detailUrl = "detail.jsp?contentid=" + contentid;
-        %>
-        <div class="col">
-            <a href="<%= detailUrl %>" class="card-link">
-                <div class="card h-100">
-                    <img src="<%= imageUrl %>" class="card-img-top card-img-custom" alt="<%= title %>">
-                    <div class="card-body">
-                        <span class="badge bg-Primary mb-2">AI추천</span>
-                        <h5 class="card-title"><%= title %></h5>
-                    </div>
+<%--    사용자가 선택한 여행지 contentid를 controller에 보내는 fetch 함수--%>
+    <script>
+        function recordClick(contentid, cat1, cat2, cat3) {
+            fetch('/recordClick', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contentid: contentid,
+                    cat1: cat1,
+                    cat2: cat2,
+                    cat3: cat3
+                })
+            })
+                .then(response => response.text())
+                .then(data => console.log(data));
+        }
+    </script>
+
+    <div class="col">
+        <a href="<%= detailUrl %>" class="card-link" onclick="recordClick('<%= contentid %>', '<%= cat1 %>', '<%= cat2 %>', '<%= cat3 %>')">
+            <div class="card h-100">
+                <img src="<%= imageUrl %>" class="card-img-top card-img-custom" alt="<%= title %>">
+                <div class="card-body">
+                    <span class="badge bg-primary mb-2">AI추천</span>
+                    <h5 class="card-title"><%= title %></h5>
                 </div>
-            </a>
-        </div>
-        <%
-            } // end for
-        %>
+            </div>
+        </a>
     </div>
-<%--</div>--%>
+    <%
+        } // end for
+    %>
+</div>
 </body>
 </html>
