@@ -1,6 +1,7 @@
 package com.nevigo.ai_navigo.service;
 
 import com.nevigo.ai_navigo.dao.IF_preferenceDao;
+import com.nevigo.ai_navigo.dto.UserClickDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,11 @@ public class preferenceService_Impl implements IF_preferenceService{
         System.out.println("서비스단 선호도: "+ purpose);
 
         return purpose;
+    }
+
+    @Override
+    public void clickTravelOne(UserClickDTO userclickdto) throws Exception {
+
+        ifpreferencedao.setUserClickInfo(userclickdto);
     }
 }
