@@ -47,7 +47,7 @@
   }
 
   .modal-content {
-    flex: 1;
+    flex: 1.2;
     overflow-y: auto;
     padding: 15px;
     display: flex;
@@ -60,6 +60,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    flex-grow: 1; /* 부모 컨테이너 내에서 가변 크기 */
   }
 
   /* 메시지 공통 스타일 */
@@ -69,7 +70,7 @@
     border-radius: 20px;
     word-wrap: break-word;
     line-height: 1.4;  /* 줄간격 추가 */
-    margin: 4px 0;  /* 상하 여백 추가 */
+    margin: 4px 4px;  /* 상하 여백 추가 */
   }
 
   /* 사용자 메시지 스타일 */
@@ -77,7 +78,8 @@
     align-self: flex-end;
     background-color: #007bff;
     color: white;
-    border-bottom-right-radius: 5px;
+    border-radius: 10px;
+    padding: 5px 6px;
   }
 
   /* AI 메시지 스타일 */
@@ -85,7 +87,8 @@
     align-self: flex-start;
     background-color: #f1f1f1;
     color: black;
-    border-bottom-left-radius: 5px;
+    border-radius: 10px;
+    padding: 5px 6px;
   }
 
   .modal-input {
