@@ -10,4 +10,12 @@
         select prefer_purpose from preference where member_id = #{memberId}
     </select>
 
+    <!-- After: 명시적 컬럼 지정 -->
+    <insert id="setUserClickInfo" parameterType="com.nevigo.ai_navigo.dto.UserClickDTO">
+        INSERT INTO user_activity
+            (member_id, contentid, cat1, cat2, cat3, clicked_at)
+        VALUES
+            (#{member_id}, #{contentid}, #{cat1}, #{cat2}, #{cat3}, DEFAULT)
+    </insert>
+
 </mapper>
