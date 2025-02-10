@@ -9,17 +9,24 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
         /* 메인 컨테이너 스타일 */
         .mypage-container {
+            width: 100%;
+            flex: 1; /* 본문 영역이 가변적으로 확장되도록 설정 */
             display: flex;
             flex-wrap: nowrap; /* 줄바꿈 방지 */
             align-items: stretch; /* 높이 균일하게 */
             padding: 20px;
         }
-
         /* 사이드바 스타일 */
         .sidebar {
-            width: 220px;
+            width: 240px;
             background-color: #f8f9fa;
             padding: 20px;
             border-right: 1px solid #ccc;
@@ -42,13 +49,14 @@
             border-radius: 5px;
         }
 
-        /* 본문 영역 스타일 */
+         본문 영역 스타일
         .content {
             flex-grow: 1;
             padding: 30px;
             background-color: #e9ecef;
             border: 1px solid #ccc;
             min-height: 600px;
+
         }
 
         /* 처음에는 개인정보 수정 화면만 보이도록 설정 */
@@ -78,6 +86,9 @@
             <li class="nav-item">
                 <span class="nav-link" onclick="showSection('history')">나의 히스토리</span>
             </li>
+            <li class="nav-item">
+                <span class="nav-link" onclick="showSection('preference')">여행 취향 수정</span>
+            </li>
         </ul>
     </div>
 
@@ -92,14 +103,23 @@
         <div id="history-section" class="content-section">
             <jsp:include page="/WEB-INF/views/mypage/hitory.jsp" />
         </div>
+
+        <!-- 여행 취향 수정 -->
+        <div id="preference-section" class="content-section">
+            <jsp:include page="/WEB-INF/views/mypage/preference.jsp" />
+        </div>
     </div>
 </div>
 
+
+
+<%--<!-- 푸터 포함 -->--%>
+<%--<footer id="bottom-footer">--%>
+<%--    <jsp:include page="/WEB-INF/views/layout/footer.jsp" />--%>
+<%--</footer>--%>
+
 <!-- chatbot 포함 -->
 <jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
-
-<!-- 푸터 포함 -->
-<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 
 <!-- JavaScript -->
 <script>
