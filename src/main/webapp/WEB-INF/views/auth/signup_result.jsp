@@ -55,73 +55,73 @@
     <div class="row">
         <!-- 여행 분야 카드 -->
         <div class="col-12 col-md-3 mb-4">
-            <div class="card" onclick="selectCategory('자연 관광지', this)">
+            <div class="card" onclick="selectCategory('산', this)">
                 <div class="card-body">
-                    <h5 class="card-title">자연 관광지</h5>
+                    <h5 class="card-title">산</h5>
                     <p class="card-text">자연 속에서의 여행을 원하시면 선택하세요.</p>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-md-3 mb-4">
-            <div class="card" onclick="selectCategory('휴양 관광지', this)">
+            <div class="card" onclick="selectCategory('해안 절경', this)">
                 <div class="card-body">
-                    <h5 class="card-title">휴양 관광지</h5>
-                    <p class="card-text">편안하게 쉬고 싶은 여행을 원하시면 선택하세요.</p>
+                    <h5 class="card-title">해안 절경</h5>
+                    <p class="card-text">바다와 해안의 아름다움을 경험하고 싶다면 선택하세요.</p>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-md-3 mb-4">
-            <div class="card" onclick="selectCategory('역사 관광지', this)">
+            <div class="card" onclick="selectCategory('온천/욕장/스파', this)">
                 <div class="card-body">
-                    <h5 class="card-title">역사 관광지</h5>
-                    <p class="card-text">역사적인 장소를 탐방하는 여행을 원하시면 선택하세요.</p>
+                    <h5 class="card-title">온천/욕장/스파</h5>
+                    <p class="card-text">몸과 마음을 힐링할 수 있는 온천 및 스파 여행을 원하시면 선택하세요.</p>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-md-3 mb-4">
-            <div class="card" onclick="selectCategory('음식 탐방', this)">
+            <div class="card" onclick="selectCategory('카페/전통찻집', this)">
                 <div class="card-body">
-                    <h5 class="card-title">음식 탐방</h5>
-                    <p class="card-text">맛있는 음식을 즐기고 싶다면 선택하세요.</p>
+                    <h5 class="card-title">카페/전통찻집</h5>
+                    <p class="card-text">아늑한 분위기에서 커피와 차를 즐기고 싶다면 선택하세요.</p>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-md-3 mb-4">
-            <div class="card" onclick="selectCategory('육상 레포츠', this)">
+            <div class="card" onclick="selectCategory('복합 레포츠', this)">
                 <div class="card-body">
-                    <h5 class="card-title">육상 레포츠</h5>
-                    <p class="card-text">액티브한 운동을 즐기고 싶다면 선택하세요.</p>
+                    <h5 class="card-title">복합 레포츠</h5>
+                    <p class="card-text">다양한 레포츠를 한 번에 즐기고 싶다면 선택하세요.</p>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-md-3 mb-4">
-            <div class="card" onclick="selectCategory('문화시설', this)">
+            <div class="card" onclick="selectCategory('야영장,오토캠핑장', this)">
                 <div class="card-body">
-                    <h5 class="card-title">문화시설</h5>
-                    <p class="card-text">문화적인 경험을 원하는 분들을 위한 여행입니다.</p>
+                    <h5 class="card-title">야영장,오토캠핑장</h5>
+                    <p class="card-text">자연 속에서 캠핑과 야영을 즐기고 싶다면 선택하세요.</p>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-md-3 mb-4">
-            <div class="card" onclick="selectCategory('힐링 코스', this)">
+            <div class="card" onclick="selectCategory('문화관광축제', this)">
                 <div class="card-body">
-                    <h5 class="card-title">힐링 코스</h5>
-                    <p class="card-text">마음과 몸을 치유하는 여행을 원하시면 선택하세요.</p>
+                    <h5 class="card-title">문화관광축제</h5>
+                    <p class="card-text">다채로운 문화와 축제의 분위기를 경험하고 싶다면 선택하세요.</p>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-md-3 mb-4">
-            <div class="card" onclick="selectCategory('쇼핑', this)">
+            <div class="card" onclick="selectCategory('박물관', this)">
                 <div class="card-body">
-                    <h5 class="card-title">쇼핑</h5>
-                    <p class="card-text">쇼핑을 즐기고 싶다면 이 카드를 선택하세요.</p>
+                    <h5 class="card-title">박물관</h5>
+                    <p class="card-text">역사와 문화, 예술을 감상하고 싶다면 이 카드를 선택하세요.</p>
                 </div>
             </div>
         </div>
