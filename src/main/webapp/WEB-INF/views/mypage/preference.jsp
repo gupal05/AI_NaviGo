@@ -136,8 +136,6 @@
         <button type="button" class="btn btn-primary" id="nextBtn">Save</button>
     </div>
 
-    <!-- chatbot 포함 -->
-    <jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 
     <!-- Bootstrap JS (Popper.js 포함) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
