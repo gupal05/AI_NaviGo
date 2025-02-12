@@ -8,7 +8,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserClickDTO {
-    private String member_id;
+    private String memberid;
+    private String title;
     private String contentid;
     private String cat1;
     private String cat2;
