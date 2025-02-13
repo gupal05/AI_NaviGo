@@ -63,8 +63,7 @@
     <h2>선호 여행 취향 수정</h2>
 
     <!-- 저장된 카테고리를 확인 -->
-    <p>저장된 카테고리: ${savedCategory}</p>
-
+    <p>저장된 선호 여행 취향: ${savedCategory}</p>
 
     <!-- 저장 성공 알림 -->
     <div id="saveAlert" class="alert alert-success" role="alert">
@@ -72,18 +71,6 @@
     </div>
 
     <div class="row">
-        <form id="preferenceForm" method="POST" action="/updatePreference">
-            <div class="form-group">
-                <label for="preference">현재 선호도:</label>
-                <input type="text" class="form-control" id="preference" name="preference"
-                       value="${savedCategory != null ? savedCategory : '선호도를 선택해주세요.'}" readonly>
-            </div>
-
-            <div class="form-group mt-4">
-                <!-- 취향을 수정할 수 있는 선택 버튼들 추가 -->
-                <button type="submit" class="btn btn-primary">선호도 수정</button>
-            </div>
-        </form>
         <script>
             // 선택된 선호도가 있다면 해당 값을 저장
             var selectedPreference = "${selectedCategory != null ? selectedCategory : ''}";
