@@ -27,7 +27,7 @@
 <div class="container">
     <h1 class="title">여행지 상세 정보</h1>
 
-        <%
+    <%
         // 좌표 정보를 위한 변수 선언
         String mapX = "";
         String mapY = "";
@@ -42,6 +42,11 @@
             mapX = item.optString("mapx", "").trim();
             mapY = item.optString("mapy", "").trim();
             mlevel = item.optString("mlevel", "").trim();
+
+            // mlevel이 제공되지 않았을 경우 기본값 6 할당
+            if (mlevel.isEmpty()) {
+                mlevel = "6";
+            }
     %>
 
     <!-- 제목 -->
@@ -182,5 +187,6 @@
     <!-- 공통 푸터 -->
     <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</div>
 </body>
 </html>
