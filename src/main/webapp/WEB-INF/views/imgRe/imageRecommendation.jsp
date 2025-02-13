@@ -21,9 +21,22 @@
         }
         .card-img-top {
             width: 100%;
-            height: 100%; /* 원하는 고정 높이 */
-            object-fit: cover; /* 비율을 유지하면서 크기를 맞춤 */
+            height: 100%;
+            object-fit: cover;
             margin-top: 0px;
+        }
+        .loading-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .loading-container img {
+            width: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -44,11 +57,16 @@
             <button type="submit" class="btn btn-primary">이미지 업로드</button>
         </form>
 
-        <div id="image-preview-container" class="mt-3">
+        <div id="image-preview-container" class="mt-3" style="display: none;">
             <img id="image-preview" class="image-preview" src="" alt="이미지 미리보기">
         </div>
     </div>
 </section>
+
+<!-- 분석 중 메시지 -->
+<div id="loading-container" class="loading-container">
+    <p>분석 중... <img src="https://i.gifer.com/4V0b.gif" alt="로딩 아이콘"></p>
+</div>
 
 <!-- 결과 섹션 -->
 <section id="result-section" class="container mt-5" style="display: none;">
@@ -68,17 +86,51 @@
             event.preventDefault();
             let formData = new FormData();
             let imageFile = $("#image")[0].files[0];
-            formData.append("image", imageFile);
 
-            // 이미지 미리보기
+            // 분석 중 메시지 표시
+            $("#loading-container").show();
+            $("#result-section").hide(); // 결과 섹션 숨기기
+
+            // 이미지 리사이징
             let reader = new FileReader();
             reader.onload = function(e) {
+                let img = new Image();
+                img.onload = function() {
+                    // 리사이징할 캔버스 생성
+                    let canvas = document.createElement("canvas");
+                    let ctx = canvas.getContext("2d");
+
+                    // 리사이징 비율 설정 (너비 800px로 리사이즈)
+                    let targetWidth = 800;
+                    let targetHeight = (img.height * targetWidth) / img.width;
+
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+
+                    // 이미지를 캔버스에 그리기
+                    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+                    // 캔버스에서 리사이징된 이미지 데이터를 얻어 FormData에 추가
+                    canvas.toBlob(function(blob) {
+                        formData.append("image", blob, imageFile.name);
+
+                        // 이미지를 서버로 업로드
+                        uploadImage(formData);
+                    }, "image/jpeg");
+                };
+                img.src = e.target.result;
+
+                // 이미지 미리보기 갱신
                 $("#image-preview").attr("src", e.target.result);
-                $("#image-preview-container").show();
+
+                // 이미지 미리보기 영역을 보여줌
+                $("#image-preview-container").show(); // 이 부분
             };
             reader.readAsDataURL(imageFile);
+        });
 
-            // 이미지 업로드 후 분석 결과 받기
+        // 이미지 업로드 후 분석 결과 받기
+        function uploadImage(formData) {
             $.ajax({
                 url: '/upload',
                 type: 'POST',
@@ -93,14 +145,18 @@
                 error: function(xhr, status, error) {
                     alert("이미지 처리 중 오류가 발생했습니다.");
                     console.error("AJAX 오류:", error);
+                    $("#loading-container").hide(); // 오류 시 로딩 메시지 숨기기
                 }
             });
-        });
+        }
 
         // 결과를 화면에 표시
         function displayResults(places) {
             let resultList = $("#result-list");
             resultList.empty(); // 기존 결과 삭제
+
+            // 로딩 메시지 숨기기
+            $("#loading-container").hide();
 
             if (places && places.length > 0) {
                 $.each(places, function(index, place) {
@@ -139,8 +195,8 @@
                 $("#result-section").show();
             }
         }
-
     });
+
 </script>
 
 <!-- Bootstrap JS (Popper.js 포함) -->
