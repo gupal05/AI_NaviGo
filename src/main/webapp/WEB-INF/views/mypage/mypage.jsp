@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -81,34 +82,50 @@
     <div class="sidebar">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <span class="nav-link active" onclick="showSection('profile')">개인정보 수정</span>
+                <a class="nav-link ${section == 'updateForm' ? 'active' : ''}" href="/mypage?section=updateForm">개인정보 수정</a>
             </li>
             <li class="nav-item">
-                <span class="nav-link" onclick="showSection('history')">나의 여행 일정</span>
+                <a class="nav-link ${section == 'history' ? 'active' : ''}" href="/mypage?section=history">나의 여행 일정</a>
             </li>
             <li class="nav-item">
-                <span class="nav-link" onclick="showSection('preference')">여행 취향 수정</span>
+                <a class="nav-link ${section == 'preference' ? 'active' : ''}" href="/mypage?section=preference">여행 취향 수정</a>
             </li>
         </ul>
     </div>
 
+
     <!-- 본문 영역 -->
-    <div class="content">
-        <!-- 개인정보 수정 -->
-        <div id="profile-section" class="content-section">
-            <jsp:include page="/WEB-INF/views/mypage/updateForm.jsp" />
-        </div>
+<%--    <div class="content">--%>
+<%--        <!-- 개인정보 수정 -->--%>
+<%--        <div id="profile-section" class="content-section">--%>
+<%--            <jsp:include page="/WEB-INF/views/mypage/updateForm.jsp" />--%>
+<%--        </div>--%>
 
-        <!-- 여행 히스토리 -->
-        <div id="history-section" class="content-section">
-            <jsp:include page="/WEB-INF/views/mypage/hitory.jsp" />
-        </div>
+<%--        <!-- 여행 히스토리 -->--%>
+<%--        <div id="history-section" class="content-section">--%>
+<%--            <jsp:include page="/WEB-INF/views/mypage/history.jsp" />--%>
+<%--        </div>--%>
 
-        <!-- 여행 취향 수정 -->
-        <div id="preference-section" class="content-section">
-            <jsp:include page="/WEB-INF/views/mypage/preference.jsp" />
-        </div>
-    </div>
+<%--        <!-- 여행 취향 수정 -->--%>
+<%--        <div id="preference-section" class="content-section">--%>
+<%--            <jsp:include page="/WEB-INF/views/mypage/preference.jsp" />--%>
+<%--        </div>--%>
+<%--    </div>--%>
+    <%-- section 값 확인 --%>
+    <c:choose>
+        <c:when test="${section == 'history'}">
+            <jsp:include page="history.jsp" />
+        </c:when>
+        <c:when test="${section == 'preference'}">
+            <jsp:include page="preference.jsp" />
+        </c:when>
+        <c:when test="${section == 'updateForm'}">
+            <jsp:include page="updateForm.jsp" />
+        </c:when>
+        <c:otherwise>
+            <p>유효하지 않은 섹션입니다.</p>
+        </c:otherwise>
+    </c:choose>
 </div>
 
 
