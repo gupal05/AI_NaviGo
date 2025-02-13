@@ -183,6 +183,7 @@ public class recommendedController {
         return null;
     }
 
+    //여행코스
     private JSONArray getTravelCourseItems(String tc) {
         try {
             URI uri = UriComponentsBuilder

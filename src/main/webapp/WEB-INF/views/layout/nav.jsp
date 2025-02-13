@@ -19,7 +19,7 @@
                     <a class="nav-link" href="/imageRecommendation">이미지</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">추천 여행지</a>
+                    <a class="nav-link" href="main/recommended">추천 여행지</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">AI여행지 생성</a>
