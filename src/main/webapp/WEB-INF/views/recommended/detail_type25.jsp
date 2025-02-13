@@ -61,22 +61,21 @@
 
 <!-- 추가상세정보 영역 (새 detail_info 속성 사용) -->
 <div class="info-box">
-    <h3>추가상세정보</h3>
+    <h3>여행코스 상세정보</h3>
     <%
         String detailInfoStr = (String) request.getAttribute("detail_info");
         if (detailInfoStr != null && !"Detail_info 정보 없음".equals(detailInfoStr)) {
             try {
                 JSONArray infoArray = new JSONArray(detailInfoStr);
                 if (infoArray.length() > 0) {
-                    // infoArray의 각 아이템을 순회하면서 infoname과 infotext를 출력
                     for (int i = 0; i < infoArray.length(); i++) {
                         JSONObject infoItem = infoArray.getJSONObject(i);
-                        String infoname = infoItem.optString("infoname", "").trim();
-                        String infotext = infoItem.optString("infotext", "").trim();
+                        String subname = infoItem.optString("subname", "").trim();
+                        String subdetailoverview = infoItem.optString("subdetailoverview", "").trim();
     %>
     <div class="sub-info-box" style="margin-bottom:15px;">
-        <p><strong><%= infoname %>:</strong></p>
-        <p><%= infotext %></p>
+        <p><strong> <%= subname %></strong></p>
+        <p><%= subdetailoverview %></p>
     </div>
     <%
         }
