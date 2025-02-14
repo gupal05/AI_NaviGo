@@ -28,7 +28,7 @@ public class PreferenceService_Impl implements IF_preferenceService {
     @Override
     public void clickTravelOne(UserClickDTO userClickDto) throws Exception {
         // 클릭 정보를 처리하는 로직 (예: 클릭 카운트 증가 등)
-        //preferenceDao.updateClickCount(userClickDto);
+        preferenceDao.setUserClickInfo(userClickDto);
     }
 
     // 인기 카테고리 가져오기
