@@ -389,6 +389,7 @@ public class recommendedController {
         if (member != null) {
             String memberId = member.getMemberId();
             userClickDTO.setMemberid(memberId);
+            System.out.println(userClickDTO.toString());
             ifPreferenceService.clickTravelOne(userClickDTO);
             return ResponseEntity.ok("Click recorded");
         }
