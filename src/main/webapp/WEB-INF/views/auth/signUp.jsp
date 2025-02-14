@@ -52,6 +52,23 @@
             <label for="member_pw" class="form-label">비밀번호</label>
             <input type="password" class="form-control" id="member_pw" name="memberPw" required>
         </div>
+
+        <!-- 이메일 입력 및 인증 -->
+        <div class="form-group">
+            <label for="member_email" class="form-label">이메일</label>
+            <div class="input-group">
+                <input type="email" class="form-control" id="member_email" name="memberEmail" required>
+                <button type="button" class="btn btn-secondary" id="sendCodeBtn">인증번호 전송</button>
+            </div>
+        </div>
+        <div class="form-group" id="verificationGroup" style="display: none;">
+            <label for="verification_code" class="form-label">인증번호</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="verification_code" name="verificationCode">
+                <button type="button" class="btn btn-primary" id="verifyCodeBtn">확인</button>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="form-label">성별</label>
             <select class="form-control" name="memberGender">
@@ -69,9 +86,32 @@
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 
 <script>
-    function showVerificationInput() {
-        document.getElementById('verification-group').style.display = 'block';
-    }
+    $(document).ready(function() {
+        $("#sendCodeBtn").click(function() { // "중복 확인" 버튼 클릭 시 실행
+            document.getElementById("verificationGroup").style.display = "block"; // 입력된 ID 값 가져오기
+            $.ajax({
+                type: "POST",
+                url: "/mailAuth",
+                data: { id: userId },
+                success: function(response) {
+                    if (response === '사용 가능한 ID 입니다.') {
+                        // 입력창과 버튼을 비활성화
+                        $("#member_id").prop("disabled", true);
+                        $("#checkIdBtn").prop("disabled", true);
+                        $("#hidden_member_id").val(userId); // hidden input에 값 설정
+                        alert(response); // 사용 가능 메시지 출력
+                    } else {
+                        // 입력창을 비우기
+                        $("#member_id").val("");
+                        alert("사용할 수 없는 ID입니다. 다시 입력해주세요.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 오류:", error);
+                }
+            });
+        });
+    });
 
     //아이디 중복 확인을 위한 function
     $(document).ready(function() {
