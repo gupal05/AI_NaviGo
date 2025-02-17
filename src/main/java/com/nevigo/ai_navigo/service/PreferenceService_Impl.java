@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import com.nevigo.ai_navigo.dao.IF_preferenceDao; // 실제 DAO 경로에 맞게 수정하세요.
 import com.nevigo.ai_navigo.dto.UserClickDTO;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class PreferenceService_Impl implements IF_preferenceService {
     //
@@ -37,5 +40,12 @@ public class PreferenceService_Impl implements IF_preferenceService {
         // DAO에서 인기 카테고리 정보 가져오기
         //return preferenceDao.getPopularCategory();
         return preferenceDao.getPopularCat3();
+    }
+
+    @Override
+    public List<Map<String, Object>> getPopularTitle10() throws Exception {
+
+
+        return preferenceDao.getPopularTitle10();
     }
 }
