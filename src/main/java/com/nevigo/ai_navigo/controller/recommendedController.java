@@ -19,10 +19,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,9 +39,11 @@ public class recommendedController {
     private static final String BASE_API_URL_DETAIL = "http://apis.data.go.kr/B551011/KorService1/detailIntro1";
     private static final String BASE_API_URL_DETAILIMAGE = "http://apis.data.go.kr/B551011/KorService1/detailImage1";
     private static final String BASE_API_URL_DETAIL_INFO = "http://apis.data.go.kr/B551011/KorService1/detailInfo1";
+    private static final String BASE_API_URL_KEYWORD = "http://apis.data.go.kr/B551011/KorService1/searchKeyword1";
 
     // URL 인코딩된 서비스 키
     private static final String SERVICE_KEY = "zEp9kLeLZiXElh6mddTl2DXHIl44C4brxSyQojUBO6zjiy25apv9Dvh00sygk%2BKzMuXzMv3zKpoylWiGbVlCLA%3D%3D";
+    private static final String SERVICE_KEY_DECODE = "zEp9kLeLZiXElh6mddTl2DXHIl44C4brxSyQojUBO6zjiy25apv9Dvh00sygk+KzMuXzMv3zKpoylWiGbVlCLA==";
 
     @GetMapping("/main/recommended")
     public String recommendedController(HttpSession session, HttpServletRequest request, Model model,
@@ -64,7 +65,7 @@ public class recommendedController {
             System.out.println("recommendedCat3 is null");
             model.addAttribute("items", new JSONArray());
             model.addAttribute("courseItems", new ArrayList<>());
-            return "/recommended/recommended";
+//            return "/recommended/recommended";
         }
 
         // 추천 여행지 데이터 호출 (cat3 기준)
@@ -137,6 +138,7 @@ public class recommendedController {
         for (int i = 0; i < festivalsArray.length(); i++) {
             JSONObject festival = festivalsArray.getJSONObject(i);
             festivalsList.add(festival.toMap());
+            System.out.println(i + ": " + festival);
         }
         model.addAttribute("festivals", festivalsList);
 
@@ -158,6 +160,52 @@ public class recommendedController {
         if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
             return "/recommended/courseSection";
         }
+
+        //인기여행지
+        List<Map<String, Object>> PopularTile = ifPreferenceService.getPopularTitle10();
+
+        // 결과를 담을 리스트(각 항목은 제목, 클릭 수, API 검색 결과를 포함)
+        List<Map<String, Object>> popularTitleListResults = new ArrayList<>();
+
+        for (Map<String, Object> popularMap : PopularTile) {
+            String title = popularMap.get("title").toString();
+            String clickCount = popularMap.get("clickCount").toString();
+
+            // title을 키워드로 API 호출 -> getTitlebyCount 메서드는 매개변수로 title을 받아,
+            // json array 리턴
+            JSONArray keywordResultsArray = getTitlebyCount(title);
+
+            //item
+            List<Map<String, Object>> keywordResults = new ArrayList<>();
+            for (int i = 0; i < keywordResultsArray.length(); i++) {
+                JSONObject keywordObj = keywordResultsArray.getJSONObject(i);
+                keywordResults.add(keywordObj.toMap());
+            }
+            // 제목, 클릭수, 그리고 API 검색결과를 하나의 Map에 담기
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("title", title);
+            resultMap.put("clickCount", clickCount);
+            resultMap.put("keywordResults", keywordResults);
+
+            //list에 추가
+            popularTitleListResults.add(resultMap);
+
+            //디버깅 console
+            System.out.println("Title: " + title + ", clickCount: " + clickCount);
+            System.out.println("Api 결과: " + keywordResults);
+
+            // 모델에 추가 (JSP에서 popularTitleResults로 접근)
+            model.addAttribute("popularTitleListResults", popularTitleListResults);
+
+        }
+
+        //
+//        for (Map<String, Object> stringObjectMap : PopularTile) {
+//            System.out.println(stringObjectMap);
+//
+//        }
+
+
 
         // 일반 요청은 전체 페이지 반환
         return "/recommended/recommended";
@@ -181,6 +229,54 @@ public class recommendedController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    //인기여행지(db)
+    private JSONArray getTitlebyCount(String keyword) {
+        String encodedKeyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+
+        try {
+            URI uri = UriComponentsBuilder.fromHttpUrl(BASE_API_URL_KEYWORD)
+                    .queryParam("serviceKey", SERVICE_KEY)
+                    .queryParam("MobileOS", "ETC")
+                    .queryParam("MobileApp", "AppTest")
+                    .queryParam("_type", "json")
+                    .queryParam("listYN", "Y")
+                    .queryParam("arrange", "C")
+                    .queryParam("keyword", encodedKeyword)
+                    .build(true)
+                    .encode()
+                    .toUri();
+
+
+            ResponseEntity<String> response = restTemplate.exchange(
+                    uri,
+                    HttpMethod.GET,
+                    new HttpEntity<>(new HttpHeaders()),
+                    String.class
+            );
+            System.out.println("ketword uri: "+ uri);
+            String responseBody = response.getBody();
+            System.out.println("Response Body: " + responseBody);
+
+
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                JSONObject jsonObj = new JSONObject(response.getBody());
+                if (jsonObj.has("response") &&
+                        jsonObj.getJSONObject("response").has("body") &&
+                        jsonObj.getJSONObject("response").getJSONObject("body").has("items") &&
+                        jsonObj.getJSONObject("response").getJSONObject("body")
+                                .getJSONObject("items").has("item")) {
+                    return jsonObj.getJSONObject("response")
+                            .getJSONObject("body")
+                            .getJSONObject("items")
+                            .getJSONArray("item");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new JSONArray();
     }
 
     //여행코스
@@ -251,6 +347,8 @@ public class recommendedController {
         }
         return new JSONArray();
     }
+    
+    // 인기여행지
 
     @GetMapping("main/recommend/detail")
     public String detailController(@RequestParam("contentid") String contentid,
