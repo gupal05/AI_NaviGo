@@ -28,4 +28,13 @@
 
     </select>
 
+    <select id="getPopularTitle10" resultType="map">
+        SELECT title, COUNT(*) AS clickCount
+        FROM user_activity
+        WHERE clicked_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+        GROUP BY title
+        ORDER BY clickCount DESC
+        LIMIT 10
+    </select>
+
 </mapper>
