@@ -108,6 +108,7 @@
                     [userPw.attr("name")]: userPw.val()
                 },
                 success: function(response) {
+                    alert(response)
                     if (response === 'ok') {
                         const form = $('#login-form');
                         form.submit();
