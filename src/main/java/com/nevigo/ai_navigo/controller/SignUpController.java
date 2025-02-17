@@ -1,14 +1,13 @@
 package com.nevigo.ai_navigo.controller;
 
 import com.nevigo.ai_navigo.dto.MemberDTO;
-import com.nevigo.ai_navigo.dto.PreferenceDTO;
 import com.nevigo.ai_navigo.service.IF_SignUpService;
+import com.nevigo.ai_navigo.service.MailAuthService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +15,8 @@ import java.util.Map;
 public class SignUpController {
     @Autowired
     private IF_SignUpService signUpService;
+    @Autowired
+    private MailAuthService mailAuthService;
     @Autowired
     private HttpSession session;
 
@@ -36,6 +37,7 @@ public class SignUpController {
         }
     }
 
+    // 회원가입 후 사용자 취향 받는 페이지로 이동
     @PostMapping("/signResult")
     public String signupResult(@ModelAttribute MemberDTO member) {
         if(signUpService.insMember(member) != 0){
@@ -46,6 +48,7 @@ public class SignUpController {
         }
     }
 
+    // 사용자 취향 저장 후 회원가입 완료 (메인 페이지로 이동)
     @PostMapping("/sign_card_result")
     public String cardResult(@RequestParam("selectedCategory") String selCard) {
         MemberDTO member = (MemberDTO) session.getAttribute("temp");
@@ -58,5 +61,17 @@ public class SignUpController {
         }else{
             return "redirect:/signUp";
         }
+    }
+
+    @PostMapping("/signUp/mailAuth")
+    @ResponseBody
+    public String mailAuth(@ModelAttribute MemberDTO member) {
+        return mailAuthService.mainAuth(member);
+    }
+
+    @PostMapping("/signUp/mailAuth/result")
+    @ResponseBody
+    public String mailAuthResult(@RequestParam("mailCode") int mailCode) {
+        return mailAuthService.mailAuthResult(mailCode);
     }
 }
