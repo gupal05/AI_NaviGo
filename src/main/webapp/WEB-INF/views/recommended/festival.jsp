@@ -30,7 +30,14 @@
     </script>
 </head>
 <body>
-<h3 class="mb-3 text-center">추천 문화축제</h3>
+<!-- AI 맞춤 추천 타이틀 -->
+<div class="container mt-5 text-center">
+    <h2 class="fw-bold">문화/축제</h2>
+    <p class="text-muted">
+        전국의 문화/축제 행사를 추천해 드립니다.
+    </p>
+</div>
+<br>
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
         <c:forEach var="festival" items="${festivals}" begin="0" end="5">
