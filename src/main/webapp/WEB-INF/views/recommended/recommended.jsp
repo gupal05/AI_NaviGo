@@ -39,7 +39,7 @@
             <jsp:param name="limit" value="6" />
         </jsp:include>
         <jsp:include page="/WEB-INF/views/recommended/popular.jsp" />
-        <jsp:include page="/WEB-INF/views/recommended/season.jsp" />
+<%--        <jsp:include page="/WEB-INF/views/recommended/season.jsp" />--%>
         <jsp:include page="/WEB-INF/views/recommended/festival.jsp">
             <jsp:param name="limit" value="6" />
         </jsp:include>
