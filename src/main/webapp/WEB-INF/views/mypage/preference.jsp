@@ -238,7 +238,7 @@
     function showPopup(message, type) {
         const alertDiv = document.getElementById('saveAlert');
         alertDiv.textContent = message;
-        alertDiv.className = `alert alert-${type}`;
+        alertDiv.className = `alert alert-` + type;
         alertDiv.style.display = 'block';
         // 3초 후 자동으로 팝업 숨김
         setTimeout(() => {
