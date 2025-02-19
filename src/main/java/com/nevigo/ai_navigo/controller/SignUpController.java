@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/auth")
 public class SignUpController {
     @Autowired
     private IF_SignUpService signUpService;
@@ -63,15 +64,21 @@ public class SignUpController {
         }
     }
 
-    @PostMapping("/signUp/mailAuth")
+    @PostMapping("/mailAuth")
     @ResponseBody
     public String mailAuth(@ModelAttribute MemberDTO member) {
         return mailAuthService.mainAuth(member);
     }
 
-    @PostMapping("/signUp/mailAuth/result")
+    @PostMapping("/mailAuth/result")
     @ResponseBody
     public String mailAuthResult(@RequestParam("mailCode") int mailCode) {
         return mailAuthService.mailAuthResult(mailCode);
+    }
+
+    @GetMapping("/googleSignUpResult")
+    public String googleSignUpResult() {
+        System.out.println("됨 : "+session.getAttribute("temp"));
+        return "/auth/signup_result";
     }
 }

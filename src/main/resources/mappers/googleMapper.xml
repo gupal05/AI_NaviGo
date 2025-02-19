@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nevigo.ai_navigo.dao.IF_Google">
+    <select id="getMemberInfoGoogle" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="com.nevigo.ai_navigo.dto.MemberDTO">
+        SELECT member_id, member_pw, member_name, member_gender, member_grade
+        FROM member
+        WHERE member_id = #{memberId}
+    </select>
+    <!-- 회원가입(member 테이블에 insert) 하기 위한 구문 -->
+    <insert id="insMemberGoogle" parameterType="com.nevigo.ai_navigo.dto.MemberDTO">
+        insert into member(member_id, member_name, member_pw, member_gender, member_grade, reg_date, upt_date, member_email)
+        values (#{memberId}, #{memberName}, default, #{memberGender}, default, default, default, #{memberEmail})
+    </insert>
+</mapper>

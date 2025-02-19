@@ -26,6 +26,7 @@ public class mypageController {
         this.preferenceService = preferenceService;
         this.changePwService = changePwService;
         this.preUpdateService_Impl = preUpdateService_Impl;
+
     }
 
     @Autowired
@@ -71,7 +72,7 @@ public class mypageController {
             // Preference 저장/수정 처리
             try {
                 // Preference 저장/수정 처리 - 인스턴스를 사용
-                preUpdateService_Impl.saveOrUpdatePreference(memberId, preference);
+                preUpdateService_impl.saveOrUpdatePreference(memberId, preference);
                 return "Preference updated successfully!";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -122,7 +123,4 @@ public class mypageController {
             return "mypage/changePw";
         }
     }
-
-
-
 }

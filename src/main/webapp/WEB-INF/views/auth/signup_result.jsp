@@ -127,7 +127,7 @@
         </div>
     </div>
 
-    <form id="categoryForm" action="/sign_card_result" method="POST" style="display: none;">
+    <form id="categoryForm" action="/auth/sign_card_result" method="POST" style="display: none;">
         <input type="hidden" name="selectedCategory" id="selectedCategoryInput">
     </form>
 
