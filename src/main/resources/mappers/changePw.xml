@@ -3,34 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.nevigo.ai_navigo.dao.IF_chagePwDao">
-
-    <!-- 회원 정보 조회 -->
-    <select id="findById" resultType="com.nevigo.ai_navigo.dto.MemberDTO">
-        SELECT member_id AS memberId,
-               member_name AS memberName,
-               member_pw AS memberPw,
-               member_gender AS memberGender,
-               member_grade AS memberGrade
-        FROM member
-        WHERE member_id = #{member_id}
-    </select>
-
-    <!-- 회원 정보 업데이트 -->
-    <update id="updateMember">
+<mapper namespace="com.nevigo.ai_navigo.dao.IF_changePwDao">
+    <!-- 비밀번호 업데이트 -->
+    <update id="updatePassword" parameterType="map">
         UPDATE member
-        SET member_name = #{memberName},
-            member_pw = #{memberPw},
-            member_gender = #{memberGender},
-            member_grade = #{memberGrade}
-        WHERE member_id = #{memberId}
-    </update>
-
-    <!-- 선호 여행 업데이트 -->
-    <update id="updatePreference">
-        UPDATE Preference
-        SET prefer_purpose = #{category}, upt_date = NOW()
-        WHERE member_id = #{memberId}
+        SET member_pw = #{newPw}
+        WHERE member_id = #{memberID}
     </update>
 
 </mapper>
