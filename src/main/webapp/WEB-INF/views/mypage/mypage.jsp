@@ -30,7 +30,7 @@
             width: 240px;
             background-color: #f8f9fa;
             padding: 20px;
-            border-right: 1px solid #ccc;
+            border-right: 1px solid #e8f1fa;
             height: 100vh;
             position: sticky;
             top: 20px;
@@ -45,7 +45,7 @@
             transition: background-color 0.3s;
         }
         .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            background-color: #007bff;
+            background-color: #1e70c9;
             color: white;
             border-radius: 5px;
         }
@@ -54,8 +54,8 @@
         .content {
             flex-grow: 1;
             padding: 30px;
-            background-color: #e9ecef;
-            border: 1px solid #ccc;
+            background-color: #f8f9fa;
+            border: 1px solid #e8f1fa;
             min-height: 600px;
 
         }
@@ -82,10 +82,10 @@
     <div class="sidebar">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link ${section == 'updateForm' ? 'active' : ''}" href="/mypage?section=updateForm">개인정보 수정</a>
+                <a class="nav-link ${section == 'history' ? 'active' : ''}" href="/mypage?section=history">나의 여행 일정</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link ${section == 'history' ? 'active' : ''}" href="/mypage?section=history">나의 여행 일정</a>
+                <a class="nav-link ${section == 'changePw' ? 'active' : ''}" href="/mypage?section=changePw">비밀번호 변경</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link ${section == 'preference' ? 'active' : ''}" href="/mypage?section=preference">여행 취향 수정</a>
@@ -98,7 +98,7 @@
 <%--    <div class="content">--%>
 <%--        <!-- 개인정보 수정 -->--%>
 <%--        <div id="profile-section" class="content-section">--%>
-<%--            <jsp:include page="/WEB-INF/views/mypage/updateForm.jsp" />--%>
+<%--            <jsp:include page="/WEB-INF/views/mypage/changePw.jsp" />--%>
 <%--        </div>--%>
 
 <%--        <!-- 여행 히스토리 -->--%>
@@ -119,8 +119,8 @@
         <c:when test="${section == 'preference'}">
             <jsp:include page="preference.jsp" />
         </c:when>
-        <c:when test="${section == 'updateForm'}">
-            <jsp:include page="updateForm.jsp" />
+        <c:when test="${section == 'changePw'}">
+            <jsp:include page="changePw.jsp" />
         </c:when>
         <c:otherwise>
             <p>유효하지 않은 섹션입니다.</p>
