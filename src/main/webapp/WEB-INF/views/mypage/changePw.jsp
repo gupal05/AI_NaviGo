@@ -41,8 +41,10 @@
 
 <body>
 
+
 <div class="container">
-  <form action="/update-profile" method="POST">
+    <!-- 비밀번호 변경 폼 -->
+    <form action="${pageContext.request.contextPath}/mypage/changePw" method="post">
     <h2>비밀번호 변경</h2>
 <%--    session 객체 확인용--%>
     <c:forEach items="${sessionScope}" var="entry">
@@ -80,7 +82,7 @@
 
 
     <div class="d-flex justify-content-between mt-4">
-      <button type="button" class="btn btn-primary" id="❤❤❤❤">변경하기</button>
+        <button type="submit" class="btn btn-primary">변경하기</button>
     </div>
   </form>
 </div>
