@@ -5,6 +5,9 @@
     <title>추천 여행지</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Bootstrap JS (Popper.js 포함) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <!-- 헤더와 네비게이션 -->
@@ -12,63 +15,64 @@
     <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
 </header>
 
-<!-- 상단 탭 메뉴 -->
-<ul class="nav nav-tabs justify-content-center" id="travelTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">전체</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="ai-tab" data-bs-toggle="tab" data-bs-target="#ai" type="button" role="tab" aria-controls="ai" aria-selected="false">AI추천여행지</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="popular-tab" data-bs-toggle="tab" data-bs-target="#popular" type="button" role="tab" aria-controls="popular" aria-selected="false">인기 여행지</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="season-tab" data-bs-toggle="tab" data-bs-target="#season" type="button" role="tab" aria-controls="season" aria-selected="false">여행 코스 추천</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="festival-tab" data-bs-toggle="tab" data-bs-target="#festival" type="button" role="tab" aria-controls="festival" aria-selected="false">문화 축제</button>
-    </li>
-</ul>
+<di class="container my-4">
+    <h1>추천 여행</h1>
+    <!-- 비어 있는 영역: Ajax로 가져온 컨텐츠(프래그먼트)를 주입 -->
+    <div id="contentArena">
 
-<!-- 탭별 콘텐츠 -->
-<div class="tab-content" id="travelTabContent" style="margin-top: 1.5rem;">
-    <!-- (1) 전체 탭 -->
-    <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
-        <jsp:include page="/WEB-INF/views/recommended/ai.jsp">
-            <jsp:param name="limit" value="6" />
-        </jsp:include>
-        <jsp:include page="/WEB-INF/views/recommended/popular.jsp" />
-<%--        <jsp:include page="/WEB-INF/views/recommended/season.jsp" />--%>
-        <jsp:include page="/WEB-INF/views/recommended/festival.jsp">
-            <jsp:param name="limit" value="6" />
-        </jsp:include>
     </div>
+    <%--    --%>
+</di>
 
-    <!-- (2) AI추천여행지 탭 -->
-    <div class="tab-pane fade" id="ai" role="tabpanel" aria-labelledby="ai-tab">
-        <jsp:include page="/WEB-INF/views/recommended/ai.jsp" />
-    </div>
 
-    <!-- (3) 인기 여행지 탭 -->
-    <div class="tab-pane fade" id="popular" role="tabpanel" aria-labelledby="popular-tab">
-        <jsp:include page="/WEB-INF/views/recommended/popular.jsp" />
-    </div>
-
-    <!-- (4)(여행코스 추천) -->
-    <div class="tab-pane fade" id="season" role="tabpanel" aria-labelledby="season-tab">
-        <jsp:include page="/WEB-INF/views/recommended/travelcourse.jsp" />
-    </div>
-
-    <!-- (5) 문화 축제 탭 -->
-    <div class="tab-pane fade" id="festival" role="tabpanel" aria-labelledby="festival-tab">
-        <jsp:include page="/WEB-INF/views/recommended/festival.jsp" />
-    </div>
-</div>
-
+<%-- footer --%>
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+<script>
+$(document).ready(function () {
+    // 현재 URL의 쿼리스트링(예: ?menu=ai)에서 menu 파라미터를 얻음
+    let urlParams = new URLSearchParams(window.location.search);
+    let menu = urlParams.get("menu"); // "ai", "festval", "popular", "course"
 
-<!-- Bootstrap JS (Popper.js 포함) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    // menu 값이 있으면 해당하는 Fragment를 Ajax로 로드
+    if (menu) {
+        loadFragment(menu);
+    }
+
+    // 실제 Fragment 로드 함수
+    function loadFragment(menukey) {
+        let endpoint = "";
+        switch (menukey) {
+            case "ai":
+                endpoint = "/main/recommended/ai"
+                break;
+            case "festival":
+                endpoint = "/main/recommended/festival"
+                break;
+            case "popular":
+                endpoint = "/main/recommended/popular"
+                break;
+            case "course":
+                endpoint = "/main/recommended/course"
+                break;
+            default:
+                console.log("없는 메뉴: ", menukey);
+                return;
+        }
+
+        $.ajax({
+            url: endpoint,
+            type: "GET",
+            success: function (response){
+                //응답 html(프라그먼트)을 #contentArea 내부에 넣음.
+                $("#contentArena").html(response);
+            },
+            error: function (err){
+                console.error("AJAX Error:", err);
+                alert("AJAX Error:" + JSON.stringify(err));
+            }
+        })
+    }
+})
+</script>
 </body>
 </html>
