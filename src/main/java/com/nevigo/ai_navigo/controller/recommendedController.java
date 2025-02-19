@@ -347,7 +347,7 @@ public class recommendedController {
         }
         return new JSONArray();
     }
-    
+
     // 인기여행지
 
     @GetMapping("main/recommend/detail")
@@ -492,5 +492,16 @@ public class recommendedController {
             return ResponseEntity.ok("Click recorded");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
+    }
+
+    // 무한스크롤?
+
+    @GetMapping("main/recommended/ai")
+    public String aiRecommendations(@RequestParam(defaultValue = "1") int pageNo,
+                                    @RequestParam(defaultValue = "6") int numOfRows,
+                                    Model model) throws Exception {
+
+
+            return "null";
     }
 }
