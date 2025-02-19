@@ -16,9 +16,13 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
+            border-radius: 8px;
+            /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); !* 그림자 효과 추가 *!*/
+            font-size: 1.2rem; /*!* 글씨 크기 키움 */
+            /*font-weight: bold; !* 글씨 진하게 *!*/
+            color: #fff; /* 텍스트 색상을 흰색으로 */
+            background-color: #007bff; /* 진한 파란색 */
         }
         .container {
             margin: 40px auto;
@@ -60,15 +64,12 @@
 </head>
 <body>
 <div class="container">
-    <h2>선호 여행 취향 수정</h2>
+    <h2 class="text-center">여행 취향 수정</h2>
+    <%--    <!-- 저장된 카테고리를 확인 -->--%>
+    <%--    <p>저장된 선호 여행 취향: ${savedCategory}</p>--%>
 
-    <!-- 저장된 카테고리를 확인 -->
-    <p>저장된 선호 여행 취향: ${savedCategory}</p>
-
-    <!-- 저장 성공 알림 -->
-    <div id="saveAlert" class="alert alert-success" role="alert">
-        성공적으로 저장되었습니다!
-    </div>
+    <!-- 저장 성공 popup -->
+    <div id="saveAlert" class="alert"></div>
 
     <div class="row">
         <script>
@@ -170,11 +171,14 @@
 
 <!-- JavaScript -->
 <script>
+    // 선택된 카테고리를 저장하는 변수
+    let selectedCategory = "";
+
     // 서버에서 전달된 과거 저장된 값
     var savedCategory = "${savedCategory != null ? savedCategory : ''}";
     console.log("Saved Category (from DB):", savedCategory);
 
-    // DOMContentLoaded 이벤트를 사용해 초기 렌더링 시 반영
+    // DOMContentLoaded 이벤트: 저장된 카테고리 강조 표시
     document.addEventListener("DOMContentLoaded", () => {
         if (savedCategory) {
             const cards = document.querySelectorAll('.card');
@@ -182,6 +186,7 @@
                 const cardTitle = card.querySelector('.card-title').textContent.trim();
                 if (cardTitle === savedCategory) {
                     card.classList.add('selected-card');
+                    selectedCategory = savedCategory; // 초기 선택값 설정
                 }
             });
         }
@@ -197,22 +202,50 @@
         // 현재 선택 적용
         cardElement.classList.add('selected-card');
 
+        // 선택된 카테고리를 변수에 저장
+        selectedCategory = category;
+    }
+    // 'Save' 버튼 클릭 이벤트
+    function savePreference() {
+        if (!selectedCategory) {
+            alert("카테고리를 선택하세요!");
+            return;
+        }
+
+        //update db에 저장하는 script
         // 선택한 값을 서버로 전달
-        fetch('/updatePreference', {
+        fetch('/mypage/updatePreference', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ selectedCategory: category }),
+            body: JSON.stringify({ selectedCategory: selectedCategory  }),
         })
             .then(response => {
                 if (response.ok) {
-                    console.log("Preference updated successfully!");
+                    // 성공 팝업 표시
+                    showPopup("성공적으로 저장되었습니다!", "success");
                 } else {
                     console.error("Failed to update preference.");
                 }
+            })
+            .catch(error => {
+                console.error("Error during preference update:", error);
             });
     }
+
+    // 팝업 메시지 표시 함수
+    function showPopup(message, type) {
+        const alertDiv = document.getElementById('saveAlert');
+        alertDiv.textContent = message;
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.style.display = 'block';
+        // 3초 후 자동으로 팝업 숨김
+        setTimeout(() => {
+            alertDiv.style.display = 'none';
+        }, 3000);
+    }
+
 </script>
 
 
