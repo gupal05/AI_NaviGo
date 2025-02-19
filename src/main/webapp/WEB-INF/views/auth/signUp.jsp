@@ -35,7 +35,7 @@
 
 <div class="container">
     <h2 class="text-center">회원가입</h2>
-    <form action="/signResult" method="post" id="signup-form">
+    <form action="/auth/signResult" method="post" id="signup-form">
         <div class="form-group">
             <label for="member_name" class="form-label">이름</label>
             <input type="text" class="form-control" id="member_name" name="memberName" required>
@@ -97,7 +97,7 @@
             }
             $.ajax({
                 type: "POST",
-                url: "/dupCheckId",
+                url: "/auth/dupCheckId",
                 data: { id: userId },
                 success: function(response) {
                     if (response === '사용 가능한 ID 입니다.') {
@@ -125,7 +125,7 @@
             var memberEmail = $("#member_email"); // 입력된 email 값 가져오기
             $.ajax({
                 type: "POST",
-                url: "/signUp/mailAuth",
+                url: "/auth/mailAuth",
                 data: { memberEmail: memberEmail.val() },
                 success: function(response) {
                     alert(response);
@@ -150,7 +150,7 @@
             var code = $("#verification_code"); // 입력된 email 값 가져오기
             $.ajax({
                 type: "POST",
-                url: "/signUp/mailAuth/result",
+                url: "/auth/mailAuth/result",
                 data: { mailCode: code.val() },
                 success: function(response) {
                     alert(response);
