@@ -32,6 +32,12 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
+      <!-- 알림 메시지가 있는 경우 -->
+      <c:if test="${not empty loginMessage}">
+        <script>
+          alert("${loginMessage}");
+        </script>
+      </c:if>
       <h2 class="text-center">로그인</h2>
       <form action="/auth/sign_in" method="post" id="login-form">
         <div class="mb-3">

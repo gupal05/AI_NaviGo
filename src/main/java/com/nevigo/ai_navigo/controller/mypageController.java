@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.nevigo.ai_navigo.dto.MemberDTO;
 import com.nevigo.ai_navigo.service.IF_preferenceService;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 
@@ -32,16 +34,22 @@ public class mypageController {
     @Autowired
     HttpSession session;
 
+
     // 사용자 ID로 저장된 선호도 가져오기 및 섹션 처리
     @GetMapping
     public String mypage(
             @RequestParam(required = false) String section, // 섹션 값 추가
             Model model,
-            HttpSession session
+            HttpSession session,
+            RedirectAttributes redirectAttributes
     ) throws Exception {
         // 세션에서 사용자 정보 가져오기
         MemberDTO member = (MemberDTO) session.getAttribute("memberInfo");
-        if (member != null) {
+        // 로그인이 안 된 경우
+        if (member == null) {
+            redirectAttributes.addFlashAttribute("loginMessage", "로그인 후 이용 가능합니다.");
+            return "redirect:/auth/login"; // 로그인 페이지로 리다이렉트
+        } else {
             String memberId = member.getMemberId();
             System.out.println("memberId: " + memberId);
 
@@ -50,8 +58,6 @@ public class mypageController {
             System.out.println("savedCategory: " + savedCategory);
 
             model.addAttribute("savedCategory", savedCategory != null ? savedCategory : "선택된 카테고리가 없습니다.");
-        } else {
-            model.addAttribute("savedCategory", "로그인 정보가 없습니다.");
         }
 
         // section 값 추가
@@ -72,7 +78,7 @@ public class mypageController {
             // Preference 저장/수정 처리
             try {
                 // Preference 저장/수정 처리 - 인스턴스를 사용
-                preUpdateService_impl.saveOrUpdatePreference(memberId, preference);
+                preUpdateService_Impl.saveOrUpdatePreference(memberId, preference);
                 return "Preference updated successfully!";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -91,36 +97,45 @@ public class mypageController {
                            HttpSession session,
                            Model model) {
 
-        // 세션에서 사용자 정보 가져오기
-        String userId = (String) session.getAttribute("userId");
-        String sessionPw = (String) session.getAttribute("password"); // 세션에 저장된 비밀번호
 
-        // 새 비밀번호 확인
-        if (!newPw.equals(confirmPw)) {
-            model.addAttribute("error", "새 비밀번호가 일치하지 않습니다.");
-            return "mypage/changePw";
+        // 세션에서 회원 정보 가져오기
+        MemberDTO memberInfo = (MemberDTO) session.getAttribute("memberInfo");
+
+        // null 체크
+        if (memberInfo == null) {
+            return "세션이 만료되었습니다. 다시 로그인 해주세요.";
         }
 
+        String memberId = memberInfo.getMemberId();
+        String encryptedPw = memberInfo.getMemberPw(); // DB에 저장된 암호화된 비밀번호
+
         // 현재 비밀번호 확인
-        if (!sessionPw.equals(currentPw)) {
-            model.addAttribute("error", "현재 비밀번호가 올바르지 않습니다.");
-            return "mypage/changePw";
+        if (!BCrypt.checkpw(currentPw, encryptedPw)) {
+            return "현재 비밀번호가 올바르지 않습니다.";
+        }
+
+        // 새 비밀번호와 확인 비밀번호가 일치하지 않을 경우
+        if (!newPw.equals(confirmPw)) {
+            return "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.";
         }
 
         try {
-            // 비밀번호 변경 처리
-            boolean isUpdated = changePwService.updatePassword(userId, currentPw, session);
+            // Service 호출하여 비밀번호 변경
+            boolean isUpdated = changePwService.updatePassword(memberId, newPw, session);
 
             if (isUpdated) {
-                model.addAttribute("success", "비밀번호가 성공적으로 변경되었습니다.");
-                return "mypage/changePw";
+                // 세션 정보 업데이트
+                memberInfo.setMemberPw(BCrypt.hashpw(newPw, BCrypt.gensalt()));
+                session.setAttribute("memberInfo", memberInfo);
+
+                return "비밀번호가 성공적으로 변경되었습니다.";
             } else {
-                model.addAttribute("error", "비밀번호 변경 중 문제가 발생했습니다.");
-                return "mypage/changePw";
+                return "비밀번호 변경 중 문제가 발생했습니다.";
             }
         } catch (Exception e) {
-            model.addAttribute("error", "비밀번호 변경 중 오류가 발생했습니다.");
-            return "mypage/changePw";
+            e.printStackTrace();
+            return "비밀번호 변경 중 오류가 발생했습니다.";
         }
+
     }
 }
