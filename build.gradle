@@ -54,6 +54,9 @@ dependencies {
     // ✅ 이메일 인증 사용하기 위해 추가
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
     implementation 'org.json:json:20231013'
 }
 
