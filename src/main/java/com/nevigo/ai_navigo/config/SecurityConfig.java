@@ -25,9 +25,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationSuccessHandler successHandler) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeRequests()
-                .anyRequest().permitAll() // 모든 페이지에 대해 인증 없이 접근 허용
-                .and()
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().permitAll() // ✅ 그 외 요청은 인증 필요
+                )
+                .formLogin(form -> form
+                        .loginPage("/auth/login") // ✅ 로그인 페이지 지정
+                        .permitAll() // ✅ 로그인 페이지 접근 허용
+                )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/auth/login") // 로그인 페이지 URL 설정
                         .successHandler(successHandler) // 로그인 성공 시 사용할 핸들러 설정
