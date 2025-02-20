@@ -3,7 +3,6 @@ package com.nevigo.ai_navigo.controller;
 import com.nevigo.ai_navigo.dto.MemberDTO;
 import com.nevigo.ai_navigo.dto.UserClickDTO;
 import com.nevigo.ai_navigo.service.IF_preferenceService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
@@ -142,9 +141,10 @@ public class recommendedController {
     }
 
     @GetMapping("/main/recommended/festival")
-    public String getFestival(Model model, HttpSession session) throws Exception {
+    public String getFestival(@RequestParam(defaultValue = "1") int page, Model model, HttpSession session) throws Exception {
         // model.addAttribute("festivals", ...);
         //MemberDTO member = (MemberDTO) session.getAttribute("memberInfo");
+
 
         // 문화축제 리스트 처리
         JSONArray festivalsArray = getRecommendedFestivals();
@@ -551,11 +551,13 @@ public class recommendedController {
 
     // 인기여행지
 
-    @GetMapping("main/recommend/detail")
+    @GetMapping("/main/recommend/detail")
     public String detailController(@RequestParam("contentid") String contentid,
                                    @RequestParam("contenttypeid") String contenttypeid,
                                    @RequestParam("title") String title,
                                    HttpSession session, Model model) throws Exception {
+        System.out.println("contentid: " + contentid);
+
         try {
             URI uri = UriComponentsBuilder
                     .fromHttpUrl(BASE_API_URL_COMMON)
@@ -684,6 +686,8 @@ public class recommendedController {
     @PostMapping("/recordClick")
     public ResponseEntity<String> recordUserClick(HttpSession session,
                                                   @RequestBody UserClickDTO userClickDTO) throws Exception {
+        //디버그
+//        System.out.println(debug: userClickDTO);
         MemberDTO member = (MemberDTO) session.getAttribute("memberInfo");
         if (member != null) {
             String memberId = member.getMemberId();
