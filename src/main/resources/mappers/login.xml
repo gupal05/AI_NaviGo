@@ -7,9 +7,9 @@
     <select id="isMemberId" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="int">
         select count(*) from member where member_id=#{memberId}
     </select>
-    <!-- 사용자 pw 일치 여부 확인 -->
-    <select id="isMemberPw" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="int">
-        select count(*) from member where member_Pw=#{memberPw}
+    <!-- 사용자 pw 일치 여부 확인을 위해 비밀번호 select -->
+    <select id="getMemberPw" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="String">
+        SELECT member_Pw FROM member WHERE member_id=#{memberId}
     </select>
     <!-- 사용자 정보 가져오기 (session 저장용) -->
     <select id="getMemberInfo" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="com.nevigo.ai_navigo.dto.MemberDTO">

@@ -21,7 +21,7 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background-color: #007bff;
+      background-color: #1e70c9;
       color: white;
       border: none;
       width: 60px;
@@ -85,7 +85,7 @@
     /* 사용자 메시지 스타일 */
     .user-message {
       align-self: flex-end;
-      background-color: #007bff;
+      background-color: #1e70c9;
       color: white;
       border-radius: 10px;
       padding: 5px 6px;
@@ -108,7 +108,7 @@
       width: 100%;
       background-color: #f8f9fa;
       padding: 15px;
-      border-top: 1px solid #dee2e6;
+      border-top: 1px solid #e8f1fa;
       box-sizing: border-box;
       display: flex;
       gap: 10px;
@@ -117,18 +117,18 @@
     .modal-input input {
       flex: 1;
       padding: 10px;
-      border: 1px solid #ced4da;
+      border: 1px solid #e8f1fa;
       border-radius: 20px;
       font-size: 14px;
       outline: none;
     }
 
     .modal-input input:focus {
-      border-color: #007bff;
+      border-color: #1e70c9;
     }
 
     .modal-input button {
-      background-color: #007bff;
+      background-color: #1e70c9;
       color: white;
       border: none;
       padding: 8px 20px;
@@ -139,7 +139,7 @@
     }
 
     .modal-input button:hover {
-      background-color: #0056b3;
+      background-color: #1e70c9;
     }
   </style>
 </head>

@@ -18,10 +18,24 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/imageRecommendation">이미지</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/main/recommended">추천 여행지</a>
+                <!-- 2) 추천 여행지: 드롭다운으로 수정된 부분 -->
+                <!-- hover 시 서브 메뉴("AI맞춤 여행지 추천", "문화축제", "인기여행지")가 슬라이드 다운됨 -->
+                <li class="nav-item dropdown" id="recommendDropdown">
+                    <a class="nav-link dropdown-toggle" <%-- href="/main/recommended" --%> id="recommendDropdownLink" role="button">
+                        추천 여행지
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="recommendDropdownLink">
+                        <li><a class="dropdown-item" href="/main/recommended?menu=ai">AI 여행지 추천</a></li>
+                        <li><a class="dropdown-item" href="/main/recommended?menu=festival">문화 축제</a></li>
+                        <li><a class="dropdown-item" href="/main/recommended?menu=popular">인기 여행지</a></li>
+                        <li><a class="dropdown-item" href="/main/recommended?menu=course">여행코스 추천</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
+
+<%--                <li class="nav-item">--%>
+<%--                    <a class="nav-link" href="main/recommended">추천 여행지</a>--%>
+<%--                </li>--%>
+<%--                <li class="nav-item">--%>
                     <a class="nav-link" href="#">AI여행지 생성</a>
                 </li>
 
@@ -38,91 +52,51 @@
                 <% } else { %>
                 <%-- session에 memberInfo가 없으면 Sign In 버튼만 표시 --%>
                 <li class="nav-item">
-                    <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#signInModal">Sign In</button>
+                    <form action="/auth/login" method="get">
+                        <button class="btn btn-primary ms-2" type="submit">Sign In</button>
+                    </form>
                 </li>
                 <% } %>
             </ul>
         </div>
     </div>
-    <!-- Sign In 모달 -->
-    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/auth/sign_in" method="post" id="login-form">
-                        <div class="mb-3">
-                            <label for="id" class="form-label">ID</label>
-                            <input type="text" class="form-control" id="id" name="memberId" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="memberPw" required>
-                        </div>
-                        <button type="button" id="login-btn" class="btn btn-primary w-100">Login</button>
-                    </form>
 
-                    <!-- 구분선 -->
-                    <div class="text-center custom-divider">or</div>
-
-                    <!-- 구글 로그인 버튼 -->
-                    <button class="btn google-btn w-100">
-                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width: 20px; margin-right: 10px;"> Google Login
-                    </button>
-
-                    <!-- 구분선 -->
-                    <hr class="sign-up-divider">
-
-                    <!-- 회원가입 버튼 -->
-                    <form action="/signUp" method="get">
-                        <button class="btn btn-secondary w-100" type="submit">Sign Up</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 </nav>
 
-<!-- javascript -->
+<!-- Dropdown & Login JS -->
+<style>
+    /*
+       Bootstrap에서는 기본적으로 .show 클래스를 붙여/떼서 드롭다운을 제어하지만,
+       jQuery로 slideDown/Up을 쓰므로, 초기 display:none으로 처리
+    */
+    .dropdown-menu {
+        display: none;         /* 초기 상태: 숨김 */
+        position: absolute;    /* 부모(nav-item) 안에서 절대 위치 */
+        top: 100%;             /* nav-item 아래 시작 */
+        left: 0;
+        min-width: 10rem;      /* 드롭다운 너비 (원하시는 대로 조정) */
+        /* 필요하다면 배경색, 테두리, 그림자 등을 추가 */
+    }
+
+    /* ▼ 새로 추가한 부분 ▼ */
+    .dropdown-item:hover {
+        font-weight: bold; /* 마우스 올린 항목을 볼드 처리 */
+    }
+</style>
 <script>
     $(document).ready(function() {
-        $("#login-btn").click(function() { // "Login" 버튼 클릭 시 실행
-            let userId = $("#id"); // 입력된 ID 값 가져오기
-            let userPw = $("#password"); // 입력된 PW 값 가져오기
-
-            if (userId.val().trim() === "") {
-                alert("아이디를 입력해주세요.");
-                return;
-            } else if(userPw.val().trim() === ""){
-                alert("비밀번호를 입력해주세요.");
-                return;
+        // 1. 추천 여행지 메뉴 hover -> slideDown & mouseleave -> slideUp
+        $("#recommendDropdown").hover(
+            function () {
+                //마우스가 추천여행지 위로 올라갔을 때
+                $(this).find(".dropdown-menu").stop(true, true).slideDown(200);
+            },
+            function () {
+                // 마우스가 영역을 벗어낫을때
+                $(this).find(".dropdown-menu").stop(true, true).slideUp(200);
             }
-            $.ajax({
-                type: "POST",
-                url: "/isLogin",
-                data: {
-                    [userId.attr("name")]: userId.val(),
-                    [userPw.attr("name")]: userPw.val()
-                },
-                success: function(response) {
-                    if (response === 'ok') {
-                        const form = $('#login-form');
-                        form.submit();
-                    } else if(response === '존재하지 않는 계정입니다.'){
-                        userId.val('');
-                        alert(response);
-                    } else{
-                        userPw.val('');
-                        alert(response);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX 오류:", error);
-                }
-            });
-        });
+        );
+
+
     });
 </script>

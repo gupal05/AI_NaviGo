@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IF_LoginDao {
     public int isMemberId(MemberDTO member);
-    public int isMemberPw(MemberDTO member);
+    public String getMemberPw(MemberDTO member);
     public MemberDTO getMemberInfo(MemberDTO member);
 }
