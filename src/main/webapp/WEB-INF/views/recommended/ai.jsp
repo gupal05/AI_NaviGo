@@ -37,7 +37,7 @@
         function recordClick(contentid, cat1, cat2, cat3, title) {
             console.log("📌 클릭 이벤트 발생!");
             console.log("📡 전송 데이터:", { contentid, cat1, cat2, cat3, title });
-            alert(contentid)
+            // alert(contentid)
             fetch('/recordClick', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
