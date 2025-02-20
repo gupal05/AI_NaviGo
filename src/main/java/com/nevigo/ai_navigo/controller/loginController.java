@@ -44,13 +44,13 @@ public class loginController {
     @PostMapping("/sign_in")
     public String signIn(@ModelAttribute MemberDTO member) {
         System.out.println(session.getAttribute("memberInfo"));
-        return "/main/home";
+        return "redirect:/main";
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         System.out.println(session.getAttribute("memberInfo"));
         session.removeAttribute("memberInfo");
-        return "/main/home";
+        return "redirect:/main";
     }
 }
