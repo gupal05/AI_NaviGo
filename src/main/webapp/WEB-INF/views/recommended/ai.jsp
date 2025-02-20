@@ -2,19 +2,19 @@
 <%@ page import="org.json.JSONArray, org.json.JSONObject" %>
 <%
     // 기본 limit는 6, request 파라미터 "limit"가 전달되면 그 값 사용
-    int limit = 6;
-    String paramLimit = request.getParameter("limit");
-    if(paramLimit != null){
-        try {
-            limit = Integer.parseInt(paramLimit);
-        } catch(NumberFormatException e) {
-            // 기본값 6 유지
-        }
-    }
+//    int limit = 6;
+//    String paramLimit = request.getParameter("limit");
+//    if(paramLimit != null){
+//        try {
+//            limit = Integer.parseInt(paramLimit);
+//        } catch(NumberFormatException e) {
+//            // 기본값 6 유지
+//        }
+//    }
     // request에 저장된 items 배열 가져오기
     JSONArray items = (JSONArray) request.getAttribute("items");
     // 출력할 아이템 수는 items 길이와 limit 중 작은 값
-    int itemCount = Math.min(items.length(), limit);
+//    int itemCount = Math.min(items.length(), limit);
 %>
 <html>
 <head>
@@ -33,15 +33,23 @@
     </style>
     <script>
         // recordClick 함수에 title 매개변수를 추가하여 전송
+
         function recordClick(contentid, cat1, cat2, cat3, title) {
+            console.log("📌 클릭 이벤트 발생!");
+            console.log("📡 전송 데이터:", { contentid, cat1, cat2, cat3, title });
+            alert(contentid)
             fetch('/recordClick', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contentid: contentid, cat1: cat1, cat2: cat2, cat3: cat3, title: title })
             })
-                .then(response => response.text())
-                .then(data => console.log("Click recorded:", data))
-                .catch(err => console.error("Error:", err));
+                // .then(response => response.text())
+                .then(response => {
+                    console.log("📡 서버 응답 상태:", response.status);
+                    return response.text();
+                })
+                .then(data => console.log("✅ 서버 응답 데이터:", data))
+                .catch(err => console.error("❌ POST 요청 오류:", err));
         }
     </script>
 </head>
@@ -57,7 +65,7 @@
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
         <%
-            for (int i = 0; i < itemCount; i++) {
+            for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
                 String title = item.optString("title", "제목 없음");
                 String imageUrl = item.optString("firstimage", "placeholder.jpg");
@@ -68,12 +76,16 @@
                 String addr1 = item.optString("addr1", "주소 정보 없음");
                 String contenttypeid = item.optString("contenttypeid", "");
                 // detailUrl에 title 파라미터도 추가 (URL 인코딩 필요 시 java.net.URLEncoder.encode(title, "UTF-8") 사용)
-                String detailUrl = "recommend/detail?contentid=" + contentid +
+                String detailUrl = "main/recommend/detail?contentid=" + contentid +
                         "&contenttypeid=" + contenttypeid +
                         "&title=" + java.net.URLEncoder.encode(title, "UTF-8");
+//                System.out.println(detailUrl);
         %>
         <div class="col">
             <a href="<%= detailUrl %>" class="card-link"
+               data-contentid="<%= contentid %>"
+               data-contenttypeid="<%= contenttypeid %>"
+               data-title="<%= title %>"
                onclick="recordClick('<%= contentid %>', '<%= cat1 %>', '<%= cat2 %>', '<%= cat3 %>', '<%= title %>');">
                 <div class="card h-100">
                     <img src="<%= imageUrl %>" class="card-img-top card-img-custom" alt="<%= title %>">

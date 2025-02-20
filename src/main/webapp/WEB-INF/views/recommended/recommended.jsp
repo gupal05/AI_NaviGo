@@ -15,64 +15,78 @@
     <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
 </header>
 
-<di class="container my-4">
-    <h1>추천 여행</h1>
-    <!-- 비어 있는 영역: Ajax로 가져온 컨텐츠(프래그먼트)를 주입 -->
-    <div id="contentArena">
+<div class="container my-4">
+<%--    <h1>추천 여행</h1>--%>
+    <!-- AJAX로 컨텐츠를 로드할 영역 -->
+    <div id="contentArena"></div>
+</div>
 
-    </div>
-    <%--    --%>
-</di>
-
-
-<%-- footer --%>
+<!-- footer -->
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+
 <script>
-$(document).ready(function () {
-    // 현재 URL의 쿼리스트링(예: ?menu=ai)에서 menu 파라미터를 얻음
-    let urlParams = new URLSearchParams(window.location.search);
-    let menu = urlParams.get("menu"); // "ai", "festval", "popular", "course"
+    $(document).ready(function () {
+        let urlParams = new URLSearchParams(window.location.search);
+        let menu = urlParams.get("menu"); // "ai", "festival", "popular", "course"
 
-    // menu 값이 있으면 해당하는 Fragment를 Ajax로 로드
-    if (menu) {
-        loadFragment(menu);
-    }
-
-    // 실제 Fragment 로드 함수
-    function loadFragment(menukey) {
-        let endpoint = "";
-        switch (menukey) {
-            case "ai":
-                endpoint = "/main/recommended/ai"
-                break;
-            case "festival":
-                endpoint = "/main/recommended/festival"
-                break;
-            case "popular":
-                endpoint = "/main/recommended/popular"
-                break;
-            case "course":
-                endpoint = "/main/recommended/course"
-                break;
-            default:
-                console.log("없는 메뉴: ", menukey);
-                return;
+        if (menu) {
+            loadFragment(menu);
         }
 
-        $.ajax({
-            url: endpoint,
-            type: "GET",
-            success: function (response){
-                //응답 html(프라그먼트)을 #contentArea 내부에 넣음.
-                $("#contentArena").html(response);
-            },
-            error: function (err){
-                console.error("AJAX Error:", err);
-                alert("AJAX Error:" + JSON.stringify(err));
+        function loadFragment(menukey) {
+            let endpoint = "";
+            switch (menukey) {
+                case "ai": endpoint = "/main/recommended/ai"; break;
+                case "festival": endpoint = "/main/recommended/festival"; break;
+                case "popular": endpoint = "/main/recommended/popular"; break;
+                case "course": endpoint = "/main/recommended/course"; break;
+                default:
+                    console.log("없는 메뉴: ", menukey);
+                    return;
             }
-        })
-    }
-})
+
+            $.ajax({
+                url: endpoint,
+                type: "GET",
+                success: function (response) {
+                    console.log("✅ AJAX 요청 성공, 응답 내용:", response); // 추가된 로그
+                    $("#contentArena").html(response);
+
+                    console.log("🔍 contentArena 업데이트 후 내부 HTML:", $("#contentArena").html()); // 추가된 로그
+
+                    // ✅ course 페이지가 로드되면 travelcourse.js 다시 실행
+                    <%--if (menukey === "course") {--%>
+                    <%--    console.log("📌 travelcourse.js 다시 실행");--%>
+                    <%--    $.getScript("${pageContext.request.contextPath}/js/travelcourse.js")--%>
+                    <%--        .done(function() { console.log("✅ travelcourse.js 로드 완료"); })--%>
+                    <%--        .fail(function(jqxhr, settings, exception) {--%>
+                    <%--            console.error("❌ travelcourse.js 로드 실패:", exception);--%>
+                    <%--        });--%>
+                    <%--}--%>
+                    if (window.location.search.includes("menu=course")) {
+                        console.log("📌 travelcourse.js 처음 로드");
+                        $.getScript("${pageContext.request.contextPath}/js/travelcourse.js")
+                            .done(function() { console.log("✅ travelcourse.js 로드 완료"); })
+                            .fail(function(jqxhr, settings, exception) {
+                                console.error("❌ travelcourse.js 로드 실패:", exception);
+                            });
+                    }
+                },
+                error: function (err) {
+                    console.error("AJAX Error:", err);
+                    alert("AJAX Error:" + JSON.stringify(err));
+                }
+            });
+
+        }
+    });
+
+</script>
+
+<!-- ✅ `defer` 속성을 추가하여 travelcourse.js를 미리 로드 -->
+<script src="${pageContext.request.contextPath}/js/travelcourse.js" defer></script>
+<script>
+    const contextPath = "${pageContext.request.contextPath}";
 </script>
 </body>
 </html>
