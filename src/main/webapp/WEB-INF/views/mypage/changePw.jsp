@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
   <style>
     .container {
-      margin: 40px auto;
+      margin: 10px auto;
       padding: 20px;
       background: #fff;
       border-radius: 10px;
@@ -36,34 +36,34 @@
       justify-content: center;
       padding-left: 30px;
     }
+    h2{
+        font-weight: bold;
+    }
   </style>
 </head>
 
 <body>
-
-
 <div class="container">
+    <h2>비밀번호 변경</h2>
+    <p>현재 비밀번호와 일치하는 경우 새 비밀번호로 변경할 수 있습니다.</p>
+    </br>
     <!-- 비밀번호 변경 폼 -->
     <form action="${pageContext.request.contextPath}/mypage/changePw" method="post">
-    <h2>비밀번호 변경</h2>
-<%--    session 객체 확인용--%>
-    <c:forEach items="${sessionScope}" var="entry">
-      <p>${entry.key}: ${entry.value}</p>
-    </c:forEach>
+<%--&lt;%&ndash;    session 객체 확인용&ndash;%&gt;--%>
+<%--    <c:forEach items="${sessionScope}" var="entry">--%>
+<%--      <p>${entry.key}: ${entry.value}</p>--%>
+<%--    </c:forEach>--%>
     <div class="form-group">
-      <label for="member_pw" class="form-label">현재 비밀번호</label>
-      <input type="password" class="form-control" id="member_pw" name="memberPw"
-<%--             value="${sessionScope.memberInfo.memberPw}"--%> required>
+      <label for="currentPw" class="form-label">현재 비밀번호</label>
+      <input type="password" class="form-control" id="currentPw" name="currentPw" required>
     </div>
     <div class="form-group">
-      <label for="member_pw" class="form-label">새 비밀번호</label>
-      <input type="password" class="form-control" id="new_member_pw" name="memberPw"
-      <%--             value="${sessionScope.memberInfo.memberPw}"--%> required>
+      <label for="newPw" class="form-label">새 비밀번호</label>
+      <input type="password" class="form-control" id="newPw" name="newPw" required>
     </div>
     <div class="form-group">
-      <label for="member_pw" class="form-label">새 비밀번호 확인</label>
-      <input type="password" class="form-control" id="new_member_pw_check" name="memberPw"
-      <%--             value="${sessionScope.memberInfo.memberPw}"--%> required>
+      <label for="confirmPw" class="form-label">새 비밀번호 확인</label>
+      <input type="password" class="form-control" id="confirmPw" name="confirmPw" required>
     </div>
 
 <%--    <div class="form-group">--%>

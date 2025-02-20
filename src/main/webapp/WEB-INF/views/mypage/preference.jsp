@@ -25,7 +25,7 @@
             background-color: #007bff; /* 진한 파란색 */
         }
         .container {
-            margin: 40px auto;
+            margin: 10px auto;
             padding: 20px;
             background: #fff;
             border-radius: 10px;
@@ -39,6 +39,10 @@
             border-radius: 10px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
+            display: flex;
+            height: 210px; /* 높이를 고정 */
+            width: 210px; /* 너비를 고정 */
+            margin: 0 auto; /* 카드들 가운데 정렬 */
         }
         .card:hover {
             transform: scale(1.05);
@@ -50,8 +54,9 @@
         .card-text {
             font-size: 1rem;
             color: #666;
+
         }
-        .card.selected-card {
+        .selected-card {
             background-color: #007bff; /* 진한 파란색 */
             color: #fff; /* 텍스트 색상 흰색으로 변경 */
         }
@@ -59,14 +64,18 @@
             background-color: #007bff; /* 진한 파란색 **/
             color: #fff; /* 카드 텍스트 색상 흰색으로 변경 */
         }
-
+        h2{
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h2 class="text-center">여행 취향 수정</h2>
+    <h2>여행 취향 수정</h2>
+    </br>
     <%--    <!-- 저장된 카테고리를 확인 -->--%>
-    <%--    <p>저장된 선호 여행 취향: ${savedCategory}</p>--%>
+<%--        <p>저장된 선호 여행 취향: ${savedCategory}</p>--%>
 
     <!-- 저장 성공 popup -->
     <div id="saveAlert" class="alert"></div>

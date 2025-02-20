@@ -1,0 +1,192 @@
+.nav-header {
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    text-align: left;
+}
+
+.back-to-main-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.back-to-main-btn:hover {
+    background-color: #0056b3;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.plan-header {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.schedule-list {
+    flex: 1;
+    max-width: 60%;
+}
+
+.map-container {
+    flex: 1;
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 100px);
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.day-schedule {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.day-header {
+    background: #007bff;
+    color: white;
+    padding: 15px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    gap: 15px;
+}
+
+.activity-time {
+    flex: 0 0 60px;
+    font-weight: bold;
+    color: #333;
+}
+
+.activity-type {
+    flex: 0 0 80px;
+    color: #666;
+    text-align: center;
+}
+
+.activity-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-name {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.activity-duration {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.activity-notes {
+    color: #555;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.place-photo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .activity-item {
+        flex-wrap: wrap;
+    }
+
+    .activity-time, .activity-type {
+        flex-basis: auto;
+    }
+
+    .place-photo {
+        order: -1;
+        width: 100%;
+        height: 150px;
+        margin-bottom: 10px;
+    }
+}
+
+.activity-item:hover {
+    background-color: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+    .schedule-list {
+        max-width: 100%;
+    }
+    .map-container {
+        height: 400px;
+        position: static;
+    }
+}
+/* 필터 컨테이너 스타일 추가 */
+.filter-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+.day-filter {
+    margin-bottom: 10px;
+}
+
+.filter-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.day-checkbox {
+    margin-right: 5px;
+}
+
+.day-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.day-color-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+}

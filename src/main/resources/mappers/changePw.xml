@@ -8,7 +8,7 @@
     <update id="updatePassword" parameterType="map">
         UPDATE member
         SET member_pw = #{newPw}
-        WHERE member_id = #{memberID}
+        WHERE member_id = #{memberId}
     </update>
 
 </mapper>

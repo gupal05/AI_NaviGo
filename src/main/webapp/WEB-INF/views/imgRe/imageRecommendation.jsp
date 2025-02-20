@@ -11,9 +11,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+        h1, h2 {
+            text-align: center;
+            font-weight: bold;
+            color: #343a40;
+        }
         .image-preview {
             max-width: 100%;
             height: auto;
+            border-radius: 10px;
             margin-top: 15px;
         }
         .result-card {
@@ -21,9 +39,21 @@
         }
         .card-img-top {
             width: 100%;
-            height: 100%;
+            height: 250px;
             object-fit: cover;
-            margin-top: 0px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
         .loading-container {
             display: none;
@@ -45,7 +75,6 @@
     <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
 </header>
 
-<!-- 이미지 업로드 섹션 -->
 <section class="image-upload-section">
     <div class="container">
         <h1>여행지 추천을 위한 이미지 업로드</h1>
@@ -54,25 +83,23 @@
                 <label for="image" class="form-label">이미지를 선택해주세요</label>
                 <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
             </div>
-            <button type="submit" class="btn btn-primary">이미지 업로드</button>
+            <button type="submit" class="btn btn-primary w-100">이미지 업로드</button>
         </form>
 
-        <div id="image-preview-container" class="mt-3" style="display: none;">
+        <div id="image-preview-container" class="mt-3" style="display: none; text-align: center;">
             <img id="image-preview" class="image-preview" src="" alt="이미지 미리보기">
         </div>
     </div>
 </section>
 
-<!-- 분석 중 메시지 -->
 <div id="loading-container" class="loading-container">
     <p>분석 중... <img src="https://i.gifer.com/4V0b.gif" alt="로딩 아이콘"></p>
 </div>
 
-<!-- 결과 섹션 -->
 <section id="result-section" class="container mt-5" style="display: none;">
     <h2>추천된 여행지</h2>
     <div id="result-list" class="row">
-        <!-- 추천된 여행지 결과는 여기에 동적으로 추가됩니다 -->
+
     </div>
 </section>
 

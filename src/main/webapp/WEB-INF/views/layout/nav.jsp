@@ -45,7 +45,7 @@
                     <a class="nav-link" href="/mypage">마이 페이지</a>
                 </li>
                 <li class="nav-item">
-                    <form action="/logout" method="post">
+                    <form action="/logout" method="get">
                         <button class="btn btn-primary ms-2" data-bs-toggle="modal" type="submit">Logout</button>
                     </form>
                 </li>

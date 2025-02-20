@@ -40,10 +40,22 @@
 <br>
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
-        <c:forEach var="festival" items="${festivals}" begin="0" end="5">
-            <c:set var="detailUrl" value="recommend/detail?contentid=${festival.contentid}&contenttypeid=${festival.contenttypeid}&title=${festival.title}" />
+        <c:forEach var="festival" items="${festivals}">
+            <c:set var="detailUrl" value="${pageContext.request.contextPath}/main/recommend/detail?contentid=${festival.contentid}&contenttypeid=${festival.contenttypeid}&title=${festival.title}" />
+            <%--            &lt;%&ndash; 디버깅용 콘솔 출력 &ndash;%&gt;--%>
+            <%--            <a href="${detailUrl}" class="card-link"--%>
+            <%--                data-contentid="${festival.contentid}"--%>
+            <%--                data-contenttypeid="${festival.contenttypeid}"--%>
+            <%--                data-title="${festival.title}">--%>
+            <%--            상세 보기--%>
+            <%--            </a>--%>
+            <%--            <c:out value="Festival Debug - contentid: ${festival.contentid}, contenttypeid: ${festival.contenttypeid}, title: ${festival.title}" escapeXml="false"/>--%>
+
             <div class="col">
                 <a href="${detailUrl}" class="card-link"
+                   data-contentid="${festival.contentid}"
+                   data-contenttypeid="${festival.contenttypeid}"
+                   data-title="${festival.title}"
                    onclick="recordClick('${festival.contentid}', '${festival.cat1}', '${festival.cat2}', '${festival.cat3}', '${festival.title}');">
                     <div class="card h-100">
                         <img src="${festival.firstimage}" class="card-img-top card-img-custom" alt="${festival.title}">
