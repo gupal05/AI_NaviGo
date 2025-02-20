@@ -78,6 +78,7 @@
                     String cat3          = (String) item.getOrDefault("cat3", "");
                     String contenttypeid = (String) item.getOrDefault("contenttypeid", "");
 
+                    String title = (String) item.getOrDefault("title", "");
                     String encodedTitle  = java.net.URLEncoder.encode(itemTitle, "UTF-8");
                     String detailUrl = "recommend/detail?contentid=" + contentid
                             + "&contenttypeid=" + contenttypeid
@@ -85,6 +86,9 @@
         %>
         <div class="col">
             <a href="<%= detailUrl %>" class="card-link"
+               data-contentid="<%= contentid %>"
+               data-contenttypeid="<%= contenttypeid %>"
+               data-title="<%= title %>"
                onclick="recordClick('<%= contentid %>', '<%= cat1 %>', '<%= cat2 %>', '<%= cat3 %>', '<%= itemTitle %>');">
                 <div class="card h-100">
                     <img src="<%= firstimage %>" class="card-img-top card-img-custom" alt="<%= itemTitle %>">
