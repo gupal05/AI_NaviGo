@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <title>여행 일정 상세</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=${apikey}&callback=initMap"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/foreign/planDetail.css"/>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
@@ -72,7 +71,7 @@
         </div>
     </div>
 </div>
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=${apikey}&callback=initMap"></script>
 <script>
     let map;
     let markers = [];
