@@ -11,18 +11,18 @@
         color: inherit;
         text-decoration: none;
     }
-    .card-body {
-        text-align: center;
-    }
-    .card-title {
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-    .card-text {
-        font-size: 0.9rem;
-        color: #666;
-    }
+    /*.card-body {*/
+    /*    text-align: center;*/
+    /*}*/
+    /*.card-title {*/
+    /*    font-size: 1.1rem;*/
+    /*    font-weight: bold;*/
+    /*    margin-bottom: 0.5rem;*/
+    /*}*/
+    /*.card-text {*/
+    /*    font-size: 0.9rem;*/
+    /*    color: #666;*/
+    /*}*/
 </style>
 
 <div class="container mt-5 text-center">
