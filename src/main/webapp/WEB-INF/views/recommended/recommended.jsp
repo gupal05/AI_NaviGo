@@ -4,6 +4,7 @@
 <head>
     <title>추천 여행지</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/recommended/travelCard.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- Bootstrap JS (Popper.js 포함) -->
