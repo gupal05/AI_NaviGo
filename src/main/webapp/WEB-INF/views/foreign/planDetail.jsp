@@ -102,17 +102,17 @@
 
     // 활동 데이터를 JavaScript 배열로 변환
     <c:forEach items="${schedules}" var="schedule">
-        <c:forEach items="${schedule.activities}" var="activity">
-        locations.push({
-            lat: ${activity.latitude},
-            lng: ${activity.longitude},
-            title: "${activity.placeName}",
-            time: "${activity.visitTime}",
-            type: "${activity.activityType}",
-            duration: "${activity.duration}분",
-            dayNumber: ${schedule.dayNumber}
-        });
-        </c:forEach>
+    <c:forEach items="${schedule.activities}" var="activity">
+    locations.push({
+        lat: ${activity.latitude},
+        lng: ${activity.longitude},
+        title: "${activity.placeName}",
+        time: "${activity.visitTime}",
+        type: "${activity.activityType}",
+        duration: "${activity.duration}분",
+        dayNumber: ${schedule.dayNumber}
+    });
+    </c:forEach>
     </c:forEach>
 
     function createDayFilters() {

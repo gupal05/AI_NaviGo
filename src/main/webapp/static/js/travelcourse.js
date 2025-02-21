@@ -61,7 +61,7 @@ function renderCourseCards(courseItems) {
                 <div class="card h-100">
                     ${imageHtml}
                     <div class="card-body">
-                        <span class="badge bg-primary mb-2">추천 코스</span>
+                        <span class="badge bg-success mb-2">추천 코스</span>
                         <h5 class="card-title">${item.title}</h5>
                         <p class="card-text">${item.addr1}</p>
                     </div>

@@ -3,6 +3,7 @@
 <%@ page import="org.json.JSONObject" %>
 <div class="info-box">
     <h3>추가 상세 정보 (음식)</h3>
+    <hr class="custom-hr">
     <%
         String detailStr = (String) request.getAttribute("detail");
         if (detailStr != null && !"Detail 정보 없음".equals(detailStr)) {

@@ -141,13 +141,14 @@ public class recommendedController {
     }
 
     @GetMapping("/main/recommended/festival")
-    public String getFestival(@RequestParam(defaultValue = "1") int page, Model model, HttpSession session) throws Exception {
+    public String getFestival(Model model, HttpSession session) throws Exception {
         // model.addAttribute("festivals", ...);
         //MemberDTO member = (MemberDTO) session.getAttribute("memberInfo");
-
+        int page = 1;
+        int numOfRows = 9;
 
         // 문화축제 리스트 처리
-        JSONArray festivalsArray = getRecommendedFestivals();
+        JSONArray festivalsArray = getRecommendedFestivals(page, numOfRows);
         List<Map<String, Object>> festivalsList = new ArrayList<>();
         for (int i = 0; i < festivalsArray.length(); i++) {
             JSONObject festival = festivalsArray.getJSONObject(i);
@@ -158,6 +159,24 @@ public class recommendedController {
 
         return "recommended/festival";
     }
+
+    @GetMapping("/main/recommended/festivalAjax")
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> getFestivalAjax(@RequestParam(defaultValue = "1") int page) throws Exception {
+        int numOfRows = 9; // 한 페이지 당 아이템 수
+        // API에서 해당 페이지의 데이터만 가져옴
+        JSONArray festivalsArray = getRecommendedFestivals(page, numOfRows);
+        List<Map<String, Object>> festivalsList = new ArrayList<>();
+        for (int i = 0; i < festivalsArray.length(); i++) {
+            JSONObject festival = festivalsArray.getJSONObject(i);
+            festivalsList.add(festival.toMap());
+        }
+        return ResponseEntity.ok(festivalsList);
+    }
+
+
+
+
 
     @GetMapping("/main/recommended/popular")
     public String getPopular(Model model, HttpSession session) throws Exception {
@@ -516,13 +535,13 @@ public class recommendedController {
         return new JSONArray();
     }
 
-    private JSONArray getRecommendedFestivals() {
+    private JSONArray getRecommendedFestivals(int page, int numOfRows) {
         try {
             URI uri = UriComponentsBuilder
                     .fromHttpUrl("http://apis.data.go.kr/B551011/KorService1/searchFestival1")
                     .queryParam("serviceKey", SERVICE_KEY)
-                    .queryParam("numOfRows", 12)
-                    .queryParam("pageNo", 1)
+                    .queryParam("numOfRows", numOfRows)
+                    .queryParam("pageNo", page)
                     .queryParam("MobileOS", "ETC")
                     .queryParam("MobileApp", "AppTest")
                     .queryParam("_type", "json")
@@ -667,21 +686,34 @@ public class recommendedController {
                 JSONObject jsonObj = new JSONObject(response.getBody());
                 if (jsonObj.has("response")) {
                     JSONObject respObj = jsonObj.getJSONObject("response");
-                    if (respObj.has("body") &&
-                            respObj.getJSONObject("body").has("items") &&
-                            respObj.getJSONObject("body").getJSONObject("items").has("item")) {
-                        JSONArray items = respObj.getJSONObject("body")
-                                .getJSONObject("items")
-                                .getJSONArray("item");
-                        return items.toString();
+                    if (respObj.has("body")) {
+                        JSONObject bodyObj = respObj.getJSONObject("body");
+                        // items가 JSONObject인지 확인
+                        Object itemsObj = bodyObj.get("items");
+                        if (itemsObj instanceof JSONObject) {
+                            JSONObject itemsJson = (JSONObject) itemsObj;
+                            if (itemsJson.has("item")) {
+                                JSONArray items = itemsJson.getJSONArray("item");
+                                return items.toString();
+                            }
+                        } else if (itemsObj instanceof String) {
+                            // 만약 items가 빈 문자열이면 빈 배열로 처리
+                            String itemsStr = (String) itemsObj;
+                            if (itemsStr.trim().isEmpty()) {
+                                return "[]";
+                            } else {
+                                return itemsStr;
+                            }
+                        }
                     }
                 }
             }
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "Detail_info 정보 없음";
     }
+
 
     @PostMapping("/recordClick")
     public ResponseEntity<String> recordUserClick(HttpSession session,

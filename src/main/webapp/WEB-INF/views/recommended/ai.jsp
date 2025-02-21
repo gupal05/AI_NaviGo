@@ -19,18 +19,6 @@
 <html>
 <head>
     <title>AI 추천 여행지</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-    <style>
-        .card-img-custom {
-            width: 100%;
-            height: 212px;
-            object-fit: cover;
-        }
-        .card-link {
-            color: inherit;
-            text-decoration: none;
-        }
-    </style>
     <script>
         // recordClick 함수에 title 매개변수를 추가하여 전송
 
@@ -55,13 +43,18 @@
 </head>
 <body>
 <!-- AI 맞춤 추천 타이틀 -->
-<div class="container mt-5 text-center">
+<%--<div class="container mt-5 text-center">--%>
+<%--    <h2 class="fw-bold">AI 사용자 맞춤 여행지 추천</h2>--%>
+<%--    <p class="text-muted">--%>
+<%--        나의 관심사와 선택한 여행지 데이터를 분석하여 맞춤형 여행지를 추천합니다.--%>
+<%--    </p>--%>
+<%--</div>--%>
+<div class="container section-header">
     <h2 class="fw-bold">AI 사용자 맞춤 여행지 추천</h2>
     <p class="text-muted">
         나의 관심사와 선택한 여행지 데이터를 분석하여 맞춤형 여행지를 추천합니다.
     </p>
 </div>
-<br>
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
         <%

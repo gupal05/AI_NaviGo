@@ -39,7 +39,6 @@
                     <a class="nav-link" href="/tourplan">
                         <i class="bi bi-map"></i> 국내 여행지 생성
                     </a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/foreign/create">
                         <i class="bi bi-globe"></i> 해외 여행지 생성

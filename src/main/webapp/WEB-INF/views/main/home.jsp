@@ -22,7 +22,7 @@
 <section class="hero">
     <h1>이제 여행도 AI와 함께 하세요! <span>AI NaviGo</span></h1>
     <p>당신의 관심사와 예산에 맞춰 일정표를 만들어주는 개인 맞춤형 여행 플래너</p>
-    <a href="#" class="btn-cta">무료 서비스 이용</a>
+    <a href="/tourplan" class="btn-cta">국내 여행지 생성!</a>
 </section>
 
 <!-- 일정 섹션 -->
