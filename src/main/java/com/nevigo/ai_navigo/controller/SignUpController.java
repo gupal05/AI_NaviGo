@@ -78,7 +78,6 @@ public class SignUpController {
 
     @GetMapping("/googleSignUpResult")
     public String googleSignUpResult() {
-        System.out.println("됨 : "+session.getAttribute("temp"));
         return "/auth/signup_result";
     }
 }
