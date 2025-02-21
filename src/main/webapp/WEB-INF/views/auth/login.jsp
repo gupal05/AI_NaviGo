@@ -51,6 +51,12 @@
         <button type="button" id="login-btn" class="btn btn-primary w-100">Login</button>
       </form>
 
+      <!-- ID/PW 찾기 버튼 (가운데 정렬) -->
+      <div class="d-flex justify-content-center mt-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm mx-1" onclick="location.href='/auth/findId'">Find ID</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm mx-1" onclick="location.href='/auth/findPw'">Find PW</button>
+      </div>
+
       <!-- 구분선 -->
       <div class="text-center custom-divider mt-3">or</div>
 
