@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nevigo.ai_navigo.dao.IF_FindMember">
+    <!-- 아이디 존재 여부 확인 -->
+    <select id="isFindMemberId" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="int">
+        select count(*) from member where member_name=#{memberName} and member_email=#{memberEmail}
+    </select>
+    <!-- 사용자 아이디 sel -->
+    <select id="getFindMemberId" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="String">
+        select member_id from member where member_name=#{memberName} and member_email=#{memberEmail}
+    </select>
+    <!-- 비밀번호 존재 여부 확인 -->
+    <select id="isFindMemberPw" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="int">
+        select count(*) from member where member_id=#{memberId} and member_email=#{memberEmail}
+    </select>
+    <!-- 사용자 아이디 sel -->
+    <select id="getFindMemberPw" parameterType="com.nevigo.ai_navigo.dto.MemberDTO" resultType="String">
+        select member_id from member where member_id=#{memberId} and member_email=#{memberEmail}
+    </select>
+    <!-- 사용자 비밀번호 변경 -->
+    <update id="changeFindMemberPw" parameterType="com.nevigo.ai_navigo.dto.MemberDTO">
+        UPDATE member
+        SET member_pw = #{memberPw}, reg_date = default
+        WHERE member_id = #{memberId}
+    </update>
+</mapper>
