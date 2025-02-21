@@ -37,13 +37,19 @@
     </script>
 </head>
 <body>
-<div class="container mt-5 text-center">
+<%--<div class="container mt-5 text-center">--%>
+<%--    <h2 class="fw-bold">인기 여행지</h2>--%>
+<%--    <p class="text-muted">--%>
+<%--        Navigo 사이트에서 최근 7일간 인기있었던 여행지를 추천해 드립니다.--%>
+<%--    </p>--%>
+<%--</div>--%>
+<div class="container section-header">
     <h2 class="fw-bold">인기 여행지</h2>
     <p class="text-muted">
-        Navigo 사이트에서 최근 많이 클릭된 여행지를 보여드립니다.
+        Navigo 사이트에서 최근 7일간 인기있었던 여행지를 추천해 드립니다.
     </p>
 </div>
-<br/>
+
 
 <%
     // Controller에서 model.addAttribute("popularTitleListResults", ...);
@@ -93,7 +99,8 @@
                 <div class="card h-100">
                     <img src="<%= firstimage %>" class="card-img-top card-img-custom" alt="<%= itemTitle %>">
                     <div class="card-body">
-                        <span class="badge bg-Green mb-2">인기</span>
+                        <!-- badge 색상을 info 클래스로 변경 -->
+                        <span class="badge bg-info mb-2">인기</span>
                         <h5 class="card-title"><%= itemTitle %></h5>
                         <h6 class="card-addr"><%= addr1 %></h6>
                     </div>
