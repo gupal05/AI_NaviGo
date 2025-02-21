@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/3789e6110d.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
@@ -30,7 +33,8 @@
             <c:forEach items="${schedules}" var="schedule">
                 <div class="day-schedule">
                     <div class="day-header">
-                        <h3>${schedule.scheduleDate} ${schedule.dayNumber} 일차</h3>
+                        <h3 class="schedule-date">${schedule.scheduleDate}</h3>
+                        <span class="day-number">${schedule.dayNumber} 일차</span>
                     </div>
 
                     <c:forEach items="${schedule.activities}" var="activity">
