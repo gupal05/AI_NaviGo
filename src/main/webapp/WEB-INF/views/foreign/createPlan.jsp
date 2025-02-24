@@ -260,6 +260,54 @@
             font-weight: normal;
         }
 
+        /* 로딩 오버레이 스타일 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+            border: 4px solid rgba(110, 120, 255, 0.2);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-spinner p {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* 반응형 Styling */
         @media (max-width: 768px) {
             .form-row {
@@ -373,6 +421,14 @@
             <i class="bi bi-calendar-plus me-2"></i>일정 생성하기
         </button>
     </form>
+
+    <!-- 로딩 오버레이 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>일정을 생성 중입니다...</p>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -495,6 +551,9 @@
         $('#travelPlanForm').on('submit', function(e) {
             e.preventDefault();
 
+            // 즉시 로딩 표시 (유효성 검사 전에)
+            document.getElementById('loading-overlay').classList.add('active');
+
             let isValid = true;
 
             // 여행지 검증
@@ -513,6 +572,12 @@
             if (selectedThemes.length === 0) {
                 $('#themeError').show();
                 isValid = false;
+            }
+
+            // 유효성 검사 실패 시 로딩 숨김
+            if (!isValid) {
+                document.getElementById('loading-overlay').classList.remove('active');
+                return;
             }
 
             if (isValid) {
@@ -551,10 +616,14 @@
                         if (response.success) {
                             window.location.href = '/foreign/plan/' + response.planId;
                         } else {
+                            // 에러 시 로딩 오버레이 숨김
+                            document.getElementById('loading-overlay').classList.remove('active');
                             alert('일정 생성에 실패했습니다: ' + response.message);
                         }
                     },
                     error: function(xhr, status, error) {
+                        // 에러 시 로딩 오버레이 숨김
+                        document.getElementById('loading-overlay').classList.remove('active');
                         alert('일정 생성 중 오류가 발생했습니다.');
                     }
                 });
