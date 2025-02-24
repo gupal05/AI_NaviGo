@@ -36,6 +36,25 @@ document.addEventListener("click", function (event) {
 
         window.location.href = `/main/recommend/detail?contentid=${contentid}&contenttypeid=${contenttypeid}&title=${title}`;
     }
+
+    // 클릭 시 DB에 기록 (recordClick)
+    function recordClick(contentid, cat1, cat2, cat3, title) {
+        fetch('/recordClick', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contentid: contentid,
+                cat1: cat1,
+                cat2: cat2,
+                cat3: cat3,
+                title: title
+            })
+        })
+            .then(response => response.text())
+            .then(data => console.log("Click recorded:", data))
+            .catch(err => console.error("Error:", err));
+    }
+
 });
 
 
