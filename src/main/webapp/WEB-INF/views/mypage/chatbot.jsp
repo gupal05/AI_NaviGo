@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.nevigo.ai_navigo.dto.MemberDTO" %>
 <%
-  // 세션에서 userId 가져오기
+  // 세션에서 userName 가져오기
   MemberDTO memberInfo = (MemberDTO) session.getAttribute("memberInfo");
-  String userId = (memberInfo != null) ? memberInfo.getMemberId() : "Guest"; // 로그인되지 않은 경우 기본값 "Guest"
+  String userName = (memberInfo != null) ? memberInfo.getMemberName() : "Guest"; // 로그인되지 않은 경우 기본값 "Guest"
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -196,8 +196,8 @@
       sendMessage();
     }
   }
-  // JSP에서 받은 userId 값을 JavaScript 변수에 저장
-  var userId = "<%= userId %>";
+  // JSP에서 받은 userName 값을 JavaScript 변수에 저장
+  var userName = "<%= userName %>";
 
   // AI 첫 번째 자동 메시지 출력
   function sendAutoMessage() {
@@ -206,7 +206,7 @@
     // AI 첫 번째 자동 메시지 추가
     const aiMessage = document.createElement("div");
     aiMessage.className = "ai-message";
-    aiMessage.innerHTML = "안녕하세요! <strong>" + userId + "</strong>님! 😊<br>" +
+    aiMessage.innerHTML = "안녕하세요! <strong>" + userName + "</strong>님! 😊<br>" +
             "저는 여행을 더 편리하게 즐길 수 있도록 도와주는 AI 챗봇입니다.<br> " +
             "일정 관리부터 장소 추천까지 여행의 작은 고민들을 해결해 드릴게요. 궁금한 점이 있으면 언제든지 편하게 물어봐 주세요!";
     chatbotMessages.appendChild(aiMessage);
