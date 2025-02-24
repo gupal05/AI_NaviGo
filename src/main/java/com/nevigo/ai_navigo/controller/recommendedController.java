@@ -17,7 +17,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,94 +53,75 @@ public class recommendedController {
 
     // [B] AI 프래그먼트
     @GetMapping("/main/recommended/ai")
-    public String getAiFragment(Model model, HttpSession session) throws Exception {
-        // 1. 로그인 사용자면 FastAPI + 공공데이터 API로 cat3 아이템 목록
-        // 2. model.addAttribute("items", items);
-
-        // 회원 정보 확인 및 추천 cat3 결정
+    public String getAiFragment(Model model, HttpSession session,
+                                @RequestParam(value = "exclude", required = false) String exclude) {
         MemberDTO member = (MemberDTO) session.getAttribute("memberInfo");
-        String recommendedCat3 = null;
-        if (member != null) {
-            String memberId = member.getMemberId();
-            System.out.println("로그인된 memberId: " + memberId);
-            recommendedCat3 = callFastAPI(memberId);
-        } else {
-            System.out.println("비로그인 상태 - 인기 여행지 추천");
-            recommendedCat3 = ifPreferenceService.getPopularCat3();
+        String memberId = member != null ? member.getMemberId() : "guest";
+        String url = FASTAPI_URL + memberId;
+        if (exclude != null && !exclude.isEmpty()) {
+            url += "?exclude=" + exclude;
         }
-
-        if (recommendedCat3 == null) {
-            System.out.println("recommendedCat3 is null");
-            model.addAttribute("items", new JSONArray());
-            model.addAttribute("courseItems", new ArrayList<>());
-//            return "/recommended/recommended";
-        }
-
-        // 추천 여행지 데이터 호출 (cat3 기준)
         try {
-            URI uri = UriComponentsBuilder
-                    .fromHttpUrl(BASE_API_URL)
-                    .queryParam("serviceKey", SERVICE_KEY)
-                    .queryParam("numOfRows", 9)
-                    .queryParam("pageNo", 1)
-                    .queryParam("MobileOS", "ETC")
-                    .queryParam("MobileApp", "AppTest")
-                    .queryParam("_type", "json")
-                    .queryParam("listYN", "Y")
-                    .queryParam("arrange", "Q")
-                    .queryParam("cat3", recommendedCat3)
-                    .build(true)
-                    .toUri();
-
-            System.out.println("최종 요청 URI: " + uri);
             HttpHeaders headers = new HttpHeaders();
             headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
             headers.set("User-Agent", "Mozilla/5.0");
             HttpEntity<?> entity = new HttpEntity<>(headers);
-            ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-            System.out.println("응답 상태: " + response.getStatusCode());
-            String responseBody = response.getBody();
-            System.out.println("응답 바디: " + responseBody);
-
-            if (response.getStatusCode() == HttpStatus.OK && responseBody != null) {
-                JSONObject jsonObj = new JSONObject(responseBody);
-                if (jsonObj.has("response")) {
-                    JSONObject respObj = jsonObj.getJSONObject("response");
-                    if (respObj.has("body") &&
-                            respObj.getJSONObject("body").has("items") &&
-                            respObj.getJSONObject("body").getJSONObject("items").has("item")) {
-
-                        JSONArray items = respObj.getJSONObject("body")
-                                .getJSONObject("items")
-                                .getJSONArray("item");
-
-                        // 배열을 랜덤으로 섞음
-                        List<JSONObject> itemList = new ArrayList<>();
-                        for (int i = 0; i < items.length(); i++) {
-                            itemList.add(items.getJSONObject(i));
-                        }
-                        Collections.shuffle(itemList);
-                        JSONArray randomItems = new JSONArray(itemList);
-                        model.addAttribute("items", randomItems);
-                    } else {
-                        System.out.println("'item' 배열 없음.");
-                        model.addAttribute("items", new JSONArray());
-                    }
-                } else {
-                    System.out.println("'response' 키 없음.");
-                    model.addAttribute("items", new JSONArray());
-                }
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+//                JSONArray items = new JSONArray(response.getBody()); 기존
+                JSONObject jsonResponse = new JSONObject(response.getBody());
+                JSONArray items = jsonResponse.getJSONArray("recommendations");
+                model.addAttribute("items", items);
             } else {
-                System.out.println("응답 코드 200이 아니거나 바디가 null");
                 model.addAttribute("items", new JSONArray());
             }
         } catch (Exception e) {
-            System.out.println("공공데이터 API 오류: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("FastAPI 오류: " + e.getMessage());
             model.addAttribute("items", new JSONArray());
         }
-
         return "recommended/ai";
+    }
+
+    // JSON 응답 전용 엔드포인트 (AJAX 호출 대상)
+    // JSON 응답 전용 엔드포인트 (AJAX 호출 대상)
+    @GetMapping("/main/recommended/ai/json")
+    @ResponseBody
+    public ResponseEntity<String> getAiFragmentJson(HttpSession session,
+                                                    @RequestParam(value = "exclude", required = false) String exclude,
+                                                    @RequestParam(value = "page", required = false, defaultValue = "1") String page,
+                                                    @RequestParam(value = "refresh", required = false, defaultValue = "false") String refresh) {
+        MemberDTO member = (MemberDTO) session.getAttribute("memberInfo");
+        String memberId = member != null ? member.getMemberId() : "guest";
+        String randomParam = "r=" + System.currentTimeMillis();
+        String url = FASTAPI_URL + memberId;
+        if (exclude != null && !exclude.isEmpty()) {
+            url += "?exclude=" + exclude + "&page=" + page + "&refresh=" + refresh;
+        } else {
+            url += "?page=" + page + "&refresh=" + refresh;
+        }
+        url += "&" + randomParam;
+        System.out.println("AJAX JSON 엔드포인트 호출 URL: " + url);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+            headers.set("User-Agent", "Mozilla/5.0");
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(response.getBody());
+            } else {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body("[]");
+            }
+        } catch (Exception e) {
+            System.out.println("FastAPI 호출 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("[]");
+        }
     }
 
     @GetMapping("/main/recommended/festival")
@@ -263,173 +247,6 @@ public class recommendedController {
         return ResponseEntity.ok(courseItems);
     }
 
-
-
-//    @GetMapping("/main/recommended")
-//    public String recommendedController(HttpSession session, HttpServletRequest request, Model model,
-//                                        @RequestParam(value = "course", required = false) String course,
-//                                        @RequestParam(value = "tc", required = false) String tc) throws Exception {
-//        // 회원 정보 확인 및 추천 cat3 결정
-//        MemberDTO member = (MemberDTO) session.getAttribute("memberInfo");
-//        String recommendedCat3 = null;
-//        if (member != null) {
-//            String memberId = member.getMemberId();
-//            System.out.println("로그인된 memberId: " + memberId);
-//            recommendedCat3 = callFastAPI(memberId);
-//        } else {
-//            System.out.println("비로그인 상태 - 인기 여행지 추천");
-//            recommendedCat3 = ifPreferenceService.getPopularCat3();
-//        }
-//
-//        if (recommendedCat3 == null) {
-//            System.out.println("recommendedCat3 is null");
-//            model.addAttribute("items", new JSONArray());
-//            model.addAttribute("courseItems", new ArrayList<>());
-////            return "/recommended/recommended";
-//        }
-//
-//        // 추천 여행지 데이터 호출 (cat3 기준)
-//        try {
-//            URI uri = UriComponentsBuilder
-//                    .fromHttpUrl(BASE_API_URL)
-//                    .queryParam("serviceKey", SERVICE_KEY)
-//                    .queryParam("numOfRows", 9)
-//                    .queryParam("pageNo", 1)
-//                    .queryParam("MobileOS", "ETC")
-//                    .queryParam("MobileApp", "AppTest")
-//                    .queryParam("_type", "json")
-//                    .queryParam("listYN", "Y")
-//                    .queryParam("arrange", "Q")
-//                    .queryParam("cat3", recommendedCat3)
-//                    .build(true)
-//                    .toUri();
-//
-//            System.out.println("최종 요청 URI: " + uri);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-//            headers.set("User-Agent", "Mozilla/5.0");
-//            HttpEntity<?> entity = new HttpEntity<>(headers);
-//            ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-//            System.out.println("응답 상태: " + response.getStatusCode());
-//            String responseBody = response.getBody();
-//            System.out.println("응답 바디: " + responseBody);
-//
-//            if (response.getStatusCode() == HttpStatus.OK && responseBody != null) {
-//                JSONObject jsonObj = new JSONObject(responseBody);
-//                if (jsonObj.has("response")) {
-//                    JSONObject respObj = jsonObj.getJSONObject("response");
-//                    if (respObj.has("body") &&
-//                            respObj.getJSONObject("body").has("items") &&
-//                            respObj.getJSONObject("body").getJSONObject("items").has("item")) {
-//
-//                        JSONArray items = respObj.getJSONObject("body")
-//                                .getJSONObject("items")
-//                                .getJSONArray("item");
-//
-//                        // 배열을 랜덤으로 섞음
-//                        List<JSONObject> itemList = new ArrayList<>();
-//                        for (int i = 0; i < items.length(); i++) {
-//                            itemList.add(items.getJSONObject(i));
-//                        }
-//                        Collections.shuffle(itemList);
-//                        JSONArray randomItems = new JSONArray(itemList);
-//                        model.addAttribute("items", randomItems);
-//                    } else {
-//                        System.out.println("'item' 배열 없음.");
-//                        model.addAttribute("items", new JSONArray());
-//                    }
-//                } else {
-//                    System.out.println("'response' 키 없음.");
-//                    model.addAttribute("items", new JSONArray());
-//                }
-//            } else {
-//                System.out.println("응답 코드 200이 아니거나 바디가 null");
-//                model.addAttribute("items", new JSONArray());
-//            }
-//        } catch (Exception e) {
-//            System.out.println("공공데이터 API 오류: " + e.getMessage());
-//            e.printStackTrace();
-//            model.addAttribute("items", new JSONArray());
-//        }
-//
-//        // 문화축제 리스트 처리
-//        JSONArray festivalsArray = getRecommendedFestivals();
-//        List<Map<String, Object>> festivalsList = new ArrayList<>();
-//        for (int i = 0; i < festivalsArray.length(); i++) {
-//            JSONObject festival = festivalsArray.getJSONObject(i);
-//            festivalsList.add(festival.toMap());
-//            System.out.println(i + ": " + festival);
-//        }
-//        model.addAttribute("festivals", festivalsList);
-//
-//        // 여행코스 검색 처리 (tc 파라미터 사용)
-//        if (tc != null && !tc.trim().isEmpty()) {
-//            JSONArray courseItemsJson = getTravelCourseItems(tc);
-//            List<Map<String, Object>> courseItems = new ArrayList<>();
-//            for (int i = 0; i < courseItemsJson.length(); i++) {
-//                JSONObject courseObj = courseItemsJson.getJSONObject(i);
-//                courseItems.add(courseObj.toMap());
-//            }
-//            model.addAttribute("courseItems", courseItems);
-//            model.addAttribute("tc", tc);
-//        } else {
-//            model.addAttribute("courseItems", new ArrayList<>());
-//        }
-//
-//        // AJAX 요청인 경우 travel course 목록만 반환
-//        if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-//            return "/recommended/courseSection";
-//        }
-//
-//        //인기여행지
-//        List<Map<String, Object>> PopularTile = ifPreferenceService.getPopularTitle10();
-//
-//        // 결과를 담을 리스트(각 항목은 제목, 클릭 수, API 검색 결과를 포함)
-//        List<Map<String, Object>> popularTitleListResults = new ArrayList<>();
-//
-//        for (Map<String, Object> popularMap : PopularTile) {
-//            String title = popularMap.get("title").toString();
-//            String clickCount = popularMap.get("clickCount").toString();
-//
-//            // title을 키워드로 API 호출 -> getTitlebyCount 메서드는 매개변수로 title을 받아,
-//            // json array 리턴
-//            JSONArray keywordResultsArray = getTitlebyCount(title);
-//
-//            //item
-//            List<Map<String, Object>> keywordResults = new ArrayList<>();
-//            for (int i = 0; i < keywordResultsArray.length(); i++) {
-//                JSONObject keywordObj = keywordResultsArray.getJSONObject(i);
-//                keywordResults.add(keywordObj.toMap());
-//            }
-//            // 제목, 클릭수, 그리고 API 검색결과를 하나의 Map에 담기
-//            Map<String, Object> resultMap = new HashMap<>();
-//            resultMap.put("title", title);
-//            resultMap.put("clickCount", clickCount);
-//            resultMap.put("keywordResults", keywordResults);
-//
-//            //list에 추가
-//            popularTitleListResults.add(resultMap);
-//
-//            //디버깅 console
-//            System.out.println("Title: " + title + ", clickCount: " + clickCount);
-//            System.out.println("Api 결과: " + keywordResults);
-//
-//            // 모델에 추가 (JSP에서 popularTitleResults로 접근)
-//            model.addAttribute("popularTitleListResults", popularTitleListResults);
-//
-//        }
-//
-//        //
-////        for (Map<String, Object> stringObjectMap : PopularTile) {
-////            System.out.println(stringObjectMap);
-////
-////        }
-//
-//
-//
-//        // 일반 요청은 전체 페이지 반환
-//        return "/recommended/recommended";
-//    }
 
     private String callFastAPI(String memberId) {
         String url = FASTAPI_URL + memberId;
@@ -721,6 +538,7 @@ public class recommendedController {
         //디버그
 //        System.out.println(debug: userClickDTO);
         MemberDTO member = (MemberDTO) session.getAttribute("memberInfo");
+
         if (member != null) {
             String memberId = member.getMemberId();
             userClickDTO.setMemberid(memberId);

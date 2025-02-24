@@ -2,16 +2,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
-<html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
     <title>여행지 상세 정보</title>
+    <!-- 공통 레이아웃 CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
+    <!-- 업데이트된 detail.css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/recommended/detail.css"/>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <!-- Font Awesome (아이콘 사용) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
-
 <!-- 공통 네비게이션 -->
 <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
 
@@ -38,12 +44,10 @@
             }
     %>
 
-    <!-- 제목 -->
+    <!-- 제목 및 이미지 영역 -->
     <div class="info-box">
         <h2><%= item.optString("title", "제목 없음").trim() %></h2>
         <hr class="custom-hr">
-
-    <!-- 이미지 -->
         <div class="image-container">
             <%
                 String firstImage = item.optString("firstimage", "").trim();
@@ -53,14 +57,14 @@
             <%
             } else {
             %>
-            <img src="default.jpg" alt="기본 이미지" />
+            <img src="${pageContext.request.contextPath}/images/default.jpg" alt="기본 이미지" />
             <%
                 }
             %>
         </div>
     </div>
 
-    <!-- 기본 정보 -->
+    <!-- 기본 정보 영역 -->
     <div class="details">
         <%
             String address = item.optString("addr1", "").trim();
@@ -173,26 +177,28 @@
             </c:choose>
         </div>
 
-        <!-- 토글 버튼 -->
-        <button id="toggleDetail" class="btn btn-secondary">추가 상세 정보 보기</button>
+        <!-- 토글 버튼 (Font Awesome 아이콘 포함) -->
+        <button id="toggleDetail" class="btn btn-secondary">
+            <i class="fas fa-angle-down"></i> 추가 상세 정보 보기
+        </button>
         <script>
             $(document).ready(function (){
                 $("#toggleDetail").click(function (){
                     $("#moreDetail").slideToggle();
-                    var btnText = $(this).text();
+                    var btnText = $(this).text().trim();
                     if (btnText === "추가 상세 정보 보기") {
-                        $(this).text("숨기기");
+                        $(this).html('<i class="fas fa-angle-up"></i> 숨기기');
                     } else {
-                        $(this).text("추가 상세 정보 보기");
+                        $(this).html('<i class="fas fa-angle-down"></i> 추가 상세 정보 보기');
                     }
                 });
             });
         </script>
-    </div>
 
-    <!-- 공통 푸터 -->
-    <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- 공통 푸터 -->
+        <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
 </div>
 </body>
 </html>

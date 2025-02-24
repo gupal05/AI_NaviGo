@@ -3,19 +3,20 @@
 <html>
 <head>
     <title>인기 여행지</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .card-img-custom {
-            width: 100%;
-            height: 212px;
-            object-fit: cover;
-        }
-        .card-link {
-            color: inherit;
-            text-decoration: none;
-        }
-    </style>
+<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>--%>
+<%--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/recommended/travelCard.css"/>
+<%--    <style>--%>
+<%--        .card-img-custom {--%>
+<%--            width: 100%;--%>
+<%--            height: 212px;--%>
+<%--            object-fit: cover;--%>
+<%--        }--%>
+<%--        .card-link {--%>
+<%--            color: inherit;--%>
+<%--            text-decoration: none;--%>
+<%--        }--%>
+<%--    </style>--%>
     <script>
         // 클릭 시 DB에 기록 (recordClick)
         function recordClick(contentid, cat1, cat2, cat3, title) {
@@ -43,13 +44,6 @@
 <%--        Navigo 사이트에서 최근 7일간 인기있었던 여행지를 추천해 드립니다.--%>
 <%--    </p>--%>
 <%--</div>--%>
-<div class="container section-header">
-    <h2 class="fw-bold">인기 여행지</h2>
-    <p class="text-muted">
-        Navigo 사이트에서 최근 7일간 인기있었던 여행지를 추천해 드립니다.
-    </p>
-</div>
-
 
 <%
     // Controller에서 model.addAttribute("popularTitleListResults", ...);
@@ -59,8 +53,14 @@
         popularTitleListResults = new ArrayList<>();
     }
 %>
-
+<div class="container section-header">
+    <h2 class="fw-bold">인기 여행지</h2>
+    <p class="text-muted">
+        Navigo 사이트에서 최근 7일간 인기있었던 여행지를 추천해 드립니다.
+    </p>
+</div>
 <div class="container">
+
     <!-- 모든 카드를 하나의 row 안에 배치 -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
         <%
