@@ -1,79 +1,138 @@
-/* 색상 변수 예시 */
+/* 색상 변수 추가 - plandetail.css의 세련된 색상 활용 */
 :root {
-    --main-blue: #1e70c9;    /* 주 파랑색 */
-    --light-blue: #e8f1fa;   /* 배경용 연한 파랑색 */
-    --dark-blue: #0b4574;    /* 버튼/포인트용 진한 파랑색 */
-    --white:     #ffffff;    /* 흰색 */
+    --primary-color: #6278ff;
+    --secondary-color: #a777e3;
+    --gradient-bg: linear-gradient(135deg, #4a9fff, #a777e3);
+    --light-bg: #f8faff;
+    --dark-text: #333333;
+    --light-text: #ffffff;
+    --gray-text: #666666;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-/* Hero 섹션 */
+
+/* Hero 섹션 개선 */
 .hero {
     max-width: 1200px;
     margin: 2rem auto;
     text-align: center;
-    padding: 2rem 1rem;
+    padding: 3rem 1rem;
 }
 
 .hero h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--dark-blue);
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
 }
 
 .hero h1 span {
-    color: var(--main-blue);
+    background: var(--gradient-bg);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
 }
 
 .hero p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
     color: #555;
+    line-height: 1.6;
 }
 
+/* CTA 버튼 스타일 개선 */
 .btn-cta {
     display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: var(--main-blue);
-    color: var(--white);
-    border-radius: 4px;
+    padding: 1rem 2rem;
+    background: var(--gradient-bg);
+    color: var(--light-text);
+    border-radius: 12px;
     text-decoration: none;
     font-weight: 600;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-cta:hover {
-    background-color: #165d9e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #3d85e6, #9668d3);
+    color: var(--light-text);
 }
 
-/* 샘플 일정 섹션 */
+/* 샘플 일정 섹션 개선 */
 .sample-itinerary {
     max-width: 1200px;
     margin: 3rem auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.sample-itinerary img {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease;
+}
+
+/* 서비스 설명 섹션 스타일 */
+.feature-description {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem;
+    text-align: center;
+    background-color: var(--light-bg);
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+}
+
+.feature-description h2 {
+    font-size: 2rem;
+    color: var(--dark-text);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    background: var(--gradient-bg);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-description p {
+    font-size: 1.1rem;
+    color: var(--gray-text);
+    line-height: 1.6;
+    margin: 0;
     padding: 0 1rem;
 }
 
-.itinerary-info h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--dark-blue);
-}
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
 
-.itinerary-info p {
-    margin-bottom: 1rem;
-    line-height: 1.5;
-}
+    .hero p {
+        font-size: 1.1rem;
+    }
 
-.itinerary-map {
-    background-color: var(--light-blue);
-    border: 2px dashed var(--main-blue);
-    border-radius: 8px;
-    min-height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--main-blue);
-    font-weight: bold;
+    .btn-cta {
+        padding: 0.8rem 1.6rem;
+    }
+
+    .sample-itinerary img {
+        max-width: 100%;
+    }
+
+    .feature-description {
+        padding: 1.5rem;
+    }
+
+    .feature-description h2 {
+        font-size: 1.8rem;
+    }
+
+    .feature-description p {
+        font-size: 1rem;
+        padding: 0;
+    }
 }
