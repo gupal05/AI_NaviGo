@@ -3,11 +3,13 @@
 
 <html>
 <head>
-    <title>선호 여행 취향 수정</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>선호 여행 취향 수정 - AI NaviGo</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .alert {
             display: none;
@@ -40,8 +42,8 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
             display: flex;
-            height: 210px; /* 높이를 고정 */
-            width: 210px; /* 너비를 고정 */
+            height: 240px; /* 높이를 고정 */
+            width: 180px; /* 너비를 고정 */
             margin: 0 auto; /* 카드들 가운데 정렬 */
         }
         .card:hover {
@@ -67,12 +69,230 @@
         h2{
             font-weight: bold;
         }
+        :root {
+            --primary-color: #5468ff;
+            --primary-hover: #4152e3;
+            --secondary-color: #f6f8ff;
+            --text-primary: #2c3256;
+            --text-secondary: #6b7280;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --white: #ffffff;
+            --box-shadow: 0 10px 30px rgba(84, 104, 255, 0.08);
+            --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+            font-family: var(--font-family);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        /* 메인 컨테이너 스타일 */
+        .mypage-container {
+            display: flex;
+            gap: 30px;
+            padding: 40px 20px;
+            margin-top: 20px;
+            min-height: calc(100vh - 80px);
+            animation: fadeIn 0.5s ease-out;
+        }
+        /* 본문 영역 스타일 */
+        .content {
+            flex: 1;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 180px);
+            padding: 40px 20px;
+        }
+
+        .resetpw-container {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+            padding: 48px 40px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .resetpw-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), #9f7aea);
+        }
+
+        .resetpw-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .resetpw-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, var(--primary-color), #9f7aea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 15px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .alert-danger {
+            background-color: #fef2f2;
+            color: var(--error-color);
+            border: 1px solid #fee2e2;
+        }
+
+        #signup-btn-group {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            height: 54px;
+            background-color: #f9fafb;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0 20px;
+            font-size: 15px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: var(--white);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(84, 104, 255, 0.1);
+            outline: none;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .valid-input {
+            border-color: var(--success-color) !important;
+        }
+
+        .btn {
+            height: 54px;
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: 12px;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 0 24px;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ebeffe;
+            color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), #6977ff);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #4a59e5, #5c6aff);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(84, 104, 255, 0.25);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 576px) {
+            .resetpw-container {
+                padding: 32px 24px;
+                border-radius: 12px;
+            }
+
+            .resetpw-title {
+                font-size: 22px;
+            }
+
+            .form-control, .btn {
+                height: 50px;
+            }
+        }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>여행 취향 수정</h2>
+<header id="top-header">
+    <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
+</header>
+<!-- 마이페이지 메인 컨테이너 -->
+<div class="mypage-container container">
+    <%--사이드바--%>
+    <jsp:include page="/WEB-INF/views/mypage/sidebar.jsp" />
+    <%--본문--%>
+    <div class="resetpw-container">
+        <div class="resetpw-header">
+            <h1 class="resetpw-title">여행 취향 수정</h1>
+        </div>
     </br>
     <%--    <!-- 저장된 카테고리를 확인 -->--%>
 <%--        <p>저장된 선호 여행 취향: ${savedCategory}</p>--%>
@@ -170,12 +390,14 @@
         </div>
 
     </div>
-
-    <!-- 저장 버튼 -->
-    <div class="d-flex justify-content-between mt-4">
-        <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="savePreference()">Save</button>
+        <!-- 저장 버튼 -->
+        <div class="d-flex justify-content-between mt-4">
+            <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="savePreference()">Save</button>
+        </div>
     </div>
+
+
 </div>
 
 <!-- JavaScript -->

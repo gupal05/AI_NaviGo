@@ -2,7 +2,8 @@
 <%@ page import="org.json.JSONArray, org.json.JSONObject" %>
 <!-- 이용안내 영역 (기존 detail 속성 사용) -->
 <div class="info-box">
-    <h3>이용안내</h3>
+    <h3>추가 상세 정보 (관광코스)</h3>
+<%--    <h3>이용안내</h3>--%>
     <%
         String detailStr = (String) request.getAttribute("detail");
         if (detailStr != null && !"Detail_intro 정보 없음".equals(detailStr)) {

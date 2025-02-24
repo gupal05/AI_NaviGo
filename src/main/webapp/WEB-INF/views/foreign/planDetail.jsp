@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/3789e6110d.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
@@ -30,7 +33,8 @@
             <c:forEach items="${schedules}" var="schedule">
                 <div class="day-schedule">
                     <div class="day-header">
-                        <h3>${schedule.scheduleDate} ${schedule.dayNumber} 일차</h3>
+                        <h3 class="schedule-date">${schedule.scheduleDate}</h3>
+                        <span class="day-number">${schedule.dayNumber} 일차</span>
                     </div>
 
                     <c:forEach items="${schedule.activities}" var="activity">
@@ -77,6 +81,7 @@
     let markers = [];
     let currentInfoWindow = null;
     let locations = [];
+    let placePhotos = {};
 
     // 14일간의 마커 색상 배열
     const markerColors = [
@@ -151,6 +156,24 @@
         });
     }
 
+    $(document).ready(function() {
+        $.ajax({
+            url: '/foreign/plan/${plan.planId}/photos',
+            type: 'GET',
+            success: function(response) {
+                console.log("API 응답:", response);
+                if (response.success) {
+                    // 사진 데이터를 전역 변수에 저장
+                    placePhotos = response.photos || {};
+                    console.log("사진 데이터:", placePhotos);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("사진 로딩 중 오류 발생:", error);
+            }
+        });
+    });
+
     function initMap() {
         console.log('Initializing map...');
 
@@ -194,14 +217,69 @@
                 visible: location.dayNumber === 1 // 첫째 날만 기본 표시
             });
 
+            // 기본 인포윈도우 내용 (간단하게)
+            const infoContent = `<div style="padding: 8px; text-align: center;">
+                               <h4 style="margin: 0;">${location.title}</h4>
+                             </div>`;
+
             const infoWindow = new google.maps.InfoWindow({
-                content: location.title
+                content: infoContent
             });
 
-            marker.addListener('click', () => {
+            marker.addListener('click', function() {
+                // 이전 인포윈도우 닫기
                 if (currentInfoWindow) {
                     currentInfoWindow.close();
                 }
+
+                // 사진 URL 가져오기 (placePhotos 객체에서)
+                const photoUrl = placePhotos[location.title];
+
+                // div 요소 생성
+                const contentDiv = document.createElement('div');
+                contentDiv.style.padding = '10px';
+                contentDiv.style.maxWidth = '250px';
+
+                const titleDiv = document.createElement('div');
+                titleDiv.textContent = location.title;
+                titleDiv.style.fontWeight = 'bold';
+                titleDiv.style.fontSize = '14px';
+                titleDiv.style.marginBottom = '8px';
+                titleDiv.style.textAlign = 'center';
+                contentDiv.appendChild(titleDiv);
+
+                if (photoUrl) {
+                    const img = document.createElement('img');
+                    img.src = photoUrl;
+                    img.alt = location.title;
+                    img.style.width = '100%';
+                    img.style.maxHeight = '150px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '4px';
+                    img.style.marginBottom = '8px';
+                    contentDiv.appendChild(img);
+                }
+
+                const infoDiv = document.createElement('div');
+                infoDiv.style.fontSize = '12px';
+
+
+                // 활동 유형 표시
+                const typeSpan = document.createElement('div');
+                let typeText = '';
+                switch(location.type) {
+                    case 'attraction': typeText = '관광지'; break;
+                    case 'hotel': typeText = '호텔'; break;
+                    case 'restaurant': typeText = '식사'; break;
+                    default: typeText = location.type;
+                }
+
+                contentDiv.appendChild(infoDiv);
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: contentDiv
+                });
+
                 infoWindow.open(map, marker);
                 currentInfoWindow = infoWindow;
             });
@@ -248,9 +326,13 @@
             type: 'GET',
             success: function(response) {
                 if (response.success) {
+                    placePhotos = response.photos;
+                    console.log("사진 데이터 로드 완료:", placePhotos);
+
+                    // 액티비티 항목에 이미지 추가 (기존 코드)
                     $('.activity-item').each(function() {
                         const placeName = $(this).data('place-name');
-                        const photoUrl = response.photos[placeName];
+                        const photoUrl = placePhotos[placeName];
 
                         if (photoUrl) {
                             const imgElement = $('<img>')
@@ -268,6 +350,45 @@
             }
         });
     });
+
+    function updateInfoWindows() {
+        locations.forEach((location, index) => {
+            const photoUrl = placePhotos[location.title];
+            let infoContent = `<div class="info-window-content">
+                              <div class="info-window-title">${location.title}</div>`;
+
+            // 이미지가 있으면 추가
+            if (photoUrl) {
+                infoContent += `<div class="info-window-image">
+                              <img src="${photoUrl}" alt="${location.title}" style="width: 150px; max-height: 100px; object-fit: cover;">
+                            </div>`;
+            }
+
+            // 추가 정보 표시
+            infoContent += `<div class="info-window-details">
+                           <p>방문 시간: ${location.time}</p>
+                           <p>소요 시간: ${location.duration}</p>
+                         </div>
+                       </div>`;
+
+            // 인포윈도우 내용 업데이트
+            if (markers[index]) {
+                const infoWindow = new google.maps.InfoWindow({
+                    content: infoContent
+                });
+
+                // 기존 이벤트 리스너 제거 후 새 이벤트 리스너 추가
+                google.maps.event.clearListeners(markers[index], 'click');
+                markers[index].addListener('click', () => {
+                    if (currentInfoWindow) {
+                        currentInfoWindow.close();
+                    }
+                    infoWindow.open(map, markers[index]);
+                    currentInfoWindow = infoWindow;
+                });
+            }
+        });
+    }
 </script>
 </body>
 </html>

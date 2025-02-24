@@ -3,19 +3,20 @@
 <html>
 <head>
     <title>인기 여행지</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .card-img-custom {
-            width: 100%;
-            height: 212px;
-            object-fit: cover;
-        }
-        .card-link {
-            color: inherit;
-            text-decoration: none;
-        }
-    </style>
+<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>--%>
+<%--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/recommended/travelCard.css"/>
+<%--    <style>--%>
+<%--        .card-img-custom {--%>
+<%--            width: 100%;--%>
+<%--            height: 212px;--%>
+<%--            object-fit: cover;--%>
+<%--        }--%>
+<%--        .card-link {--%>
+<%--            color: inherit;--%>
+<%--            text-decoration: none;--%>
+<%--        }--%>
+<%--    </style>--%>
     <script>
         // 클릭 시 DB에 기록 (recordClick)
         function recordClick(contentid, cat1, cat2, cat3, title) {
@@ -37,13 +38,12 @@
     </script>
 </head>
 <body>
-<div class="container mt-5 text-center">
-    <h2 class="fw-bold">인기 여행지</h2>
-    <p class="text-muted">
-        Navigo 사이트에서 최근 많이 클릭된 여행지를 보여드립니다.
-    </p>
-</div>
-<br/>
+<%--<div class="container mt-5 text-center">--%>
+<%--    <h2 class="fw-bold">인기 여행지</h2>--%>
+<%--    <p class="text-muted">--%>
+<%--        Navigo 사이트에서 최근 7일간 인기있었던 여행지를 추천해 드립니다.--%>
+<%--    </p>--%>
+<%--</div>--%>
 
 <%
     // Controller에서 model.addAttribute("popularTitleListResults", ...);
@@ -53,8 +53,14 @@
         popularTitleListResults = new ArrayList<>();
     }
 %>
-
+<div class="container section-header">
+    <h2 class="fw-bold">인기 여행지</h2>
+    <p class="text-muted">
+        Navigo 사이트에서 최근 7일간 인기있었던 여행지를 추천해 드립니다.
+    </p>
+</div>
 <div class="container">
+
     <!-- 모든 카드를 하나의 row 안에 배치 -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mb-5">
         <%
@@ -93,7 +99,8 @@
                 <div class="card h-100">
                     <img src="<%= firstimage %>" class="card-img-top card-img-custom" alt="<%= itemTitle %>">
                     <div class="card-body">
-                        <span class="badge bg-Green mb-2">인기</span>
+                        <!-- badge 색상을 info 클래스로 변경 -->
+                        <span class="badge bg-info mb-2">인기</span>
                         <h5 class="card-title"><%= itemTitle %></h5>
                         <h6 class="card-addr"><%= addr1 %></h6>
                     </div>

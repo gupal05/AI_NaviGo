@@ -9,67 +9,335 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Google Places API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=${apikey}&libraries=places"></script>
-    <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-
 
     <style>
+        :root {
+            --primary-color: #6e78ff;
+            --secondary-color: #a777e3;
+            --light-bg: #f8faff;
+            --dark-text: #333333;
+            --light-text: #ffffff;
+            --gray-text: #6e6e6e;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
         .container {
             max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            margin: 30px auto;
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            background-color: white;
         }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--dark-text);
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
         }
+
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-text);
         }
+
         .form-control {
             width: 100%;
-            padding: 8px;
+            padding: 12px 15px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
         }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(110, 120, 255, 0.2);
+            outline: none;
+            background-color: white;
+        }
+
         .form-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 25px;
         }
+
         .form-row > div {
             flex: 1;
         }
+
         .btn-submit {
-            background-color: #007bff;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 10px 20px;
+            padding: 14px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 50px;
             cursor: pointer;
             width: 100%;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(110, 120, 255, 0.3);
+            letter-spacing: 0.5px;
         }
+
         .btn-submit:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(110, 120, 255, 0.4);
+            background: linear-gradient(135deg, #5d67ff, #9566d3);
         }
+
         .error-message {
-            color: red;
+            color: #e74c3c;
             font-size: 14px;
             margin-top: 5px;
             display: none;
         }
-        .select2-container {
-            width: 100% !important;
+
+        /* Custom Styling for Date Input */
+        input[type="date"] {
+            appearance: none;
+            -webkit-appearance: none;
+            color: var(--dark-text);
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="date"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(110, 120, 255, 0.2);
+            outline: none;
+            background-color: white;
+        }
+
+        /* Placeholder text styling */
+        ::placeholder {
+            color: #aaa;
+            opacity: 1;
+        }
+
+        /* Top header spacing */
+        #top-header {
+            margin-bottom: 20px;
+        }
+
+        /* Google Places Autocomplete Styling */
+        .pac-container {
+            border-radius: 8px;
+            margin-top: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .pac-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .pac-item:hover {
+            background-color: rgba(110, 120, 255, 0.1);
+        }
+
+        .pac-item-query {
+            font-size: 15px;
+            color: var(--dark-text);
+        }
+
+        .pac-matched {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Form Group with Icon Adjustment */
+        .form-group.with-icon {
+            position: relative;
+        }
+
+        .form-group.with-icon .icon-prefix {
+            position: absolute;
+            left: 15px;
+            top: 47px; /* 조정된 위치: 라벨 아래, 인풋 중앙에 맞춤 */
+            color: var(--gray-text);
+            z-index: 1;
+        }
+
+        .form-group.with-icon .form-control.with-icon {
+            padding-left: 40px;
+        }
+
+        /* 테마 선택기 스타일 */
+        .custom-theme-selector {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            padding: 10px;
+        }
+
+        .theme-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .theme-tag {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .theme-tag:hover {
+            background-color: #f0f0f0;
+        }
+
+        .theme-tag.selected {
+            background-color: rgba(110, 120, 255, 0.1);
+            border-color: rgba(110, 120, 255, 0.3);
+            color: #6e78ff;
+            font-weight: 500;
+            padding-right: 35px;
+        }
+
+        .theme-tag.selected::after {
+            content: '×';
+            position: absolute;
+            right: 12px;
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        /* 로딩 오버레이 스타일 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+            border: 4px solid rgba(110, 120, 255, 0.2);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-spinner p {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 반응형 Styling */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .container {
+                padding: 20px;
+                margin: 20px 15px;
+            }
+
+            .form-control,
+            input[type="date"] {
+                padding: 10px 12px;
+            }
+
+            .btn-submit {
+                padding: 12px 15px;
+                font-size: 16px;
+            }
+
+            .theme-options {
+                gap: 8px;
+            }
+
+            .theme-tag {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -78,13 +346,14 @@
     <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
 </header>
 <div class="container">
-    <h2 style="text-align: center; margin-bottom: 30px;">해외 여행 일정 만들기</h2>
+    <h2>해외 여행 일정 만들기</h2>
 
     <form id="travelPlanForm">
         <!-- 여행지 검색 -->
-        <div class="form-group">
+        <div class="form-group with-icon">
             <label for="locationSearch">여행지 선택</label>
-            <input type="text" id="locationSearch" class="form-control" placeholder="도시를 검색하세요 (예: 도쿄, 파리)">
+            <i class="bi bi-geo-alt icon-prefix"></i>
+            <input type="text" id="locationSearch" class="form-control with-icon" placeholder="도시를 검색하세요 (예: 도쿄, 파리)">
             <div id="locationError" class="error-message">여행지를 선택해주세요.</div>
             <input type="hidden" id="destinationName">
             <input type="hidden" id="destinationLat">
@@ -93,7 +362,7 @@
 
         <!-- 여행 날짜 선택 -->
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group with-icon">
                 <label for="startDate">여행 시작일</label>
                 <input type="date" id="startDate" class="form-control" required>
                 <div id="dateError" class="error-message">시작일을 선택해주세요.</div>
@@ -111,17 +380,20 @@
         <!-- 여행 테마 -->
         <div class="form-group">
             <label>여행 테마 (최대 3개 선택)</label>
-            <select id="themes" multiple="multiple" class="form-control">
-                <option value="박물관">박물관</option>
-                <option value="미술관">미술관</option>
-                <option value="문화/역사">문화/역사</option>
-                <option value="관광명소">관광명소</option>
-                <option value="자연/아웃도어">자연/아웃도어</option>
-                <option value="음식/맛집">음식/맛집</option>
-                <option value="쇼핑">쇼핑</option>
-                <option value="휴양/힐링">휴양/힐링</option>
-            </select>
+            <div class="custom-theme-selector">
+                <div class="theme-options">
+                    <div class="theme-tag">박물관</div>
+                    <div class="theme-tag">미술관</div>
+                    <div class="theme-tag">문화/역사</div>
+                    <div class="theme-tag">관광명소</div>
+                    <div class="theme-tag">자연/아웃도어</div>
+                    <div class="theme-tag">음식/맛집</div>
+                    <div class="theme-tag">쇼핑</div>
+                    <div class="theme-tag">휴양/힐링</div>
+                </div>
+            </div>
             <div id="themeError" class="error-message">최소 1개의 테마를 선택해주세요.</div>
+            <input type="hidden" id="themes" name="themes">
         </div>
 
         <!-- 여행자 정보 -->
@@ -145,8 +417,18 @@
             </div>
         </div>
 
-        <button type="submit" class="btn-submit">일정 생성하기</button>
+        <button type="submit" class="btn-submit">
+            <i class="bi bi-calendar-plus me-2"></i>일정 생성하기
+        </button>
     </form>
+
+    <!-- 로딩 오버레이 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>일정을 생성 중입니다...</p>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -178,11 +460,57 @@
     }
 
     $(document).ready(function() {
-        // Select2 초기화
-        $('#themes').select2({
-            placeholder: "여행 테마를 선택하세요",
-            maximumSelectionLength: 3
+        // 테마 선택 관련 변수
+        const themeOptions = document.querySelectorAll('.theme-tag');
+        const themesInput = document.getElementById('themes');
+        const maxThemes = 3;
+        const selectedThemes = [];
+
+        // 테마 항목 클릭 이벤트
+        themeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const theme = this.textContent.trim();
+
+                // 이미 선택된 테마인 경우 제거
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                    removeSelectedTheme(theme);
+                    return;
+                }
+
+                // 최대 3개까지만 선택 가능
+                if (selectedThemes.length >= maxThemes) {
+                    return;
+                }
+
+                // 테마 선택
+                this.classList.add('selected');
+                addSelectedTheme(theme);
+            });
         });
+
+        // 선택된 테마 추가
+        function addSelectedTheme(theme) {
+            if (selectedThemes.includes(theme)) return;
+
+            selectedThemes.push(theme);
+            updateHiddenInput();
+            $('#themeError').hide();
+        }
+
+        // 선택된 테마 제거
+        function removeSelectedTheme(theme) {
+            const index = selectedThemes.indexOf(theme);
+            if (index !== -1) {
+                selectedThemes.splice(index, 1);
+                updateHiddenInput();
+            }
+        }
+
+        // 숨겨진 input 업데이트
+        function updateHiddenInput() {
+            themesInput.value = JSON.stringify(selectedThemes);
+        }
 
         // Google Places Autocomplete 초기화
         initPlacesAutocomplete();
@@ -223,6 +551,9 @@
         $('#travelPlanForm').on('submit', function(e) {
             e.preventDefault();
 
+            // 즉시 로딩 표시 (유효성 검사 전에)
+            document.getElementById('loading-overlay').classList.add('active');
+
             let isValid = true;
 
             // 여행지 검증
@@ -238,9 +569,15 @@
             }
 
             // 테마 검증
-            if ($('#themes').val().length === 0) {
+            if (selectedThemes.length === 0) {
                 $('#themeError').show();
                 isValid = false;
+            }
+
+            // 유효성 검사 실패 시 로딩 숨김
+            if (!isValid) {
+                document.getElementById('loading-overlay').classList.remove('active');
+                return;
             }
 
             if (isValid) {
@@ -262,7 +599,7 @@
                     },
                     startDate: $('#startDate').val(),
                     endDate: endDate.toISOString().split('T')[0],
-                    themes: $('#themes').val(),
+                    themes: selectedThemes,
                     travelers: {
                         count: parseInt($('#travellerCount').val()),
                         type: $('#travellerType').val()
@@ -279,10 +616,14 @@
                         if (response.success) {
                             window.location.href = '/foreign/plan/' + response.planId;
                         } else {
+                            // 에러 시 로딩 오버레이 숨김
+                            document.getElementById('loading-overlay').classList.remove('active');
                             alert('일정 생성에 실패했습니다: ' + response.message);
                         }
                     },
                     error: function(xhr, status, error) {
+                        // 에러 시 로딩 오버레이 숨김
+                        document.getElementById('loading-overlay').classList.remove('active');
                         alert('일정 생성 중 오류가 발생했습니다.');
                     }
                 });

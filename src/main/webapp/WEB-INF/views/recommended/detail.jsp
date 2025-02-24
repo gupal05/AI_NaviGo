@@ -2,32 +2,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
-<html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
     <title>여행지 상세 정보</title>
+    <!-- 공통 레이아웃 CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- 업데이트된 detail.css -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/recommended/detail.css"/>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .container { width: 80%; margin: 30px auto 50px auto; }
-        .title { font-size: 24px; font-weight: bold; margin-top: 20px; }
-        .image-container img { width: 100%; max-height: 400px; object-fit: cover; }
-        .details { margin-top: 20px; }
-        .info-box { padding: 10px; border: 1px solid #ddd; margin-top: 10px; }
-        .info-box h3 { margin-bottom: 10px; }
-        /* 지도 표시 영역 */
-        #map { width: 100%; height: 400px; margin-top: 20px; }
-    </style>
+    <!-- Font Awesome (아이콘 사용) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
-
 <!-- 공통 네비게이션 -->
 <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
 
 <div class="container">
-    <h1 class="title">여행지 상세 정보</h1>
-
     <%
         // 좌표 정보를 위한 변수 선언
         String mapX = "";
@@ -50,26 +44,27 @@
             }
     %>
 
-    <!-- 제목 -->
-    <h2><%= item.optString("title", "제목 없음").trim() %></h2>
-
-    <!-- 이미지 -->
-    <div class="image-container">
-        <%
-            String firstImage = item.optString("firstimage", "").trim();
-            if (!firstImage.isEmpty()) {
-        %>
-        <img src="<%= firstImage %>" alt="여행지 이미지" />
-        <%
-        } else {
-        %>
-        <img src="default.jpg" alt="기본 이미지" />
-        <%
-            }
-        %>
+    <!-- 제목 및 이미지 영역 -->
+    <div class="info-box">
+        <h2><%= item.optString("title", "제목 없음").trim() %></h2>
+        <hr class="custom-hr">
+        <div class="image-container">
+            <%
+                String firstImage = item.optString("firstimage", "").trim();
+                if (!firstImage.isEmpty()) {
+            %>
+            <img src="<%= firstImage %>" alt="여행지 이미지" />
+            <%
+            } else {
+            %>
+            <img src="${pageContext.request.contextPath}/images/default.jpg" alt="기본 이미지" />
+            <%
+                }
+            %>
+        </div>
     </div>
 
-    <!-- 기본 정보 -->
+    <!-- 기본 정보 영역 -->
     <div class="details">
         <%
             String address = item.optString("addr1", "").trim();
@@ -77,6 +72,7 @@
         %>
         <div class="info-box">
             <h3>주소</h3>
+            <hr class="custom-hr">
             <p><%= address %></p>
         </div>
         <%
@@ -87,24 +83,22 @@
         %>
         <div class="info-box">
             <h3>상세 설명</h3>
+            <hr class="custom-hr">
             <p><%= overview %></p>
         </div>
         <%
             }
 
-            // ✅ 홈페이지 URL 중복 제거 및 하나만 출력하도록 수정
             String homepage = item.optString("homepage", "").trim();
             if (!homepage.isEmpty()) {
-                // HTML 태그 제거하고 URL만 추출
                 String homepageUrl = homepage.replaceAll(".*?href=\"(.*?)\".*", "$1");
-
-                // 만약 URL이 http로 시작하지 않으면 원래 값 사용
                 if (!homepageUrl.startsWith("http")) {
                     homepageUrl = homepage;
                 }
         %>
         <div class="info-box">
             <h3>홈페이지</h3>
+            <hr class="custom-hr">
             <p>
                 <a href="<%= homepageUrl %>" target="_blank">
                     <%= homepageUrl %>
@@ -119,6 +113,7 @@
         %>
         <div class="info-box">
             <h3>전화번호</h3>
+            <hr class="custom-hr">
             <p><%= tel %></p>
         </div>
         <%
@@ -133,21 +128,17 @@
         <!-- 지도 영역 -->
         <div class="info-box">
             <h3>지도</h3>
+            <hr class="custom-hr">
             <div id="map"></div>
             <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1566bd1d6f68d1023bc9a09a03089078"></script>
             <script>
-                <%
-                   // 좌표 값이 있을 때만 지도 초기화
-                   if (!mapX.isEmpty() && !mapY.isEmpty() && !mlevel.isEmpty()) {
-                %>
+                <% if (!mapX.isEmpty() && !mapY.isEmpty() && !mlevel.isEmpty()) { %>
                 var container = document.getElementById('map');
                 var options = {
                     center: new kakao.maps.LatLng(<%= mapY %>, <%= mapX %>),
                     level: parseInt('<%= mlevel %>')
                 };
                 var map = new kakao.maps.Map(container, options);
-
-                // 마커 표시
                 var markerPosition = new kakao.maps.LatLng(<%= mapY %>, <%= mapX %>);
                 var marker = new kakao.maps.Marker({ position: markerPosition });
                 marker.setMap(map);
@@ -157,37 +148,57 @@
 
         <hr style="margin-top:40px; margin-bottom:40px;">
 
-        <!-- 타입별 추가 상세정보 include -->
-        <c:choose>
-            <c:when test="${contenttypeid == '12'}">
-                <jsp:include page="/WEB-INF/views/recommended/detail_type12.jsp" />
-            </c:when>
-            <c:when test="${contenttypeid == '14'}">
-                <jsp:include page="/WEB-INF/views/recommended/detail_type14.jsp" />
-            </c:when>
-            <c:when test="${contenttypeid == '15'}">
-                <jsp:include page="/WEB-INF/views/recommended/detail_type15.jsp" />
-            </c:when>
-            <c:when test="${contenttypeid == '25'}">
-                <jsp:include page="/WEB-INF/views/recommended/detail_type25.jsp" />
-            </c:when>
-            <c:when test="${contenttypeid == '28'}">
-                <jsp:include page="/WEB-INF/views/recommended/detail_type28.jsp" />
-            </c:when>
-            <c:when test="${contenttypeid == '39'}">
-                <jsp:include page="/WEB-INF/views/recommended/detail_type39.jsp" />
-            </c:when>
-            <c:otherwise>
-                <div class="info-box">
-                    <p>추가 상세 정보가 없습니다.</p>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </div>
+        <!-- 타입별 추가 상세정보 영역 (초기에는 숨김) -->
+        <div id="moreDetail" style="display: none">
+            <c:choose>
+                <c:when test="${contenttypeid == '12'}">
+                    <jsp:include page="/WEB-INF/views/recommended/detail_type12.jsp" />
+                </c:when>
+                <c:when test="${contenttypeid == '14'}">
+                    <jsp:include page="/WEB-INF/views/recommended/detail_type14.jsp" />
+                </c:when>
+                <c:when test="${contenttypeid == '15'}">
+                    <jsp:include page="/WEB-INF/views/recommended/detail_type15.jsp" />
+                </c:when>
+                <c:when test="${contenttypeid == '25'}">
+                    <jsp:include page="/WEB-INF/views/recommended/detail_type25.jsp" />
+                </c:when>
+                <c:when test="${contenttypeid == '28'}">
+                    <jsp:include page="/WEB-INF/views/recommended/detail_type28.jsp" />
+                </c:when>
+                <c:when test="${contenttypeid == '39'}">
+                    <jsp:include page="/WEB-INF/views/recommended/detail_type39.jsp" />
+                </c:when>
+                <c:otherwise>
+                    <div class="info-box">
+                        <p>추가 상세 정보가 없습니다.</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
 
-    <!-- 공통 푸터 -->
-    <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- 토글 버튼 (Font Awesome 아이콘 포함) -->
+        <button id="toggleDetail" class="btn btn-secondary">
+            <i class="fas fa-angle-down"></i> 추가 상세 정보 보기
+        </button>
+        <script>
+            $(document).ready(function (){
+                $("#toggleDetail").click(function (){
+                    $("#moreDetail").slideToggle();
+                    var btnText = $(this).text().trim();
+                    if (btnText === "추가 상세 정보 보기") {
+                        $(this).html('<i class="fas fa-angle-up"></i> 숨기기');
+                    } else {
+                        $(this).html('<i class="fas fa-angle-down"></i> 추가 상세 정보 보기');
+                    }
+                });
+            });
+        </script>
+
+        <!-- 공통 푸터 -->
+        <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
 </div>
 </body>
 </html>
