@@ -4,6 +4,8 @@ import com.nevigo.ai_navigo.dto.ForeignPlanDTO;
 import com.nevigo.ai_navigo.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +96,29 @@ public class mypageController {
         }
 
         return mav;
+    }
+
+    @PostMapping("/updatePreference")
+    public ResponseEntity<String> updatePreference(@RequestBody Map<String, String> requestData) {
+        // 세션에서 회원 정보 가져오기
+        MemberDTO memberInfo = (MemberDTO) session.getAttribute("memberInfo");
+        String memberId = memberInfo.getMemberId();
+        String preference = requestData.get("selectedCategory");
+
+        if (memberId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        if (preference == null || preference.isEmpty()) {
+            return ResponseEntity.badRequest().body("선택한 카테고리가 없습니다.");
+        }
+
+        try {
+            preUpdateService_Impl.saveOrUpdatePreference(memberId, preference);
+            return ResponseEntity.ok("성공적으로 저장되었습니다!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 중 오류가 발생했습니다.");
+        }
     }
 
     @PostMapping("/changePw")

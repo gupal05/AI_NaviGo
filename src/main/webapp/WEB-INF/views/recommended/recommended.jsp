@@ -95,5 +95,7 @@
 <script>
     const contextPath = "${pageContext.request.contextPath}";
 </script>
+<!-- chatbot 포함 -->
+<jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 </body>
 </html>

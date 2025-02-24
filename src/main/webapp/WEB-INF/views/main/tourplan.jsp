@@ -159,6 +159,7 @@
 
 
 </script>
-
+<!-- chatbot 포함 -->
+<jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 </body>
 </html>

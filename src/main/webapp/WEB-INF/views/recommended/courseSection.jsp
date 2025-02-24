@@ -30,5 +30,6 @@
       </a>
     </div>
   </c:forEach>
-
+  <!-- chatbot 포함 -->
+  <jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 </div>
