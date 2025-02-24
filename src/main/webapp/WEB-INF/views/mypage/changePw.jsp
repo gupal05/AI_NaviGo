@@ -265,6 +265,9 @@
         <form action="/auth/findPw" method="get" id="fail-form"></form>
     </div>
 </div>
+
+<!-- chatbot 포함 -->
+<jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 <%--footer--%>
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 

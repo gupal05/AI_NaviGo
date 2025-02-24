@@ -245,53 +245,101 @@
         }
 
         .plan-card {
-            padding: 24px;
-            background-color: #f6f8ff;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            transition: transform 0.2s ease;
+            position: relative;
+            background: linear-gradient(145deg, #ffffff, #f6f8ff);
+            border-radius: 16px;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), #9f7aea);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .plan-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(84, 104, 255, 0.12);
+            box-shadow: 0 12px 24px rgba(84, 104, 255, 0.15);
         }
 
-        .plan-id {
-            color: #6b7280;
-            font-size: 14px;
-            margin-bottom: 8px;
+        .plan-card:hover::before {
+            opacity: 1;
         }
 
-        .destination {
+        .plan-card__content {
+            padding: 28px;
+        }
+
+        .plan-card__destination {
             color: #2c3256;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 16px;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .view-link {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: rgba(84, 104, 255, 0.1);
-            color: #5468ff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-        }
-
-        .view-link:hover {
-            background-color: rgba(84, 104, 255, 0.15);
-            color: #4152e3;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 48px 24px;
+        .plan-card__date {
             color: #6b7280;
-            font-size: 18px;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 20px;
         }
 
+        .plan-card__date-range {
+            display: inline-block;
+        }
+
+        .plan-card__actions {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .plan-card__view-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: linear-gradient(to right, var(--primary-color), #6977ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(84, 104, 255, 0.2);
+        }
+
+        .plan-card__view-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(84, 104, 255, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .plans-container {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .plan-card__content {
+                padding: 20px;
+            }
+
+            .plan-card__destination {
+                font-size: 20px;
+            }
+        }
     </style>
     <title>나의 여행</title>
 </head>
@@ -310,7 +358,6 @@
         <div class="resetpw-header">
             <h1 class="resetpw-title">${member.memberId}님의 여행 일정 🗺</h1>
         </div>
-        </br>
         <!-- 여행일정 확인 -->
 <%--        <form action="${pageContext.request.contextPath}/mypage/history" method="post">--%>
 <%--            <p>Saved Plans: ${savedPlans}</p>--%>
@@ -320,9 +367,15 @@
                     <ul class="plans-list">
                         <c:forEach var="plan" items="${savedPlans}">
                             <li class="plan-card">
-                                <div class="plan-id">Plan ID: ${plan.planId}<br></div>
-                                <div class="destination">Destination: ${plan.destination}<br></div>
-                                <a href="/foreign/plan/${plan.planId}" class="view-link">${plan.destination} 일정 보기</a>
+                                <div class="plan-card__content">
+                                    <h3 class="plan-card__destination">${plan.destination}</h3>
+                                    <div class="plan-card__date">
+                                        <span class="plan-card__date-range">${plan.startDate} ~ ${plan.endDate}</span>
+                                    </div>
+                                    <div class="plan-card__actions">
+                                        <a href="/foreign/plan/${plan.planId}" class="plan-card__view-link">상세 일정</a>
+                                    </div>
+                                </div>
                             </li>
                         </c:forEach>
                     </ul>
@@ -337,6 +390,8 @@
         </form>
     </div>
 </div>
+<!-- chatbot 포함 -->
+<jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 <%--footer--%>
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 <script>

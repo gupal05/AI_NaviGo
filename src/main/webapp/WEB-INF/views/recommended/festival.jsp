@@ -136,5 +136,7 @@
         }, 200); // 200ms 디바운스
     });
 </script>
+<!-- chatbot 포함 -->
+<jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 </body>
 </html>
