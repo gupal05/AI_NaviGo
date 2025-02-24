@@ -210,10 +210,18 @@
         }
 
         .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%; /* 부모 요소 바로 아래에 위치 */
+            left: 0;
+            min-width: 12rem;
             border: none;
-            background-color: rgba(255, 255, 255, 0.05);
-            box-shadow: none;
-            padding: 0.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 0.8rem 0.5rem;
+            z-index: 1000;
+            margin-top: 0; /* 기존 margin-top 제거 */
         }
 
         .dropdown-item {
@@ -237,20 +245,26 @@
 <script>
     $(document).ready(function() {
         // 추천 여행지 메뉴 호버 효과
-        $("#recommendDropdown").hover(
-            function () {
-                // 마우스가 올라갔을 때
-                $(this).find(".dropdown-menu").stop(true, true).slideDown(200);
-                $(this).find(".nav-link").addClass("active");
-            },
-            function () {
-                // 마우스가 벗어났을 때
-                $(this).find(".dropdown-menu").stop(true, true).slideUp(200);
-                if (!$(this).find(".nav-link").hasClass("current")) {
-                    $(this).find(".nav-link").removeClass("active");
+        $(document).ready(function() {
+            let hideTimer; // slideUp 지연용 타이머 변수
+
+            $("#recommendDropdown").hover(
+                function () {
+                    clearTimeout(hideTimer); // 마우스가 들어오면 이전 타이머 클리어
+                    $(this).find(".dropdown-menu").stop(true, true).slideDown(200);
+                    $(this).find(".nav-link").addClass("active");
+                },
+                function () {
+                    // 마우스가 벗어났을 때 100ms 후 slideUp 실행
+                    hideTimer = setTimeout(() => {
+                        $(this).find(".dropdown-menu").stop(true, true).slideUp(200);
+                        if (!$(this).find(".nav-link").hasClass("current")) {
+                            $(this).find(".nav-link").removeClass("active");
+                        }
+                    }, 100);
                 }
-            }
-        );
+            );
+        });
 
         // 현재 활성화된 메뉴 표시
         const currentPath = window.location.pathname;
