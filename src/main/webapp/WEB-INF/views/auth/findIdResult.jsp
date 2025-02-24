@@ -190,7 +190,8 @@
     </c:choose>
   </div>
 </div>
-
+<!-- chatbot 포함 -->
+<jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 </body>
 </html>

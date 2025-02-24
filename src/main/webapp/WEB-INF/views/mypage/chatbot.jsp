@@ -17,12 +17,26 @@
 <head>
   <title>Chatbot</title>
   <style>
+    :root {
+      --primary-color: #5468ff;
+      --primary-hover: #4152e3;
+      --secondary-color: #f6f8ff;
+      --text-primary: #2c3256;
+      --text-secondary: #6b7280;
+      --border-color: #e2e8f0;
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --white: #ffffff;
+      --box-shadow: 0 10px 30px rgba(84, 104, 255, 0.08);
+      --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
     .chatbot-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background-color: #1e70c9;
-      color: white;
+      background-color: var(--primary-color);
+      color: var(--white);
       border: none;
       width: 60px;
       height: 60px;
@@ -33,6 +47,11 @@
       font-size: 24px;
       cursor: pointer;
       z-index: 1000;
+      box-shadow: var(--box-shadow);
+    }
+
+    .chatbot-btn:hover {
+      background-color: var(--primary-hover);
     }
 
     .chatbot-modal {
@@ -42,10 +61,10 @@
       right: 20px;
       width: 350px;
       height: 500px;
-      background-color: white;
-      border: 1px solid #ccc;
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
       border-radius: 10px;
-      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--box-shadow);
       z-index: 999;
       flex-direction: column;
       overflow: hidden;
@@ -64,39 +83,35 @@
       gap: 10px;
     }
 
-    /* 메시지 컨테이너 스타일 수정 */
     .message {
       display: flex;
       flex-direction: column;
       gap: 16px;
-      flex-grow: 1; /* 부모 컨테이너 내에서 가변 크기 */
+      flex-grow: 1;
     }
 
-    /* 메시지 공통 스타일 */
     .message-bubble {
       max-width: 70%;
       padding: 12px 16px;
       border-radius: 20px;
       word-wrap: break-word;
-      line-height: 1.4;  /* 줄간격 추가 */
-      margin: 4px 4px;  /* 상하 여백 추가 */
+      line-height: 1.4;
+      margin: 4px 4px;
     }
 
-    /* 사용자 메시지 스타일 */
     .user-message {
       align-self: flex-end;
-      background-color: #1e70c9;
-      color: white;
+      background-color: var(--primary-color);
+      color: var(--white);
       border-radius: 10px;
       padding: 5px 6px;
       font-size: 14px;
     }
 
-    /* AI 메시지 스타일 */
     .ai-message {
       align-self: flex-start;
-      background-color: #f1f1f1;
-      color: black;
+      background-color: var(--secondary-color);
+      color: var(--text-primary);
       border-radius: 10px;
       padding: 5px 6px;
       font-size: 14px;
@@ -106,9 +121,9 @@
       position: sticky;
       bottom: 0;
       width: 100%;
-      background-color: #f8f9fa;
+      background-color: var(--secondary-color);
       padding: 15px;
-      border-top: 1px solid #e8f1fa;
+      border-top: 1px solid var(--border-color);
       box-sizing: border-box;
       display: flex;
       gap: 10px;
@@ -117,30 +132,33 @@
     .modal-input input {
       flex: 1;
       padding: 10px;
-      border: 1px solid #e8f1fa;
+      border: 1px solid var(--border-color);
       border-radius: 20px;
       font-size: 14px;
       outline: none;
+      font-family: var(--font-family);
     }
 
     .modal-input input:focus {
-      border-color: #1e70c9;
+      border-color: var(--primary-color);
     }
 
     .modal-input button {
-      background-color: #1e70c9;
-      color: white;
+      background-color: var(--primary-color);
+      color: var(--white);
       border: none;
       padding: 8px 20px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 14px;
       transition: background-color 0.2s;
+      font-family: var(--font-family);
     }
 
     .modal-input button:hover {
-      background-color: #1e70c9;
+      background-color: var(--primary-hover);
     }
+
   </style>
 </head>
 </html>
