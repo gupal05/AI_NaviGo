@@ -25,7 +25,7 @@ public class ForeignPlanServiceImpl implements IF_ForeignPlanService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${python.server.url}")
+    @Value("${foreign.server.url}")
     private String pythonServerUrl;
 
     @Transactional
