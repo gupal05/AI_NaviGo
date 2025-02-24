@@ -39,7 +39,7 @@ public class SignUpService implements IF_SignUpService {
 
             return signUpDao.insMember(member);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return 1;
         }
     }
 

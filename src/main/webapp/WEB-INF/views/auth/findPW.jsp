@@ -5,26 +5,207 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>아이디 찾기 - AI NaviGo</title>
+  <title>비밀번호 찾기 - AI NaviGo</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/layout/style.css"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main/main.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
-    .container {
-      max-width: 500px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    :root {
+      --primary-color: #5468ff;
+      --primary-hover: #4152e3;
+      --secondary-color: #f6f8ff;
+      --text-primary: #2c3256;
+      --text-secondary: #6b7280;
+      --border-color: #e2e8f0;
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --white: #ffffff;
+      --box-shadow: 0 10px 30px rgba(84, 104, 255, 0.08);
+      --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    .form-label {
-      font-weight: bold;
+
+    body {
+      background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+      font-family: var(--font-family);
+      color: var(--text-primary);
+      min-height: 100vh;
     }
+
+    .page-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 180px);
+      padding: 40px 20px;
+    }
+
+    .findpw-container {
+      width: 100%;
+      max-width: 520px;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--box-shadow);
+      position: relative;
+      overflow: hidden;
+      padding: 48px 40px;
+      margin: 0 auto;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .findpw-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary-color), #9f7aea);
+    }
+
+    .findpw-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .findpw-title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(to right, var(--primary-color), #9f7aea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .findpw-subtitle {
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 400;
+    }
+
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .form-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-control {
+      height: 54px;
+      background-color: #f9fafb;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0 20px;
+      font-size: 15px;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .form-control:focus {
+      background-color: var(--white);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(84, 104, 255, 0.1);
+      outline: none;
+    }
+
+    .form-control::placeholder {
+      color: #94a3b8;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      height: 54px;
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 12px;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      padding: 0 24px;
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: var(--primary-color);
+      border: none;
+    }
+
+    .btn-secondary:hover {
+      background-color: #ebeffe;
+      color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary-color), #6977ff);
+      border: none;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(to right, #4a59e5, #5c6aff);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(84, 104, 255, 0.25);
+    }
+
+    #verificationGroup {
+      display: none;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-control:disabled, .form-control[readonly] {
+      background-color: #f1f5f9;
+      color: #64748b;
+      cursor: not-allowed;
+    }
+
+    .btn:disabled {
+      background: #e2e8f0;
+      color: #94a3b8;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    @media (max-width: 576px) {
+      .findpw-container {
+        padding: 32px 24px;
+        border-radius: 12px;
+      }
+
+      .form-control, .btn {
+        height: 50px;
+      }
+
+      .findpw-title {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
@@ -33,35 +214,41 @@
   <jsp:include page="/WEB-INF/views/layout/nav.jsp" />
 </header>
 
-<div class="container">
-  <h2 class="text-center">비밀번호 찾기</h2>
-  <form action="/auth/findPwResult" method="post" id="find-pw-form">
-    <div class="form-group">
-      <label for="member_id" class="form-label">아이디</label>
-      <input type="text" class="form-control" id="member_id" name="memberId" required>
+<div class="page-wrapper">
+  <div class="findpw-container">
+    <div class="findpw-header">
+      <h1 class="findpw-title">비밀번호 찾기</h1>
+      <p class="findpw-subtitle">가입하신 아이디와 이메일로 비밀번호를 찾을 수 있습니다</p>
     </div>
 
-    <!-- 이메일 입력 및 인증 -->
-    <div class="form-group">
-      <label for="member_email" class="form-label">이메일</label>
-      <div class="input-group">
-        <input type="email" class="form-control" id="member_email" name="memberEmail" required>
-        <button type="button" class="btn btn-secondary" id="sendCodeBtn">인증번호 전송</button>
+    <form action="/auth/findPwResult" method="post" id="find-pw-form">
+      <div class="form-group">
+        <label for="member_id" class="form-label">아이디</label>
+        <input type="text" class="form-control" id="member_id" name="memberId" placeholder="아이디를 입력하세요" required>
       </div>
-    </div>
-    <div class="form-group" id="verificationGroup" style="display: none;">
-      <label for="verification_code" class="form-label">인증번호</label>
-      <div class="input-group">
-        <input type="text" class="form-control" id="verification_code" name="verificationCode">
-        <button type="button" class="btn btn-primary" id="verifyCodeBtn">확인</button>
-      </div>
-    </div>
 
-    <div class="d-flex justify-content-between mt-4">
-      <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
-      <button type="button" class="btn btn-primary" id="find-pw-result-btn">비밀번호 찾기</button>
-    </div>
-  </form>
+      <div class="form-group">
+        <label for="member_email" class="form-label">이메일</label>
+        <div class="input-group">
+          <input type="email" class="form-control" id="member_email" name="memberEmail" placeholder="이메일을 입력하세요" required>
+          <button type="button" class="btn btn-secondary" id="sendCodeBtn">인증번호 전송</button>
+        </div>
+      </div>
+
+      <div class="form-group" id="verificationGroup">
+        <label for="verification_code" class="form-label">인증번호</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="verification_code" name="verificationCode" placeholder="인증번호를 입력하세요">
+          <button type="button" class="btn btn-secondary" id="verifyCodeBtn">확인</button>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary" onclick="window.history.back()">취소</button>
+        <button type="button" class="btn btn-primary" id="find-pw-result-btn">비밀번호 찾기</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
