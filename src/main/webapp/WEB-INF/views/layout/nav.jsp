@@ -36,12 +36,11 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/tourplan">
+                    <a class="nav-link" href="/generate-plan">
                         <i class="bi bi-map"></i> 국내 여행지 생성
                     </a>
-                <!-- 해외 여행지 생성 -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="foreignCreate">
+                    <a class="nav-link" href="/foreign/create">
                         <i class="bi bi-globe"></i> 해외 여행지 생성
                     </a>
                 </li>
@@ -59,7 +58,7 @@
                 </form>
                 <% } else { %>
                 <%-- session에 memberInfo가 없으면 Sign In 버튼만 표시 --%>
-                <form action="/auth/login" method="get" class="d-inline-block" id="loginForm">
+                <form action="/auth/login" method="get" class="d-inline-block">
                     <button class="btn login-btn" type="submit">Sign In</button>
                 </form>
                 <% } %>
@@ -67,9 +66,6 @@
         </div>
     </div>
 </nav>
-
-<!-- 로그인 상태 확인을 위한 hidden input -->
-<input type="hidden" id="isLoggedIn" value="<%= session.getAttribute("memberInfo") != null %>" />
 
 <!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -214,18 +210,10 @@
         }
 
         .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%; /* 부모 요소 바로 아래에 위치 */
-            left: 0;
-            min-width: 12rem;
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 0.8rem 0.5rem;
-            z-index: 1000;
-            margin-top: 0; /* 기존 margin-top 제거 */
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+            padding: 0.5rem;
         }
 
         .dropdown-item {
@@ -247,47 +235,22 @@
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const foreignCreateBtn = document.getElementById("foreignCreate");
-        const isLoggedIn = document.getElementById("isLoggedIn").value === "true";
-        const loginForm = document.getElementById("loginForm");
-
-        foreignCreateBtn.addEventListener("click", function(event) {
-            event.preventDefault(); // 기본 링크 동작 막기
-
-            if (isLoggedIn) {
-                // 로그인 상태면 원래 링크로 이동
-                window.location.href = "/foreign/create";
-            } else {
-                // 로그인 안 되어 있으면 경고창 띄운 후 로그인 폼 제출
-                alert("로그인 후 이용할 수 있습니다.");
-                loginForm.submit();
-            }
-        });
-    });
-
     $(document).ready(function() {
         // 추천 여행지 메뉴 호버 효과
-        $(document).ready(function() {
-            let hideTimer; // slideUp 지연용 타이머 변수
-
-            $("#recommendDropdown").hover(
-                function () {
-                    clearTimeout(hideTimer); // 마우스가 들어오면 이전 타이머 클리어
-                    $(this).find(".dropdown-menu").stop(true, true).slideDown(200);
-                    $(this).find(".nav-link").addClass("active");
-                },
-                function () {
-                    // 마우스가 벗어났을 때 100ms 후 slideUp 실행
-                    hideTimer = setTimeout(() => {
-                        $(this).find(".dropdown-menu").stop(true, true).slideUp(200);
-                        if (!$(this).find(".nav-link").hasClass("current")) {
-                            $(this).find(".nav-link").removeClass("active");
-                        }
-                    }, 100);
+        $("#recommendDropdown").hover(
+            function () {
+                // 마우스가 올라갔을 때
+                $(this).find(".dropdown-menu").stop(true, true).slideDown(200);
+                $(this).find(".nav-link").addClass("active");
+            },
+            function () {
+                // 마우스가 벗어났을 때
+                $(this).find(".dropdown-menu").stop(true, true).slideUp(200);
+                if (!$(this).find(".nav-link").hasClass("current")) {
+                    $(this).find(".nav-link").removeClass("active");
                 }
-            );
-        });
+            }
+        );
 
         // 현재 활성화된 메뉴 표시
         const currentPath = window.location.pathname;
