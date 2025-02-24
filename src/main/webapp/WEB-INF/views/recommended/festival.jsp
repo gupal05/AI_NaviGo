@@ -4,6 +4,7 @@
 <head>
     <title>추천 문화축제</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/recommended/travelCard.css"/>
     <script>
         // recordClick 함수는 그대로 유지
         function recordClick(contentid, cat1, cat2, cat3, title) {
@@ -34,8 +35,9 @@
         전국의 문화/축제 행사를 추천해 드립니다.
     </p>
 </div>
-<br>
+
 <div class="container" id="festivalContainer">
+
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
         <c:forEach var="festival" items="${festivals}">
             <c:set var="detailUrl" value="${pageContext.request.contextPath}/main/recommend/detail?contentid=${festival.contentid}&contenttypeid=${festival.contenttypeid}&title=${festival.title}" />
@@ -51,7 +53,7 @@
                             <span class="badge bg-danger mb-2">행사 및 축제</span>
                             <h5 class="card-title">${festival.title}</h5>
                             <p class="card-text text-muted">
-                                    ${festival.eventstartdate} ~ ${festival.eventenddate}
+                                   기간: ${festival.eventstartdate} ~ ${festival.eventenddate}
                             </p>
                             <p class="card-text"><small class="text-muted">주소: ${festival.addr1}</small></p>
                             <p class="card-text"><small class="text-muted">전화번호: ${festival.tel}</small></p>
