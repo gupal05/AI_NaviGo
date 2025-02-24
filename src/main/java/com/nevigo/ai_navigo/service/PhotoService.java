@@ -19,7 +19,7 @@ public class PhotoService {
     private final IF_ForeignPlanService foreignPlanService;
 
     // 파이썬 서버의 URL (application.properties에서 설정)
-    @Value("${python.server.url}")
+    @Value("${foreign.server.url}")
     private String pythonServerUrl;
 
     public Map<String, String> fetchPlacePhotos(List<String> places) {
