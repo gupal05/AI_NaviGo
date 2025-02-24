@@ -25,27 +25,26 @@
     <a href="/tourplan" class="btn-cta">국내 여행지 생성!</a>
 </section>
 
+<%--<!-- AI 기반 여행 일정 생성 서비스 설명 -->--%>
+<%--<section class="feature-description">--%>
+<%--    <h2>AI 기반 여행 일정 생성 서비스</h2>--%>
+<%--    <p>--%>
+<%--        이 웹사이트는 사용자가 여행 날짜, 방문하고 싶은 지역, 인원수 등 다양한 정보를 입력하면, <br>--%>
+<%--        최신 AI 기술을 활용하여 최적의 여행 일정을 자동으로 생성해 드립니다. <br>--%>
+<%--        생성된 일정에는 세부 코스, 추천 관광지, 지도 정보 등이 포함되어 있어 <br>--%>
+<%--        사용자가 편리하게 여행 계획을 수립할 수 있습니다.--%>
+<%--    </p>--%>
+<%--</section>--%>
+
 <!-- 일정 섹션 -->
 <section class="sample-itinerary">
-    <div class="itinerary-info">
-        <h2>4 Days trip in Melbourne, Victoria, Australia</h2>
-        <p>1000 - 2500 USD | Sightseeing | Shopping | Food Exploration</p>
-        <p>
-            Melbourne is a vibrant city located in the state of Victoria, Australia.
-            It is known for its cosmopolitan atmosphere, thriving arts scene, and
-            diverse culinary offerings...
-        </p>
-    </div>
-    <div class="itinerary-map">
-        지도/이미지 자리
-    </div>
+    <img src="${pageContext.request.contextPath}/img/main_image1.jpg" alt="로고이미지" />
 </section>
+
+
 
 <!-- 푸터 포함 -->
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
-
-<!-- javascript -->
-
 
 <!-- Bootstrap JS (Popper.js 포함) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
