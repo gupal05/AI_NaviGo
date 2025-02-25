@@ -79,6 +79,7 @@
 <script>
     let map;
     let markers = [];
+    let routePaths = [];
     let currentInfoWindow = null;
     let locations = [];
     let placePhotos = {};
@@ -288,6 +289,28 @@
             bounds.extend(marker.getPosition());
         });
 
+        const uniqueDays = [...new Set(locations.map(loc => loc.dayNumber))].sort((a, b) => a - b);
+
+        uniqueDays.forEach(day => {
+            const dayLocations = locations.filter(loc => loc.dayNumber === day);
+
+            if (dayLocations.length > 1) {
+                const routePath = new google.maps.Polyline({
+                    path: dayLocations.map(loc => ({
+                        lat: loc.lat,
+                        lng: loc.lng
+                    })),
+                    geodesic: true,
+                    strokeColor: markerColors[day - 1],  // 마커 색상과 동일한 라인 색상
+                    strokeOpacity: 0.8,
+                    strokeWeight: 3,
+                    visible: day === 1  // 첫째 날만 기본적으로 보이게
+                });
+                routePath.setMap(map);
+                routePaths.push({ day, path: routePath });
+            }
+        });
+
         if (markers.length > 0) {
             map.fitBounds(bounds);
         }
@@ -388,7 +411,27 @@
                 });
             }
         });
+
     }
+
+    function updateMarkerVisibility() {
+        const selectedDays = Array.from(document.querySelectorAll('.day-checkbox:checked'))
+            .map(cb => parseInt(cb.value));
+
+        markers.forEach((marker, index) => {
+            const dayNumber = locations[index].dayNumber;
+            marker.setVisible(selectedDays.includes(dayNumber));
+        });
+
+        // 라인 가시성도 업데이트
+        routePaths.forEach(routePath => {
+            routePath.path.setVisible(selectedDays.includes(routePath.day));
+        });
+    }
+
+
+
+
 </script>
 <!-- chatbot 포함 -->
 <jsp:include page="/WEB-INF/views/mypage/chatbot.jsp" />
