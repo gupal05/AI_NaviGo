@@ -121,9 +121,31 @@ body {
     right: 10px;
     z-index: 10;
     color: #fff !important;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, #3d85e6, #9668d3);
     border: none;
     border-radius: 8px;
     padding: 8px 12px;
     cursor: pointer;
 }
+
+.recommend-again:hover {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 10;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #3d85e6, #9668d3);
+    color: var(--light-text);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+/*.btn-cta:hover {*/
+/*    transform: translateY(-2px);*/
+/*    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);*/
+/*    background: linear-gradient(135deg, #3d85e6, #9668d3);*/
+/*    color: var(--light-text);*/
+/*!*}*!*/
