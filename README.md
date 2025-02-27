@@ -218,4 +218,4 @@ Q&A게시판 - 4개</br>
 <hr>
 <h3>📣 5. 해당 과정을 통하여 프로젝트를 진행하고, 최종적으로 아래의 PPT를 제작 및 발표를 진행하였습니다. </br>
          (ppt링크 하단 첨부)</h3>
-<h5>https://www.canva.com/design/DAGZVvxtMYA/wBKJnaE-GkslEEP4kNPlJA/edit?utm_content=DAGZVvxtMYA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton</h5>
+<h5>https://drive.google.com/file/d/16Z_0DRBO0tn0gSanrAPOX6Zo_OGnP6yg/view?usp=drive_link</h5>
