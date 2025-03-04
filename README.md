@@ -213,4 +213,4 @@ AI를 활용한 데이터 분석으로 여행자의 취향에 맞는 최적의 �
 <h3>👉👉<a href="https://youtu.be/Ni4PvNojgzM?si=V1L4rKI48ewJWmZx">NaviGo 기능 종합 버전 영상 보러가기!!</a></h3>
 <h3>📣 5. 해당 과정을 통하여 프로젝트를 진행하고, 최종적으로 아래의 PPT를 제작 및 발표를 진행하였습니다. </br>
          (ppt링크 하단 첨부)</h3>
-<h5>https://drive.google.com/file/d/16Z_0DRBO0tn0gSanrAPOX6Zo_OGnP6yg/view?usp=drive_link</h5>
+<h5>https://drive.google.com/file/d/1fRMcnzHgylpNGke1Le2ngSbEtYHtptqb/view?usp=sharing</h5>
