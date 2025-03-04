@@ -64,19 +64,19 @@ AI를 활용한 데이터 분석으로 여행자의 취향에 맞는 최적의 �
 <thead>
 
 <tr>
+<th align="center"><img src="https://github.com/user-attachments/assets/9ca11ff9-bc31-40f8-aadf-218d30faef66" alt="영호"></th>
 <th align="center"><img src="https://github.com/user-attachments/assets/9746b334-38e3-48dc-b845-92bb2e712536" alt="예빈"></th>
 <th align="center"><img src="https://github.com/user-attachments/assets/5ce4153e-b2d9-4471-8716-d11b9f9d1ef7" alt="세진"></th>
 <th align="center"><img src="https://github.com/user-attachments/assets/e0d4287e-5e7a-4a30-abf7-ed4e086749d3" alt="시온"></th>
-<th align="center"><img src="https://github.com/user-attachments/assets/9ca11ff9-bc31-40f8-aadf-218d30faef66" alt="영호"></th>
 <th align="center"><img src="https://github.com/user-attachments/assets/2fd436db-2c51-4d13-b458-b011aa7e0c7a" alt="찬"></th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td align="center"><a href="https://github.com/gupal05">황영호</a></td>
 <td align="center"><a href="https://github.com/PlaidMoon99">문예빈</a></td>
 <td align="center"><a href="https://github.com/WRL-SPR">김세진</a></td>
 <td align="center"><a href="https://github.com/KIMMZN">김시온</a></td>
-<td align="center"><a href="https://github.com/gupal05">황영호</a></td>
 <td align="center"><a href="https://github.com/LC-coder33">이 찬</a></td>
 </tr>
 
