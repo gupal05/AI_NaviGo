@@ -87,46 +87,58 @@ AI를 활용한 데이터 분석으로 여행자의 취향에 맞는 최적의 �
 
 <hr>
 <h3>🛠️ 2. 주요 기능 및 설계</h3>
-<h4>(1) Main화면의 기본 디자인 설계</h4>
-<img src="https://github.com/user-attachments/assets/f5b786b0-7173-4c7a-b337-91ae8bf050c0" width="width 30%" height="height 40%">
-<h4>(2) 주요 기능 및 요구사항</h4>
-<h4>a. 비회원 / 회원의 기능</h4>
-<img src="https://github.com/user-attachments/assets/fb29d40a-d3a4-4177-bf61-06b26e34e40f">
-<h4>b. 관리자의 주요 기능</h4>
-<img src="https://github.com/user-attachments/assets/ed443dbc-001e-430b-8e60-13963dea5b04"></br>
-<h3><a href="https://docs.google.com/spreadsheets/d/16US4o8_Yy0UbsYzRZtFX-uC85ofW8f5_WLkOHVndZIU/edit?gid=0#gid=0">-> 클릭하시면 상세 요구사항을 확인하실 수 있습니다.😊😊</br>(누르면 이동이 가능합니다.)</a></h3>
+<h4>(1) Main화면의 기본 디자인</h4>
+<img src="https://github.com/user-attachments/assets/fce08bcd-a125-4390-bcae-7fd4ed132a50" width="width 30%" height="height 40%">
+<h4>(2) 메뉴 구조도</h4>
+<img src="https://github.com/user-attachments/assets/f6dcd846-952e-4f7a-af35-6f6ea360b39b">
+
 <h4>(3) ERD(다이아그램)</h4>
 <span>
-<h4>총: 23개 테이블</h4>
-회원관리 - 3개</br>
-자유게시판 - 4개</br>
-Q&A게시판 - 4개</br>
-우울증게시판 - 5개</br>
-건강검진 check - 2개</br>
-우울증 check - 1개</br>
-관리자 전용 - 4개</br></br>
+<h4>총: 10개 테이블</h4>
 </span>
-<img src="https://github.com/user-attachments/assets/c630786b-523c-46ab-b1c8-6106325684ee" alt="ERD">
+<img src="https://github.com/user-attachments/assets/d003b9a5-7597-425b-ac6d-bd121ad27ce5" alt="ERD">
+<h4><a href="https://www.erdcloud.com/d/tDmh2YTH3bAvvFAw3">
+  더욱 자세한 ERD는 클릭하면 확인하실수 있습니다.😊😊</br>(누르면 이동이 가능합니다.)</a></h4>
 <h4>(4) 어떤 기술들을 실제 구현해보았나?</h4>
 <spna>1. <b>View</b>의 제작</br>
-         &nbsp;&nbsp;&nbsp; : html5, CSS3, Bootstrap를 사용한 정적디자인 / 타임리프, JSP를 사용한 동적 렌더링 /</br>
+         &nbsp;&nbsp;&nbsp; : html5, CSS3, Bootstrap를 사용한 정적디자인 / JSP를 사용한 동적 렌더링 /</br>
          &nbsp;&nbsp;&nbsp; JavaScript를 이용한 이벤트 핸들러처리, 테이블 형성 및 document의 요소 동적 생성 구현</spna>
 <div>2. 사용한 <b>API</b></br>
-  : 카카오 Map Api를 통한 건강 맞춤 추천 병원 지도를 구현 / Daum Api를 통한 주소 검색 기능 구현 / Kakao Api 통한 소셜 로그인 /
-  &nbsp;&nbsp;&nbsp;News Api 통한 메인화면에 건강관련 뉴스코너를 구성</div>
+ - 소셜 로그인 : Google OAuth2.0</br>
+ - 회원가입 이메일 인증 : Naver Email</br>
+ - 이미지 키워드 분석 : Google Cloud Vision</br>
+ - 키워드 기반 여행지 검색 : Kakao Search</br>
+ - 여행지 기반 이미지 검색 : Naver Image Search</br>
+ - ChatBot : Google Gemini</br>
+ - 위치 좌표 변환: Google Geocoding API</br>
+ - 지도 : Google Places API(도시/장소 자동완성, 장소 상세 정보 조회,장소 사진 검색), Google Maps JavaScript API(지도 렌더링, 마커 생성, 장소 검색), KAKAO Maps</br>
+ - 공공데이터 API:  Area Based List,  Detail Common API, Detail Intro API,  Detail Image API, Detail Info API, Search Keyword API, Festival API
+</div>
 <div>3. <b>백엔드</b>의 구현 (크게 5가지로 분류) </br>
-  - 3-1. 로그인: spring security통한 authority부여, 인증과 인가정책, oauth2 라이브러리 통한 소셜 로그인 구현, 유저디테일 및 핸들러의 커스텀</br>
-  - 3-2. 회원가입: ajax를 통한 비동기 방식 구현(아이디 중복체크, 비밀번호 유효성 체크 등), spring-boot-starter-mail 라이브러리를 통한 이메일 인증 구현, Daum Api를 통한 주소 검색 및 저장 기능</br>
-  - 3-3. 게시판: 타임리프 통한 동적 화면 구성, 추천-신고 기능등의 비동기 구현, 댓글 작성 및 수정의 암호화된 비밀번호 인증 처리, 페이징구현, 추천순-최신순으로의 데이터베이스 커스텀, 파일 첨부기능</br>
-  - 3-4. 마이페이지: 최근 활동 정보 출력을 위한 데이터 정제 및 추출, JS의 테이블 tr-td 생성으로 화면 동적 생성, 회원의 정보 수정 및 삭제를 위한 2차 인증절차 및 url로의 접근 제한 구현</br>
-  - 3-5. 관리자모드: spring security통한 authority부여, JS의 테이블 tr-td 생성으로 화면 동적 생성, 관리자가 조회할 수 있는 데이터의 커스텀 및 정제</br>
+  - 3-1. 로그인: spring security통한 authority부여, 인증과 인가정책, oauth2 라이브러리 통한 소셜 로그인 구현</br>
+  - 3-2. 회원가입: ajax를 통한 비동기 방식 구현(아이디 중복체크, 비밀번호 유효성 체크 등), spring-boot-starter-mail 라이브러리를 통한 이메일 인증 구현, 사용자 회원가입 시 사용자의 여행 취향 데이터 DB에 있는 사용자 취향 테이블에 insert</br>
+  - 3-3. 마이페이지: AI를 활용한 여행 일정 생성 기록 조회, spring security의 matches와 암호화를 활용한 비밀번호 변경, 회원가입 시 DB에 insert 되었던 사용자 여행 취향 수정</br>
+  - 3-4. 챗봇: Google Gemini API를 활용한 챗봇 기능 구현</br>
+  - 3-5. 이미지 기반 여행지 추천: Google Vision API를 활용하여 사용자가 이미지를 업로드 하면 해당 이미지를 분석 후 키워드 추출, 추출한 키워드를 기반으로 Kakao Search API를 활용하여 유사한 국내 여행지 추천, Naver Search API를 활용하여 해당 국내 여행지의 이미지 출력</br>
+  - 3-6. 여행 일정 생성: 사용자가 여행할 도시와 여행 기간 등을 입력 하면 해당 데이터를 기반으로 프롬프트 작성, 작성된 프롬프트와 Google Gemini를 활용하여 여행 일정 생성, 생성된 일정에 맞게 Google Maps API를 활용하여 지도에 일정별 마크 기능 구현
+  - 3-7. 여행지 추천: 회원가입 때 DB에 저장된 사용자의 취향을 기반으로 Google Gemini를 활용해 여행지 추천, NaviGo 사이트에서 추천 횟수가 가장 많은 순서대로 인기 여행지 추천, 문화 및 축제가 있는 지역 기반 여행지 추천
 <hr>
 <h3>💻 3. 개발 환경</h3>
 ⚙️ 개발 환경
-<div display="inline">✅FRONTEND : <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"><div align="center"><img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white"><img src="https://img.shields.io/badge/Bootstrapap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"/><img src="https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white"/><img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"></div>
+<div display="inline">✅FRONTEND : <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white"><img src="https://img.shields.io/badge/Bootstrapap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"/><img src="https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white"/><img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"></div>
   <br></div></br>
 <div display="inline">
-✅BACKEND : <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"><img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=OpenJDK&logoColor=white"><img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white"><img src="https://img.shields.io/badge/Apache Tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=black"/><img src="https://img.shields.io/badge/MyBatis-000000?style=for-the-badge&logo=MyBatis&logoColor=white"> 
+✅BACKEND-JAVA :
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=OpenJDK&logoColor=white">
+<img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=Spring%20Security&logoColor=white">
+<img src="https://img.shields.io/badge/MyBatis-000000?style=for-the-badge&logo=MyBatis&logoColor=white">
+<img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white">
+</div></br>
+<div display="inline">
+✅BACKEND-PYTHON :
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=FastAPI&logoColor=white">
 </div></br>
 <div display="inline">
 ✅DATABASE : <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white"/><img src="https://img.shields.io/badge/dbeaver-gray?style=for-the-badge"></div></br>
@@ -135,48 +147,48 @@ Q&A게시판 - 4개</br>
 </div></br>
 <hr>
 <h3> 📼 4. 실제 구현 영상 </h3>
-<p dir="auto">기능별 미리보기 영상입니다. 자세한 영상과 설명 시청은 하단의 각 기능별 링크를 통하여 확인 가능합니다.</p>
+<p dir="auto">기능별 미리보기입니다. 자세한 영상 시청은 하단의 각 기능별 링크를 통하여 확인 가능합니다.</p>
 <markdown-accessiblity-table data-catalyst=""><table>
 <thead>
 <tr>
-<th align="center">메인화면 기능</th>
-<th align="center">회원가입 기능</th>
-<th align="center">로그인 기능</th>
+<th align="center">메인화면</th>
+<th align="center">회원가입/로그인</th>
+<th align="center">회원가입 후 취향 선택</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><img src="https://github.com/user-attachments/assets/2e6cd813-a018-46a0-a1a4-ab51325136aa">
+<td><img src="https://github.com/user-attachments/assets/fce08bcd-a125-4390-bcae-7fd4ed132a50">
 </td>
-<td><img src="https://github.com/user-attachments/assets/5294b9fb-3934-4d3b-b4d5-18a884bab21b"></td>
-<td><img src="https://github.com/user-attachments/assets/8412140c-8be4-4d80-adb5-a882df7db6ec"></td>
+<td><img src="https://github.com/user-attachments/assets/5e7d1971-811e-4cb8-8a88-f6463cb69736"></td>
+<td><img src="https://github.com/user-attachments/assets/94e1ef32-2b05-46a3-b669-d78cd3095db0"></td>
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
 <markdown-accessiblity-table data-catalyst=""><table>
 <thead>
 <tr>
-<th align="center">건강검진 CHECK</th>
-<th align="center">우울증 CHECK</th>
+<th align="center">마이페이지</th>
+<th align="center">챗봇</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><img src="https://github.com/user-attachments/assets/0e2eeaf0-fa37-43d6-917a-eb4c8baa460d">
+<td><img src="https://github.com/user-attachments/assets/04fdc1a6-81eb-4de4-b337-15fbe4d3d456">
 </td>
-<td><img src="https://github.com/user-attachments/assets/124fe820-cb7c-4275-bbe8-ba0f7c65ee83"></td>
+<td><img src="https://github.com/user-attachments/assets/99f76ac6-c70e-4ed7-9133-97cf01666d47"></td>
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
 <markdown-accessiblity-table data-catalyst=""><table>
 <thead>
 <tr>
-<th align="center">카카오 회원가입 - 로그인 기능</th>
+<th align="center">이미지 기반 국내 여행지 추천</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><img src="https://github.com/user-attachments/assets/35314266-dc86-42c1-a5dd-878a325dd908">
+<td><img src="https://github.com/user-attachments/assets/d3294d96-ec2e-4383-9b7e-3b18fa5a43c6">
 </td>
 </tr>
 </tbody>
@@ -185,37 +197,20 @@ Q&A게시판 - 4개</br>
 <markdown-accessiblity-table data-catalyst=""><table>
 <thead>
 <tr>
-<th align="center">마이페이지 기능</th>
-<th align="center">관리자 신고 관리 - 정지 기능</th>
+<th align="center">여행 일정 생성 기능</th>
+<th align="center">여행지 추천 - 사용자 취향 기반</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><img src="https://github.com/user-attachments/assets/c827addf-b854-4500-8f65-4894c3c9b709">
+<td><img src="https://github.com/user-attachments/assets/861db6ff-b25a-4cf8-9fa5-6ed194aa5c47">
 </td>
-<td><img src="https://github.com/user-attachments/assets/7699db94-ac60-4c2e-a821-e35afd7bfabf">
+<td><img src="https://github.com/user-attachments/assets/f9f909b0-5400-4a0f-a8b5-16bf66c19f75">
 </td>
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<h3>👉👉<a href="https://youtu.be/OBIiHWSFoac">PETITCURE 기능 종합 버전 영상 및 설명 보러가기!!</a></h3>
-<h3>더 많은 기능 및 기능별 설명 자세히 보러가기!!</br>( -> 영상별 자막을 통한 설명이 추가되어 있습니다.)</h3>
-<a href="https://www.youtube.com/watch?v=en9syPim3Z4">(1) 기본 메인화면 보기!</a></br>
-<a href="https://www.youtube.com/watch?v=7DGF0gJPiAY">(2) 회원가입 기능 보기!</a></br>
-<a href="https://www.youtube.com/watch?v=icFCi6NpcXM">(3) 로그인 기능 보기 !</a></br>
-<a href="https://youtu.be/jzuRroEn6p8">(4) 자유게시판 기능 보기!</a></br>
-<a href="https://youtu.be/2qLPKIujQrM">(5) Q&A게시판 기능 보기! </br>
-&nbsp;&nbsp;&nbsp;    - 댓글제한</a></br>
-<a href="https://www.youtube.com/watch?v=z3MxpA2ZFKE">(6) 우울증 게시판 기능 보기!</br>
-&nbsp;&nbsp;&nbsp;   + 카카오 로그인</a></br>
-<a href="https://www.youtube.com/watch?v=EXJeOeM43WQ&feature=youtu.be">(7) 마이페이지 기능 보기!</br>
-&nbsp;&nbsp;&nbsp;(+ 회원 정보 수정 및 삭제)</a></br>
-<a href="https://youtu.be/TSHQcxzJQqY">(8) 건강검진 check 기능 보기!</a></br>
-<a href="https://youtu.be/ALDZ6Ou3t0U">(9) 우울증 check 기능 보기!</a></br>
-<a href="https://www.youtube.com/watch?v=_ev_hWKM8-o&feature=youtu.be">(10) 공지사항 관리 기능 보기!</a></br>
-<a href="https://youtu.be/qVKWJTnlVoE">(11) 탈퇴현황 관리 및 블랙리스트 기능 보기!</a></br>
-<a href="https://www.youtube.com/watch?v=w06MhWS4wvM">(12) 관리자 페이지 기능 보기!</a></br>
-<hr>
+<h3>👉👉<a href="https://youtu.be/Ni4PvNojgzM?si=V1L4rKI48ewJWmZx">NaviGo 기능 종합 버전 영상 보러가기!!</a></h3>
 <h3>📣 5. 해당 과정을 통하여 프로젝트를 진행하고, 최종적으로 아래의 PPT를 제작 및 발표를 진행하였습니다. </br>
          (ppt링크 하단 첨부)</h3>
 <h5>https://drive.google.com/file/d/16Z_0DRBO0tn0gSanrAPOX6Zo_OGnP6yg/view?usp=drive_link</h5>
